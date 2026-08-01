@@ -15,6 +15,14 @@ class UISpec:
     Frontend generators consume this object.
     """
 
+    pages: list[str] = field(
+        default_factory=list
+    )
+
+    components: list[str] = field(
+        default_factory=list
+    )
+
     layout: str = "default"
 
     theme: str = "modern"
@@ -26,6 +34,8 @@ class UISpec:
     metadata: dict = field(
         default_factory=dict
     )
+
+    # Expanded UI intelligence
 
     page_models: list[UIPage] = field(
         default_factory=list
@@ -41,40 +51,14 @@ class UISpec:
 
 
     @property
-    def pages(self) -> list[str]:
-        """
-        Compatibility accessor.
-        """
-
-        return [
-            page.name
-            for page in self.page_models
-        ]
-
-
-    @property
-    def components(self) -> list[str]:
-        """
-        Compatibility accessor.
-        """
-
-        return [
-            component.name
-            for component in self.component_models
-        ]
-
-
-    @property
     def page_count(self) -> int:
-
         return len(
-            self.page_models
+            self.pages
         )
 
 
     @property
     def component_count(self) -> int:
-
         return len(
-            self.component_models
+            self.components
         )
