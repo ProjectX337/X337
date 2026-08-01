@@ -1,0 +1,19 @@
+interface {{ component.name }}Props {
+  children?: React.ReactNode;
+}
+
+
+export default function {{ component.name }}(
+  {
+    children,
+  }: {{ component.name }}Props
+) {
+
+  return (
+    <div
+      data-component="{{ component.component_type }}"
+    >
+      {children}
+    </div>
+  );
+}

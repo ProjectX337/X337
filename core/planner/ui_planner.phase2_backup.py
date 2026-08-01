@@ -6,7 +6,6 @@ from core.planner.capability_match import CapabilityMatch
 from core.spec.ui_spec import UISpec
 from core.spec.models.ui_page import UIPage
 from core.spec.models.ui_component import UIComponent
-from core.spec.models.ui_layout import UILayoutNode
 from core.spec.models.design_system import DesignSystem
 
 
@@ -67,45 +66,21 @@ class UIPlanner:
             and getattr(intent, "category", None) == "saas"
         ):
 
-            sidebar = UIComponent(
-                name="Sidebar",
-                component_type="navigation",
-            )
-
-            data_card = UIComponent(
-                name="DataCard",
-                component_type="data",
-            )
-
             page_models.append(
                 UIPage(
                     name="Dashboard",
                     route="/dashboard",
                     layout="dashboard",
                     components=[
-                        sidebar,
-                        data_card,
+                        UIComponent(
+                            name="Sidebar",
+                            component_type="navigation",
+                        ),
+                        UIComponent(
+                            name="DataCard",
+                            component_type="data",
+                        ),
                     ],
-                    composition=UILayoutNode(
-                        name="DashboardRoot",
-                        node_type="layout",
-                        children=[
-                            UILayoutNode(
-                                name="SidebarRegion",
-                                component=sidebar,
-                            ),
-                            UILayoutNode(
-                                name="MainContent",
-                                node_type="container",
-                                children=[
-                                    UILayoutNode(
-                                        name="DataCardRegion",
-                                        component=data_card,
-                                    )
-                                ],
-                            ),
-                        ],
-                    ),
                 )
             )
 

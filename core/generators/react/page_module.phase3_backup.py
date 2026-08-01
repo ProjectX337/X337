@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from core.generators.generator_context import GeneratorContext
 from core.generators.modules.base_module import BaseModule
-from core.generators.react.layout_renderer import LayoutRenderer
 
 
 class PageModule(BaseModule):
@@ -41,11 +40,4 @@ class PageModule(BaseModule):
                 page_name=page.name,
                 route=page.route,
                 components=page.components,
-            composition=(
-                LayoutRenderer().render(
-                    page.composition
-                )
-                if page.composition
-                else ""
-            ),
             )

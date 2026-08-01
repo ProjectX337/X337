@@ -30,5 +30,5 @@ class ComponentModule(BaseModule):
                 template="react/component.tsx.j2",
                 output=f"frontend/src/components/{component.name}.tsx",
                 language="typescript",
-                component=component.name,
+                component=component,
             )

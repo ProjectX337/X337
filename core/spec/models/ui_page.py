@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from core.spec.models.ui_component import UIComponent
+from core.spec.models.ui_layout import UILayoutNode
+
 
 @dataclass(slots=True)
 class UIPage:
@@ -12,6 +15,8 @@ class UIPage:
 
     layout: str = "default"
 
-    components: list[str] = field(
+    components: list[UIComponent] = field(
         default_factory=list
     )
+
+    composition: UILayoutNode | None = None

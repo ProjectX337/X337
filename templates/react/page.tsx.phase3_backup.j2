@@ -1,18 +1,14 @@
 export default function {{ page_name }}() {
 
   return (
-
-    <main>
+    <main
+      data-route="{{ route }}"
+      data-layout="{{ page_name }}"
+    >
 
       <h1>
         {{ page_name }}
       </h1>
-
-      {% if composition %}
-
-      {{ composition }}
-
-      {% else %}
 
       {% for component in components %}
 
@@ -20,9 +16,6 @@ export default function {{ page_name }}() {
 
       {% endfor %}
 
-      {% endif %}
-
     </main>
-
   );
 }
