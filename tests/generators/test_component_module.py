@@ -34,7 +34,7 @@ def test_component_module():
     ]
 
     assert (
-        "frontend/src/components/Header.tsx"
+        "frontend/src/components/Navbar.tsx"
         in paths
     )
 
