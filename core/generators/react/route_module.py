@@ -6,7 +6,7 @@ from core.generators.modules.base_module import BaseModule
 
 class RouteModule(BaseModule):
     """
-    Generates application routes from generated pages.
+    Generates application routes from UISpec pages.
     """
 
     @property
@@ -20,30 +20,67 @@ class RouteModule(BaseModule):
 
         routes = []
 
-        pages = (
-            context.spec.features
-            if context.spec.features
-            else (
+        pages = []
+
+        # Explicit features override planner defaults
+        if context.spec.features:
+
+            pages.extend(
+                context.spec.features
+            )
+
+        # Structured pages
+        elif (
+            context.spec.ui_spec
+            and getattr(
+                context.spec.ui_spec,
+                "page_models",
+                None,
+            )
+        ):
+
+            pages.extend(
+                context.spec.ui_spec.page_models
+            )
+
+        elif context.spec.ui_spec:
+
+            pages.extend(
                 context.spec.ui_spec.pages
-                if context.spec.ui_spec
-                else []
-            )
-        )
-
-        for feature in pages:
-
-            page_name = (
-                feature
-                .replace("_", " ")
-                .title()
-                .replace(" ", "")
             )
 
-            path = (
-                feature
-                .lower()
-                .replace(" ", "-")
-            )
+
+        for page in pages:
+
+            if hasattr(page, "name"):
+
+                page_name = page.name
+
+                path = (
+                    page.route
+                    .replace("/", "", 1)
+                    if page.route != "/"
+                    else ""
+                )
+
+                if path == "":
+                    path = "/"
+
+            else:
+
+                page_name = (
+                    page
+                    .replace("_", " ")
+                    .title()
+                    .replace(" ", "")
+                )
+
+                path = (
+                    page
+                    .lower()
+                    .replace(" ", "-")
+                )
+
 
             routes.append(
                 {
@@ -51,6 +88,7 @@ class RouteModule(BaseModule):
                     "page": page_name,
                 }
             )
+
 
         context.builder.template(
             template="react/routes.tsx.j2",

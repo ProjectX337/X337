@@ -6,7 +6,7 @@ from core.generators.modules.base_module import BaseModule
 
 class PageModule(BaseModule):
     """
-    Generates React pages from project features.
+    Generates React pages from UISpec pages.
     """
 
     @property
@@ -18,24 +18,54 @@ class PageModule(BaseModule):
         context: GeneratorContext,
     ) -> None:
 
-        pages = (
-            context.spec.features
-            if context.spec.features
-            else (
+        pages = []
+
+        # Explicit features override planner defaults
+        if context.spec.features:
+
+            pages.extend(
+                context.spec.features
+            )
+
+        # Structured UI pages
+        elif (
+            context.spec.ui_spec
+            and getattr(
+                context.spec.ui_spec,
+                "page_models",
+                None,
+            )
+        ):
+
+            pages.extend(
+                context.spec.ui_spec.page_models
+            )
+
+        elif context.spec.ui_spec:
+
+            pages.extend(
                 context.spec.ui_spec.pages
-                if context.spec.ui_spec
-                else []
             )
-        )
 
-        for feature in pages:
 
-            name = (
-                feature
-                .replace("_", " ")
-                .title()
-                .replace(" ", "")
-            )
+        for page in pages:
+
+            if hasattr(page, "name"):
+
+                name = page.name
+                feature = page.name
+
+            else:
+
+                feature = page
+
+                name = (
+                    feature
+                    .replace("_", " ")
+                    .title()
+                    .replace(" ", "")
+                )
+
 
             context.builder.template(
                 template="react/page.tsx.j2",
