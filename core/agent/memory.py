@@ -1,11 +1,21 @@
-from dataclasses import dataclass
+from __future__ import annotations
 
-from core.spec.project_spec import ProjectSpec
+from dataclasses import dataclass, field
 
 
 @dataclass
-class ProjectMemory:
+class ConversationMemory:
 
-    project_spec: ProjectSpec | None = None
+    messages: list[str] = field(
+        default_factory=list
+    )
 
-    last_prompt: str = ""
+    def add(
+        self,
+        message: str,
+    ):
+        self.messages.append(message)
+
+
+    def history(self):
+        return self.messages

@@ -1,23 +1,31 @@
-from dataclasses import dataclass, field
+from __future__ import annotations
 
-from core.agent.messages import Message
+from dataclasses import dataclass, field
 
 
 @dataclass
 class Conversation:
+    """
+    Stores an X337 builder conversation.
+    """
 
-    messages: list[Message] = field(
+    messages: list[dict[str, str]] = field(
         default_factory=list
     )
+
+    project_name: str = ""
+
+    last_prompt: str = ""
 
     def add(
         self,
         role: str,
         content: str,
-    ):
+    ) -> None:
+
         self.messages.append(
-            Message(
-                role=role,
-                content=content,
-            )
+            {
+                "role": role,
+                "content": content,
+            }
         )
