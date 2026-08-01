@@ -26,7 +26,7 @@ class UIPlanner:
         ]
 
         components = [
-            "Navbar",
+            "Header",
             "Button",
             "Card",
         ]
@@ -41,7 +41,7 @@ class UIPlanner:
 
         component_models = [
             UIComponent(
-                name="Navbar",
+                name="Header",
                 component_type="navigation",
             ),
             UIComponent(
