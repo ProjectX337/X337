@@ -18,17 +18,66 @@ class ComponentModule(BaseModule):
         context: GeneratorContext,
     ) -> None:
 
-        components = [
-            "Header",
-            "Button",
-            "Card",
-        ]
+        components = []
+
+        # Preferred: structured UI components
+        if (
+            context.spec.ui_spec
+            and getattr(
+                context.spec.ui_spec,
+                "component_models",
+                None,
+            )
+        ):
+
+            components.extend(
+                context.spec.ui_spec.component_models
+            )
+
+        # Existing UISpec support
+        elif (
+            context.spec.ui_spec
+            and context.spec.ui_spec.components
+        ):
+
+            components.extend(
+                context.spec.ui_spec.components
+            )
+
+            # Preserve legacy Header contract
+            if "Header" not in components:
+
+                components.insert(
+                    0,
+                    "Header",
+                )
+
+        # Safe fallback
+        else:
+
+            components.extend(
+                [
+                    "Header",
+                    "Button",
+                    "Card",
+                ]
+            )
+
 
         for component in components:
 
+            if hasattr(component, "name"):
+
+                name = component.name
+
+            else:
+
+                name = component
+
+
             context.builder.template(
                 template="react/component.tsx.j2",
-                output=f"frontend/src/components/{component}.tsx",
+                output=f"frontend/src/components/{name}.tsx",
                 language="typescript",
-                component=component,
+                component=name,
             )
