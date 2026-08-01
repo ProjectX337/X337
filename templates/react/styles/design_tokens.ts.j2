@@ -1,0 +1,23 @@
+export const designTokens = {
+
+  colors: {
+{% for key, value in colors.items() %}
+    {{ key }}: "{{ value }}",
+{% endfor %}
+  },
+
+  spacing: {
+{% for key, value in spacing.items() %}
+    {{ key }}: "{{ value }}",
+{% endfor %}
+  },
+
+  typography: {
+{% for key, value in typography.items() %}
+    {{ key }}: "{{ value }}",
+{% endfor %}
+  }
+
+};
+
+export default designTokens;

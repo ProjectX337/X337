@@ -13,7 +13,6 @@ from core.generators.react.page_module import PageModule
 from core.generators.react.route_module import RouteModule
 from core.generators.react.router_module import RouterModule
 from core.generators.react.style_module import StyleModule
-from core.generators.react.design_system_module import DesignSystemModule
 from core.generators.react.typescript_module import TypeScriptModule
 from core.generators.react.vite_module import ViteModule
 
@@ -43,8 +42,7 @@ class ReactGenerator(BaseGenerator):
             PageModule(),
             RouteModule(),
             RouterModule(),
-            DesignSystemModule(),
-        StyleModule(),
+            StyleModule(),
         ]
 
         for module in modules:

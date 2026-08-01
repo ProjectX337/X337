@@ -1,0 +1,15 @@
+:root {
+
+{% for key, value in colors.items() %}
+  --color-{{ key }}: {{ value }};
+{% endfor %}
+
+{% for key, value in spacing.items() %}
+  --spacing-{{ key }}: {{ value }};
+{% endfor %}
+
+{% for key, value in typography.items() %}
+  --font-{{ key }}: {{ value }};
+{% endfor %}
+
+}
