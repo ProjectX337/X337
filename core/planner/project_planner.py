@@ -19,6 +19,10 @@ from core.planner.stages.project_spec_stage import (
     ProjectSpecStage,
 )
 
+from core.planner.stages.ui_spec_stage import (
+    UISpecStage,
+)
+
 
 class ProjectPlanner:
     """
@@ -43,6 +47,7 @@ class ProjectPlanner:
 
                 TechnologyResolverStage(),
 
+            UISpecStage(),
                 ProjectSpecStage(),
 
             ]

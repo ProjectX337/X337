@@ -8,8 +8,10 @@ from core.planner.models import (
     Intent,
     TechnologyPlan,
 )
+
 from core.planner.stack_builder import ArchitectureStack
 from core.planner.capability_match import CapabilityMatch
+from core.spec.ui_spec import UISpec
 
 
 @dataclass(slots=True)
@@ -38,13 +40,11 @@ class ProjectSpec:
 
     technologies: TechnologyPlan | None = None
 
+    ui_spec: UISpec | None = None
+
     metadata: dict[str, Any] = field(
         default_factory=dict
     )
-
-    # ---------------------------------------------------------
-    # Normalized Properties
-    # ---------------------------------------------------------
 
     @property
     def project_name(self) -> str:

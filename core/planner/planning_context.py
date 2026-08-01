@@ -11,6 +11,7 @@ from core.planner.models import (
 )
 from core.planner.stack_builder import ArchitectureStack
 from core.spec.project_spec import ProjectSpec
+from core.spec.ui_spec import UISpec
 
 
 @dataclass(slots=True)
@@ -38,3 +39,6 @@ class PlanningContext:
     technologies: TechnologyPlan | None = None
 
     project_spec: ProjectSpec | None = None
+
+    ui_spec: UISpec | None = None
+

@@ -42,4 +42,6 @@ class ProjectSpecStage(PlanningStage):
 
             technologies=context.technologies,
 
+        ui_spec=context.ui_spec,
+
         )
