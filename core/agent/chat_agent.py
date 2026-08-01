@@ -1,34 +1,55 @@
 from __future__ import annotations
 
-from core.planner.project_planner import ProjectPlanner
-from core.agent.memory import ConversationMemory
+from core.ai.planner_agent import PlannerAgent
+from core.agent.update_agent import UpdateAgent
 
 
 class ChatAgent:
     """
-    Conversational AI layer over X337 planner.
+    Main X337 conversational agent.
     """
+
 
     def __init__(self):
 
-        self.planner = ProjectPlanner()
+        self.planner = PlannerAgent()
 
-        self.memory = ConversationMemory()
+        self.updater = UpdateAgent()
+
 
 
     def respond(
         self,
         message: str,
-    ) -> str:
+    ):
 
-        self.memory.add(message)
+        if any(
+            word in message.lower()
+            for word in [
+                "add",
+                "change",
+                "update",
+            ]
+        ):
 
-        spec = self.planner.plan(
+            state = self.updater.apply(
+                message
+            )
+
+            return (
+                "Updated project with: "
+                + ", ".join(
+                    state.changes
+                )
+            )
+
+
+        spec = self.planner.build(
             message
         )
 
+
         return (
-            f"Project planned: {spec.project_name}. "
-            f"Conversation messages: "
-            f"{len(self.memory.history())}"
+            f"Created project: "
+            f"{spec.project_name}"
         )
