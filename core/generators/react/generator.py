@@ -7,16 +7,19 @@ from core.generators.generation_result import GenerationResult
 from core.generators.react.package_module import PackageModule
 from core.generators.react.config_module import ConfigModule
 from core.generators.react.app_module import AppModule
+from core.generators.react.app_shell_module import AppShellModule
+from core.generators.react.component_module import ComponentModule
+from core.generators.react.page_module import PageModule
+from core.generators.react.route_module import RouteModule
+from core.generators.react.router_module import RouterModule
 from core.generators.react.style_module import StyleModule
+from core.generators.react.typescript_module import TypeScriptModule
+from core.generators.react.vite_module import ViteModule
 
 
 class ReactGenerator(BaseGenerator):
     """
     Production React application generator.
-
-    Responsible only for orchestration.
-    Individual modules generate different
-    parts of the project.
     """
 
     @property
@@ -28,20 +31,21 @@ class ReactGenerator(BaseGenerator):
         context: GeneratorContext,
     ) -> GenerationResult:
 
-        package = PackageModule()
+        modules = [
+            PackageModule(),
+            ConfigModule(),
+            ViteModule(),
+            TypeScriptModule(),
+            AppModule(),
+            AppShellModule(),
+            ComponentModule(),
+            PageModule(),
+            RouteModule(),
+            RouterModule(),
+            StyleModule(),
+        ]
 
-        config = ConfigModule()
-
-        app = AppModule()
-
-        style = StyleModule()
-
-        package.generate(context)
-
-        config.generate(context)
-
-        app.generate(context)
-
-        style.generate(context)
+        for module in modules:
+            module.generate(context)
 
         return context.builder.result()

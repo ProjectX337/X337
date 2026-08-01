@@ -20,7 +20,17 @@ class RouteModule(BaseModule):
 
         routes = []
 
-        for feature in context.spec.features:
+        pages = (
+            context.spec.features
+            if context.spec.features
+            else (
+                context.spec.ui_spec.pages
+                if context.spec.ui_spec
+                else []
+            )
+        )
+
+        for feature in pages:
 
             page_name = (
                 feature
