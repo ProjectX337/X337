@@ -22,19 +22,32 @@ class RouteModule(BaseModule):
 
         pages = []
 
-        ui_spec = context.spec.ui_spec
-
-        if ui_spec and ui_spec.page_models:
-
-            pages.extend(
-                ui_spec.page_models
-            )
-
+        # Explicit features override planner defaults
         if context.spec.features:
 
-            for feature in context.spec.features:
+            pages.extend(
+                context.spec.features
+            )
 
-                pages.append(feature)
+        # Structured pages
+        elif (
+            context.spec.ui_spec
+            and getattr(
+                context.spec.ui_spec,
+                "page_models",
+                None,
+            )
+        ):
+
+            pages.extend(
+                context.spec.ui_spec.page_models
+            )
+
+        elif context.spec.ui_spec:
+
+            pages.extend(
+                context.spec.ui_spec.pages
+            )
 
 
         for page in pages:
@@ -43,7 +56,15 @@ class RouteModule(BaseModule):
 
                 page_name = page.name
 
-                path = page.route
+                path = (
+                    page.route
+                    .replace("/", "", 1)
+                    if page.route != "/"
+                    else ""
+                )
+
+                if path == "":
+                    path = "/"
 
             else:
 
@@ -54,10 +75,10 @@ class RouteModule(BaseModule):
                     .replace(" ", "")
                 )
 
-                path = "/" + (
+                path = (
                     page
                     .lower()
-                    .replace("_", "-")
+                    .replace(" ", "-")
                 )
 
 
