@@ -28,3 +28,13 @@ class FeatureSpec:
     api_contracts: list[str] = field(
         default_factory=list
     )
+
+@property
+def slug(self) -> str:
+
+    return (
+        self.name
+        .lower()
+        .replace(" ", "_")
+        .replace("-", "_")
+    )

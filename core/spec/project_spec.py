@@ -13,7 +13,7 @@ from core.planner.stack_builder import ArchitectureStack
 from core.planner.capability_match import CapabilityMatch
 from core.spec.ui_spec import UISpec
 from core.spec.models.feature_spec import FeatureSpec
-from core.spec.models.feature import FeatureSpec
+from core.spec.models.feature_spec import FeatureSpec
 
 
 @dataclass(slots=True)

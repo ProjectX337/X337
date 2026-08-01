@@ -37,6 +37,12 @@ class ReactGenerator(BaseGenerator):
         context: GeneratorContext,
     ) -> GenerationResult:
 
+        if context.is_update:
+            print(
+                "React update mode:",
+                context.changes
+            )
+
         modules = [
             PackageModule(),
     
