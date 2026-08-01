@@ -1,24 +1,16 @@
 from __future__ import annotations
 
+from core.agent.feature_registry import FeatureRegistry
+
 
 class FeatureGraph:
     """
-    Represents relationships between project capabilities.
+    Resolves capability dependencies.
     """
 
-    DEPENDENCIES = {
-        "analytics": [
-            "authentication",
-            "dashboard",
-        ],
-        "dashboard": [
-            "authentication",
-        ],
-        "billing": [
-            "authentication",
-        ],
-        "authentication": [],
-    }
+    def __init__(self):
+        self.registry = FeatureRegistry()
+
 
     def resolve(
         self,
@@ -27,20 +19,30 @@ class FeatureGraph:
 
         resolved = []
 
+
         def visit(feature):
 
             if feature in resolved:
                 return
 
-            for dep in self.DEPENDENCIES.get(
-                feature,
+
+            dependencies = self.registry.get(
+                feature
+            ).get(
+                "dependencies",
                 []
-            ):
+            )
+
+
+            for dep in dependencies:
                 visit(dep)
+
 
             resolved.append(feature)
 
+
         for feature in features:
             visit(feature)
+
 
         return resolved

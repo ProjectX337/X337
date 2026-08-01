@@ -38,6 +38,10 @@ class FeatureRegistry:
             "api_contracts": [
                 "GET /reports"
             ],
+            "dependencies": [
+                "authentication",
+                "dashboard",
+            ],
         },
 
 
@@ -64,6 +68,9 @@ class FeatureRegistry:
             ],
             "api_contracts": [
                 "GET /analytics"
+            ],
+            "dependencies": [
+                "authentication",
             ],
         },
 
@@ -92,6 +99,9 @@ class FeatureRegistry:
             ],
             "api_contracts": [
                 "GET /billing",
+            ],
+            "dependencies": [
+                "authentication",
             ],
         },
 
@@ -122,6 +132,7 @@ class FeatureRegistry:
             "api_contracts": [
                 "POST /auth/login",
             ],
+            "dependencies": [],
         },
     }
 
