@@ -55,4 +55,15 @@ class CapabilityComposer:
                 features.extend(items)
 
 
+        direct_features = [
+            "authentication",
+            "billing",
+            "dashboard",
+            "analytics",
+        ]
+
+        for feature in direct_features:
+            if feature in text:
+                features.append(feature)
+
         return list(dict.fromkeys(features))
