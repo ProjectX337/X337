@@ -20,15 +20,7 @@ class PageModule(BaseModule):
 
         pages = []
 
-        # Explicit features override planner defaults
-        if context.spec.features:
-
-            pages.extend(
-                context.spec.features
-            )
-
-        # Structured UI pages
-        elif (
+        if (
             context.spec.ui_spec
             and getattr(
                 context.spec.ui_spec,
@@ -36,41 +28,16 @@ class PageModule(BaseModule):
                 None,
             )
         ):
-
-            pages.extend(
-                context.spec.ui_spec.page_models
-            )
-
-        elif context.spec.ui_spec:
-
-            pages.extend(
-                context.spec.ui_spec.pages
-            )
-
+            pages = context.spec.ui_spec.page_models
 
         for page in pages:
 
-            if hasattr(page, "name"):
-
-                name = page.name
-                feature = page.name
-
-            else:
-
-                feature = page
-
-                name = (
-                    feature
-                    .replace("_", " ")
-                    .title()
-                    .replace(" ", "")
-                )
-
-
             context.builder.template(
                 template="react/page.tsx.j2",
-                output=f"frontend/src/pages/{name}.tsx",
+                output=f"frontend/src/pages/{page.name}.tsx",
                 language="typescript",
-                feature=feature,
-                page_name=name,
+                feature=page.name,
+                page_name=page.name,
+                route=page.route,
+                components=page.components,
             )
