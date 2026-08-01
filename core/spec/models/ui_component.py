@@ -17,3 +17,15 @@ class UIComponent:
     variants: list[str] = field(
         default_factory=list
     )
+
+    states: list[str] = field(
+        default_factory=list
+    )
+
+    children: list[str] = field(
+        default_factory=list
+    )
+
+    dependencies: list[str] = field(
+        default_factory=list
+    )

@@ -21,6 +21,16 @@ class UIPlanner:
         capabilities: list[CapabilityMatch],
     ) -> UISpec:
 
+        pages = [
+            "Landing",
+        ]
+
+        components = [
+            "Navbar",
+            "Button",
+            "Card",
+        ]
+
         page_models = [
             UIPage(
                 name="Landing",
@@ -55,6 +65,10 @@ class UIPlanner:
 
         if "authentication" in capability_names:
 
+            pages.append(
+                "Login"
+            )
+
             page_models.append(
                 UIPage(
                     name="Login",
@@ -72,6 +86,17 @@ class UIPlanner:
                 None,
             ) == "saas"
         ):
+
+            pages.append(
+                "Dashboard"
+            )
+
+            components.extend(
+                [
+                    "Sidebar",
+                    "DataCard",
+                ]
+            )
 
             page_models.append(
                 UIPage(
@@ -116,21 +141,11 @@ class UIPlanner:
 
 
         return UISpec(
-            pages=[
-                page.name
-                for page in page_models
-            ],
-
-            components=[
-                component.name
-                for component in component_models
-            ],
-
+            pages=pages,
+            components=components,
             layout=layout,
             theme="modern",
-
             page_models=page_models,
             component_models=component_models,
-
             design_system=design_system,
         )
