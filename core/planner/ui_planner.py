@@ -46,12 +46,10 @@ class UIPlanner:
 
         layout = "default"
 
-
         capability_names = [
             capability.name
             for capability in capabilities
         ]
-
 
         if "authentication" in capability_names:
 
@@ -63,14 +61,9 @@ class UIPlanner:
                 )
             )
 
-
         if (
             intent
-            and getattr(
-                intent,
-                "category",
-                None,
-            ) == "saas"
+            and getattr(intent, "category", None) == "saas"
         ):
 
             page_models.append(
@@ -100,7 +93,6 @@ class UIPlanner:
 
             layout = "dashboard"
 
-
         design_system = DesignSystem(
             colors={
                 "primary": "cyan",
@@ -114,23 +106,10 @@ class UIPlanner:
             },
         )
 
-
         return UISpec(
-            pages=[
-                page.name
-                for page in page_models
-            ],
-
-            components=[
-                component.name
-                for component in component_models
-            ],
-
             layout=layout,
             theme="modern",
-
             page_models=page_models,
             component_models=component_models,
-
             design_system=design_system,
         )
