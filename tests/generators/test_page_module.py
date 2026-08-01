@@ -3,6 +3,8 @@ from core.generators.file_builder import FileBuilder
 from core.generators.generator_context import GeneratorContext
 from core.generators.react.page_module import PageModule
 from core.planner.project_planner import ProjectPlanner
+from core.spec.models.ui_page import UIPage
+from core.spec.models.ui_page import UIPage
 
 
 def test_page_module():
@@ -13,8 +15,12 @@ def test_page_module():
         "Build an AI SaaS"
     )
 
-    spec.features = [
-        "authentication"
+    spec.ui_spec.page_models = [
+        UIPage(
+            name="Authentication",
+            route="/auth",
+            components=[]
+        )
     ]
 
     context = GeneratorContext(
