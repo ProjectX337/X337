@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from core.agent.change_plan import ChangePlan
 from core.agent.feature_registry import FeatureRegistry
+from core.agent.capability_composer import CapabilityComposer
 
 
 class ChangeEngine:
@@ -17,10 +18,21 @@ class ChangeEngine:
 
         registry = FeatureRegistry()
 
+        composer = CapabilityComposer()
+
         detected = registry.match(
             message
         )
 
+        composed = composer.compose(
+            message
+        )
+
+        changes = list(
+            dict.fromkeys(
+                detected + composed
+            )
+        )
         changes = detected
 
 
