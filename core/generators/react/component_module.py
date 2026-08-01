@@ -19,7 +19,7 @@ class ComponentModule(BaseModule):
     ) -> None:
 
         components = (
-            context.spec.ui_spec.components
+            context.spec.ui_spec.component_models
             if context.spec.ui_spec
             else []
         )
@@ -28,7 +28,7 @@ class ComponentModule(BaseModule):
 
             context.builder.template(
                 template="react/component.tsx.j2",
-                output=f"frontend/src/components/{component}.tsx",
+                output=f"frontend/src/components/{component.name}.tsx",
                 language="typescript",
-                component=component,
+                component=component.name,
             )
