@@ -11,6 +11,8 @@ from core.memory.project_memory import ProjectMemory
 from core.memory.project_context_resolver import ProjectContextResolver
 from core.memory.conversation_memory import ConversationMemory
 from core.agent.router.intent_router import IntentRouter
+from core.planner.project_planner import ProjectPlanner
+from core.agent.change_engine import ChangeEngine
 
 
 class ChatAgent:
@@ -21,6 +23,10 @@ class ChatAgent:
     def __init__(self):
 
         self.planner = PlannerAgent()
+
+        self.project_planner = ProjectPlanner()
+
+        self.change_engine = ChangeEngine()
 
         self.updater = UpdateAgent()
 
@@ -114,9 +120,14 @@ class ChatAgent:
                         for c in state.changes
                     )
                     + "\n\n"
-                    "Regeneration:\n"
-                    f"✓ React application regenerated\n"
-                    f"✓ {result['generated']['files']} files created\n"
+                      "Regeneration:\n"
+                      + (
+                          f"✓ React application regenerated\n"
+                          f"✓ {result['generated']['files']} files created\n"
+                          if "generated" in result
+                          else
+                          f"⚠ React regeneration failed after {result.get('attempts', 0)} attempts\n"
+                      )
                 )
 
 
@@ -135,13 +146,21 @@ class ChatAgent:
 
 
 
+        features = self.project_planner.plan(
+            message
+        )
+
+        plans = self.change_engine.detect(
+            features
+        )
+
         spec = self.planner.build(
             message
         )
 
         context = create_generator_context(
             spec,
-            changes=self.updater.state.changes,
+            changes=plans["plans"],
             project_state=self.updater.state,
         )
 
