@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 
 @dataclass(slots=True)
@@ -27,7 +28,19 @@ class UISpec:
         default_factory=list
     )
 
-    metadata: dict = field(
+    design_system: dict[str, Any] = field(
+        default_factory=dict
+    )
+
+    interactions: list[str] = field(
+        default_factory=list
+    )
+
+    responsive: dict[str, Any] = field(
+        default_factory=dict
+    )
+
+    metadata: dict[str, Any] = field(
         default_factory=dict
     )
 
