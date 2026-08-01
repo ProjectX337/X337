@@ -1,36 +1,25 @@
-from core.agent.conversation import Conversation
-from core.agent.memory import ProjectMemory
+from __future__ import annotations
 
-from core.planner.project_planner import ProjectPlanner
+from core.agent.intent_router import IntentRouter
+from core.agent.planner_bridge import PlannerBridge
 
 
 class X337Agent:
+    """
+    Main conversational interface for X337.
+    """
 
     def __init__(self):
+        self.router = IntentRouter()
+        self.planner = PlannerBridge()
 
-        self.conversation = Conversation()
-
-        self.memory = ProjectMemory()
-
-        self.planner = ProjectPlanner()
-
-
-    def run(
+    def chat(
         self,
         message: str,
     ):
+        intent = self.router.route(message)
 
-        self.conversation.add(
-            "user",
+        return self.planner.execute(
             message,
+            intent,
         )
-
-        self.memory.last_prompt = message
-
-        spec = self.planner.plan(
-            message
-        )
-
-        self.memory.project_spec = spec
-
-        return spec
