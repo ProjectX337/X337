@@ -1,0 +1,15 @@
+{
+    "project": "build_rest_api_for_customers",
+    "architecture": "fastapi",
+    "version": "4.0.0",
+    "generated": "2026-07-30 22:19:09.684827",
+    "files": [
+        "workspace/projects/build_rest_api_for_customers/app.py",
+        "workspace/projects/build_rest_api_for_customers/api/routes.py",
+        "workspace/projects/build_rest_api_for_customers/api/schemas.py",
+        "workspace/projects/build_rest_api_for_customers/services/service.py",
+        "workspace/projects/build_rest_api_for_customers/database/models.py",
+        "workspace/projects/build_rest_api_for_customers/requirements.txt",
+        "workspace/projects/build_rest_api_for_customers/README.md"
+    ]
+}

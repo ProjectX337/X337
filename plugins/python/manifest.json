@@ -1,0 +1,24 @@
+{
+  "name": "python",
+  "language": "python",
+  "template": "python",
+  "tester": "pytest",
+  "roles": [
+    "scripting"
+  ],
+  "technology_defaults": {
+    "formatter": "black",
+    "linter": "ruff",
+    "package_manager_backend": "pip"
+  },
+  "keywords": [
+    "python",
+    "script",
+    "automation"
+  ],
+  "dependencies": [],
+  "default_features": [],
+  "metadata": {
+    "version": "1.0"
+  }
+}

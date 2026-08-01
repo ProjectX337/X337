@@ -1,0 +1,25 @@
+{
+  "name": "ai_agent",
+  "language": "python",
+  "template": "ai_agent",
+  "tester": "pytest",
+  "roles": [
+    "ai"
+  ],
+  "technology_defaults": {
+    "llm_provider": "openai",
+    "embeddings": "text-embedding-3-large",
+    "vector_database": "pgvector"
+  },
+  "keywords": [
+    "agent",
+    "assistant",
+    "llm",
+    "ai"
+  ],
+  "dependencies": [],
+  "default_features": [],
+  "metadata": {
+    "version": "1.0"
+  }
+}

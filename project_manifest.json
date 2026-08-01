@@ -1,0 +1,15 @@
+{
+    "project": "rest_api",
+    "files": [
+        {
+            "path": "workspace/projects/rest_api/app.py",
+            "operation": "create",
+            "size": 442
+        },
+        {
+            "path": "workspace/projects/rest_api/requirements.txt",
+            "operation": "create",
+            "size": 19
+        }
+    ]
+}

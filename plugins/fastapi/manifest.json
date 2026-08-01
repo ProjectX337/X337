@@ -1,0 +1,39 @@
+{
+  "name": "fastapi",
+  "language": "python",
+  "template": "fastapi",
+  "tester": "pytest",
+  "roles": [
+    "backend"
+  ],
+  "technology_defaults": {
+    "database": "postgresql",
+    "orm": "sqlalchemy",
+    "authentication": "jwt",
+    "authorization": "rbac",
+    "validation": "pydantic",
+    "api_style": "rest",
+    "testing_backend": "pytest",
+    "containerization": "docker"
+  },
+  "keywords": [
+    "api",
+    "backend",
+    "rest",
+    "fastapi"
+  ],
+  "dependencies": [
+    "fastapi",
+    "uvicorn",
+    "pydantic"
+  ],
+  "default_features": [
+    "routes",
+    "schemas",
+    "services",
+    "tests"
+  ],
+  "metadata": {
+    "version": "1.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "website",
+  "language": "html",
+  "template": "website",
+  "tester": "none",
+  "roles": [
+    "static_site"
+  ],
+  "technology_defaults": {
+    "deployment": "vercel"
+  },
+  "keywords": [
+    "website",
+    "landing",
+    "portfolio",
+    "business"
+  ],
+  "dependencies": [],
+  "default_features": [],
+  "metadata": {
+    "version": "1.0"
+  }
+}
