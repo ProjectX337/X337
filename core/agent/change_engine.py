@@ -47,7 +47,6 @@ class ChangeEngine:
 
 
         for change in changes:
-
             capability = registry.get(
                 change
             )
