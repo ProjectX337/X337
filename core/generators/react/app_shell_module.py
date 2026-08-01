@@ -19,7 +19,8 @@ class AppShellModule(BaseModule):
     ) -> None:
 
         context.builder.template(
-            template="react/App.tsx.j2",
-            output="frontend/src/App.tsx",
+            template="react/app_shell.tsx.j2",
+            output="frontend/src/AppShell.tsx",
             language="typescript",
         )
+

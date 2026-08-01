@@ -38,12 +38,15 @@ class ReactGenerator(BaseGenerator):
 
         modules = [
             PackageModule(),
-            ConfigModule(),
+    
             ViteModule(),
             TypeScriptModule(),
             AppModule(),
             AppShellModule(),
             ComponentModule(),
+            FeatureModule(),
+            FeatureComponentModule(),
+            FeaturePageModule(),
             PageModule(),
             RouteModule(),
             RouterModule(),

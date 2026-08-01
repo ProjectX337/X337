@@ -30,7 +30,7 @@ def test_app_shell_module():
 
     file = result.files[0]
 
-    assert file.path == "frontend/src/App.tsx"
+    assert file.path == "frontend/src/AppShell.tsx"
 
     assert "RouterProvider" in file.content
     assert "./router" in file.content
