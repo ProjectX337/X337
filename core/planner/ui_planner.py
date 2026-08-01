@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from core.planner.models import Intent
 from core.planner.capability_match import CapabilityMatch
+from core.spec.models.feature_spec import FeatureSpec
 
 from core.spec.ui_spec import UISpec
 from core.spec.models.ui_page import UIPage
@@ -20,6 +21,7 @@ class UIPlanner:
         *,
         intent: Intent,
         capabilities: list[CapabilityMatch],
+        features: list[FeatureSpec] | None = None,
     ) -> UISpec:
 
         page_models = [
@@ -47,20 +49,47 @@ class UIPlanner:
 
         layout = "default"
 
+        # ---------------------------------------------------------
+        # Feature-driven UI generation
+        # ---------------------------------------------------------
+
+        if features:
+
+            for feature in features:
+
+                for page in feature.pages:
+
+                    page_models.append(
+                        UIPage(
+                            name=page,
+                            route=f"/{feature.slug}/{page.lower()}",
+                            layout="default",
+                        )
+                    )
+
+                for component in feature.components:
+
+                    component_models.append(
+                        UIComponent(
+                            name=component,
+                            component_type="feature",
+                        )
+                    )
+
         capability_names = [
-            capability.name
-            for capability in capabilities
+            match.capability.name
+            for match in capabilities
         ]
 
         if "authentication" in capability_names:
 
-            page_models.append(
-                UIPage(
-                    name="Login",
-                    route="/login",
-                    layout="default",
+                page_models.append(
+                    UIPage(
+                        name="Login",
+                        route="/login",
+                        layout="default",
+                    )
                 )
-            )
 
         if (
             intent
@@ -143,4 +172,4 @@ class UIPlanner:
             page_models=page_models,
             component_models=component_models,
             design_system=design_system,
-        )
+    )

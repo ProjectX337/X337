@@ -28,6 +28,14 @@ class Capability:
 
     required_roles: list[str] = field(default_factory=list)
 
+    pages: list[str] = field(
+        default_factory=list
+    )
+
+    components: list[str] = field(
+        default_factory=list
+    )
+
     priority: int = 100
 
     confidence: float = 1.0

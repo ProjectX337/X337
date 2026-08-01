@@ -66,6 +66,16 @@ class CapabilityLoader:
                         [],
                     ),
 
+                    pages=data.get(
+                        "pages",
+                        [],
+                    ),
+
+                    components=data.get(
+                        "components",
+                        [],
+                    ),
+
                     priority=data.get(
                         "priority",
                         100,

@@ -22,5 +22,25 @@
 
   "priority": 100,
 
-  "metadata": {}
+  "metadata": {
+    "features": [
+      {
+        "name": "Authentication",
+        "slug": "authentication",
+        "description": "User authentication flows",
+        "pages": [
+          "Login",
+          "Signup"
+        ],
+        "components": [
+          "AuthForm",
+          "UserMenu"
+        ],
+        "api_endpoints": [
+          "/api/auth/login",
+          "/api/auth/signup"
+        ]
+      }
+    ]
+  }
 }
