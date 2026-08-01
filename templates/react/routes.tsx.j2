@@ -1,13 +1,12 @@
 {% for route in routes %}
-import {{ route.page }} from "./pages/{{ route.page }}";
+import {{ route.page }} from "{{ route.import_path }}";
 {% endfor %}
-
 
 export const routes = [
 {% for route in routes %}
-  {
-    path: "/{{ route.path }}",
-    element: <{{ route.page }} />,
-  },
+{
+  path: "{{ route.path }}",
+  element: <{{ route.page }} />,
+},
 {% endfor %}
 ];

@@ -44,5 +44,5 @@ class FeatureModule(BaseModule):
                 template="react/feature/index.ts.j2",
                 output=f"frontend/src/features/{slug}/index.ts",
                 language="typescript",
-                feature=feature.name,
+                feature=feature,
             )

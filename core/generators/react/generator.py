@@ -18,6 +18,7 @@ from core.generators.react.typescript_module import TypeScriptModule
 from core.generators.react.vite_module import ViteModule
 from core.generators.react.feature_module import FeatureModule
 from core.generators.react.feature_page_module import FeaturePageModule
+from core.generators.react.feature_index_module import FeatureIndexModule
 from core.generators.react.feature_component_module import FeatureComponentModule
 
 
@@ -47,6 +48,7 @@ class ReactGenerator(BaseGenerator):
             FeatureModule(),
             FeatureComponentModule(),
             FeaturePageModule(),
+            FeatureIndexModule(),
             PageModule(),
             RouteModule(),
             RouterModule(),
