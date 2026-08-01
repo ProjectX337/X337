@@ -3,7 +3,7 @@ from __future__ import annotations
 from core.agent.change_plan import ChangePlan
 from core.agent.feature_registry import FeatureRegistry
 from core.agent.capability_composer import CapabilityComposer
-from core.agent.dependency_resolver import DependencyResolver
+from core.agent.feature_graph import FeatureGraph
 from core.agent.feature_graph import FeatureGraph
 
 
@@ -22,7 +22,7 @@ class ChangeEngine:
 
         composer = CapabilityComposer()
 
-        resolver = DependencyResolver()
+        graph = FeatureGraph()
         graph = FeatureGraph()
 
         detected = registry.match(
@@ -39,7 +39,7 @@ class ChangeEngine:
             )
         )
 
-        changes = resolver.resolve(
+        changes = graph.resolve(
             changes
         )
 
