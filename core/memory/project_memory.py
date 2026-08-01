@@ -13,6 +13,7 @@ class ProjectMemory:
         self.memory = MemoryManager()
 
 
+
     def save_project(
         self,
         spec,
@@ -24,14 +25,16 @@ class ProjectMemory:
             "description": spec.description,
             "features": [
                 {
-                    "name": f.name,
-                    "description": f.description,
-                    "routes": f.routes,
-                    "components": f.components,
-                    "state": f.state,
-                    "api_contracts": f.api_contracts,
+                    "name": feature.name,
+                    "slug": feature.slug,
+                    "description": feature.description,
+                    "routes": feature.routes,
+                      "pages": feature.pages,
+                    "components": feature.components,
+                    "state": feature.state,
+                    "api_contracts": feature.api_contracts,
                 }
-                for f in spec.feature_models
+                for feature in spec.feature_models
             ],
             "slug": spec.slug,
             "build": build_result,

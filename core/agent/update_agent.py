@@ -41,49 +41,61 @@ class UpdateAgent:
                     None,
                 )
 
-
         if project:
 
             self.state.update(
                 project
             )
 
-
         changes = self.engine.detect(
             message
         )
 
-
-        for feature in changes["features"]:
+        for plan in changes["plans"]:
 
             self.state.record_change(
-                feature
+                plan
             )
 
 
-            if self.state.project:
+            if not self.state.project:
+                continue
 
-                from core.spec.models.feature_spec import FeatureSpec
 
-                exists = any(
-                    f.name == feature
-                    for f in self.state.project.feature_models
-                )
+            existing = None
 
-                if not exists:
 
-                    self.state.project.feature_models.append(
-                        FeatureSpec(
-                            name=feature,
-                            slug=(
-                                feature
-                                .lower()
-                                .replace(" ", "_")
-                                .replace("-", "_")
-                            ),
-                            description=f"{feature} feature",
-                        )
+            for feature in self.state.project.feature_models:
+
+                if feature.name == plan.feature:
+                    existing = feature
+                    break
+
+
+            if existing:
+
+                existing.routes = plan.routes
+                existing.pages = plan.pages
+                existing.components = plan.components
+                existing.state = plan.state
+                existing.api_contracts = plan.api_contracts
+
+
+            else:
+
+                self.state.project.feature_models.append(
+                    FeatureSpec(
+                        name=plan.feature,
+                        slug=plan.feature,
+                        description=f"{plan.feature} feature",
+                        routes=plan.routes,
+                        pages=plan.pages,
+                        components=plan.components,
+                        state=plan.state,
+                        api_contracts=plan.api_contracts,
                     )
+                )
 
 
         return self.state
+

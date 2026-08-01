@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from core.spec.project_spec import ProjectSpec
+from core.agent.change_plan import ChangePlan
 
 
 @dataclass
@@ -13,7 +14,7 @@ class ProjectState:
 
     project: ProjectSpec | None = None
 
-    changes: list[str] = field(
+    changes: list[ChangePlan] = field(
         default_factory=list
     )
 
@@ -28,7 +29,9 @@ class ProjectState:
 
     def record_change(
         self,
-        change: str,
+        change: ChangePlan,
     ):
 
-        self.changes.append(change)
+        self.changes.append(
+            change
+        )

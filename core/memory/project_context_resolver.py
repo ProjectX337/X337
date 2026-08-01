@@ -48,6 +48,7 @@ class ProjectContextResolver:
         features = [
             FeatureSpec(
                 name=f["name"],
+                    slug=f.get("slug", f["name"]),
                 description=f.get(
                     "description",
                     "",

@@ -1,68 +1,39 @@
 {
-    "generated_project": null,
-    "code_plan": {
-        "framework": "frontend",
-        "database": null,
-        "features": [],
-        "files": [
-            "index.html",
-            "app.js",
-            "style.css"
-        ]
-    },
-    "project_files": [
+    "last_change": [
         {
-            "file": "app.py",
-            "exists": false
-        },
-        {
-            "file": "api/routes.py",
-            "exists": false
-        },
-        {
-            "file": "api/schemas.py",
-            "exists": false
-        },
-        {
-            "file": "database/connection.py",
-            "exists": false
-        },
-        {
-            "file": "database/models.py",
-            "exists": false
-        },
-        {
-            "file": "services/service.py",
-            "exists": false
-        },
-        {
-            "file": "tests/test_api.py",
-            "exists": false
-        },
-        {
-            "file": "requirements.txt",
-            "exists": false
-        },
-        {
-            "file": "README.md",
-            "exists": false
+            "feature": "dashboard",
+            "routes": [
+                "/dashboard"
+            ],
+            "components": [
+                "DashboardPage",
+                "AnalyticsCard"
+            ],
+            "state": [
+                "dashboard_metrics"
+            ],
+            "api_contracts": [
+                "GET /analytics"
+            ]
         }
     ],
-    "test_results": {
-        "project": "workspace/projects/rest_api",
-        "status": "passed",
-        "missing_files": [],
-        "syntax_errors": []
-    },
-    "review": {
-        "status": "approved",
-        "message": "Execution reviewed successfully.",
-        "generated_code": null,
-        "test_results": {
-            "project": "workspace/projects/rest_api",
-            "status": "passed",
-            "missing_files": [],
-            "syntax_errors": []
+    "active_project": {
+        "name": "x337-app",
+        "description": "Create dashboard analytics",
+        "features": [],
+        "slug": "x337-app",
+        "build": {
+            "status": "complete",
+            "generated": {
+                "status": "generated",
+                "files": 18
+            }
         }
-    }
+    },
+    "conversation_history": [
+        {
+            "message": "Add dashboard",
+            "intent": "modify"
+        }
+    ]
 }

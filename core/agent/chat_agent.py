@@ -38,6 +38,13 @@ class ChatAgent:
 
         self.project_context = ProjectContextResolver()
 
+        project = self.project_context.current()
+
+        if project:
+            self.updater.state.update(
+                project
+            )
+
         self.conversation = ConversationMemory()
 
         self.router = IntentRouter()
@@ -72,7 +79,10 @@ class ChatAgent:
 
             self.memory.remember(
                 "last_change",
-                state.changes,
+                [
+                    change.to_dict()
+                    for change in state.changes
+                ],
             )
 
 
@@ -90,11 +100,17 @@ class ChatAgent:
                 )
 
 
+                self.project_memory.save_project(
+                    state.project,
+                    result,
+                )
+
+
                 return (
                     "Updated project.\n\n"
                     "Changes:\n"
                     + "\n".join(
-                        f"✓ {c}"
+                        f"✓ {c.feature}"
                         for c in state.changes
                     )
                     + "\n\n"
@@ -107,7 +123,8 @@ class ChatAgent:
             return (
                 "Updated project with: "
                 + ", ".join(
-                    state.changes
+                    change.feature
+                    for change in state.changes
                 )
             )
 

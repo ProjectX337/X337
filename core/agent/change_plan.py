@@ -1,22 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
 
 
-@dataclass(slots=True)
-class FeatureSpec:
-    """
-    Structured product feature definition.
+@dataclass
+class ChangePlan:
 
-    Used by planners, update agents, and generators.
-    """
-
-    name: str
-
-    slug: str
-
-    description: str = ""
+    feature: str
 
     routes: list[str] = field(
         default_factory=list
@@ -38,6 +28,19 @@ class FeatureSpec:
         default_factory=list
     )
 
-    metadata: dict[str, Any] = field(
-        default_factory=dict
-    )
+
+    def to_dict(self):
+
+        return {
+            "feature": self.feature,
+
+            "routes": self.routes,
+
+            "pages": self.pages,
+
+            "components": self.components,
+
+            "state": self.state,
+
+            "api_contracts": self.api_contracts,
+        }
