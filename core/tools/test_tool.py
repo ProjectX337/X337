@@ -33,5 +33,5 @@ class TestTool(Tool):
                 result.returncode == 0,
 
             "output":
-                result.stdout,
+                result.stdout + "\n" + result.stderr,
         }
