@@ -3,6 +3,7 @@ from __future__ import annotations
 from core.agent.project_state import ProjectState
 from core.agent.change_engine import ChangeEngine
 from core.spec.models.feature_spec import FeatureSpec
+from core.planner.project_planner import ProjectPlanner
 
 
 class UpdateAgent:
@@ -15,6 +16,8 @@ class UpdateAgent:
         self.state = ProjectState()
 
         self.engine = ChangeEngine()
+
+        self.planner = ProjectPlanner()
 
 
     def apply(
@@ -47,8 +50,12 @@ class UpdateAgent:
                 project
             )
 
-        changes = self.engine.detect(
+        features = self.planner.plan(
             message
+        )
+
+        changes = self.engine.detect(
+            features
         )
 
         for plan in changes["plans"]:
