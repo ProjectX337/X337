@@ -20,3 +20,7 @@ class UIPage:
     )
 
     composition: UILayoutNode | None = None
+
+    metadata: dict = field(
+        default_factory=dict
+    )

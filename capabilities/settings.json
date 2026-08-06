@@ -1,0 +1,41 @@
+{
+  "name": "settings",
+  "description": "Application settings",
+  "keywords": [
+    "settings",
+    "preferences",
+    "configuration"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Settings"
+  ],
+  "components": [
+    "SettingsForm"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Settings",
+        "slug": "settings",
+        "description": "Application settings",
+        "pages": [
+          "Settings"
+        ],
+        "components": [
+          "SettingsForm"
+        ],
+        "api_endpoints": [
+          "/api/settings"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

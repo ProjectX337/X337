@@ -1,0 +1,43 @@
+{
+  "name": "analytics",
+  "description": "Analytics and reporting",
+  "keywords": [
+    "analytics",
+    "metrics",
+    "reports",
+    "dashboard",
+    "insights"
+  ],
+  "technologies": [
+    "recharts"
+  ],
+  "required_roles": [
+    "frontend"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Analytics",
+        "slug": "analytics",
+        "description": "Analytics dashboards",
+        "pages": [
+          "Analytics"
+        ],
+        "components": [
+          "MetricCard",
+          "Chart",
+          "ReportTable"
+        ],
+        "api_endpoints": [
+          "/api/analytics"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

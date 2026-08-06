@@ -1,0 +1,44 @@
+{
+  "name": "crm",
+  "description": "CRM",
+  "keywords": [
+    "crm",
+    "customers",
+    "contacts",
+    "leads"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Contacts"
+  ],
+  "components": [
+    "ContactTable"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Crm",
+        "slug": "crm",
+        "description": "CRM",
+        "pages": [
+          "Contacts"
+        ],
+        "components": [
+          "ContactTable"
+        ],
+        "api_endpoints": [
+          "/api/contacts"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [
+    "search"
+  ],
+  "conflicts_with": []
+}

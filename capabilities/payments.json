@@ -1,0 +1,47 @@
+{
+  "name": "payments",
+  "description": "Payment processing and subscriptions",
+  "keywords": [
+    "payment",
+    "payments",
+    "billing",
+    "stripe",
+    "checkout",
+    "subscription",
+    "invoice"
+  ],
+  "technologies": [
+    "stripe"
+  ],
+  "required_roles": [
+    "backend"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Payments",
+        "slug": "payments",
+        "description": "Payment and subscription management",
+        "pages": [
+          "Billing",
+          "Checkout"
+        ],
+        "components": [
+          "PricingCard",
+          "CheckoutForm",
+          "BillingTable"
+        ],
+        "api_endpoints": [
+          "/api/payments/create-session",
+          "/api/payments/webhook"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

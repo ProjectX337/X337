@@ -89,3 +89,9 @@ class TechnologyPlan:
     # ---------------------------------------------------------
 
     technologies: list[str] = field(default_factory=list)
+    def as_dict(self):
+        return self.__dict__
+
+    def to_dict(self):
+        return self.as_dict()
+

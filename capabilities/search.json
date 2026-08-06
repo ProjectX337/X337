@@ -1,0 +1,31 @@
+{
+  "name": "search",
+  "description": "Search",
+  "keywords": [
+    "search",
+    "find",
+    "lookup"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Search",
+        "slug": "search",
+        "description": "Application search",
+        "pages": [],
+        "components": [
+          "SearchBar"
+        ],
+        "api_endpoints": [
+          "/api/search"
+        ]
+      }
+    ]
+  },
+  "depends_on": [],
+  "implies": [],
+  "conflicts_with": []
+}

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.base_stage import PlanningStage
 from core.planner.technology_resolver import TechnologyResolver
 
@@ -27,7 +27,7 @@ class TechnologyResolverStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.technologies = self.resolver.resolve(

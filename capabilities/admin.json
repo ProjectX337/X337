@@ -1,0 +1,40 @@
+{
+  "name": "admin",
+  "description": "Administration",
+  "keywords": [
+    "admin",
+    "administrator"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Admin"
+  ],
+  "components": [
+    "AdminPanel"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Admin",
+        "slug": "admin",
+        "description": "Administration",
+        "pages": [
+          "Admin"
+        ],
+        "components": [
+          "AdminPanel"
+        ],
+        "api_endpoints": [
+          "/api/admin"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

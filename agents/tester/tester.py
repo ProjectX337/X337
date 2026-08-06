@@ -10,7 +10,7 @@ from core.models.task_result import TaskResult
 from core.events.event import Event
 from core.events.event_types import EventTypes
 
-from core.projects.specification.project_spec import ProjectSpec
+from core.spec.project_spec import ProjectSpec
 
 
 class TesterAgent(BaseAgent):

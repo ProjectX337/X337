@@ -26,9 +26,15 @@ class ComponentModule(BaseModule):
 
         for component in components:
 
+
             context.builder.template(
                 template="react/component.tsx.j2",
                 output=f"frontend/src/components/{component.name}.tsx",
                 language="typescript",
                 component=component,
+                metadata=getattr(
+                    component,
+                    "metadata",
+                    {},
+                ),
             )

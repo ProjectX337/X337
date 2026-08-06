@@ -6,12 +6,14 @@ from core.generators.modules.base_module import BaseModule
 
 class RouteModule(BaseModule):
     """
-    Generates application routes from UISpec and features.
+    Generates application routes from feature models
+    and global UI pages.
     """
 
     @property
     def name(self) -> str:
         return "routes"
+
 
     def generate(
         self,
@@ -20,71 +22,74 @@ class RouteModule(BaseModule):
 
         routes = []
 
-        pages = []
+        feature_pages = set()
 
-        ui_spec = context.spec.ui_spec
+        #
+        # Feature routes are canonical
+        #
 
-        if ui_spec and ui_spec.page_models:
-            pages.extend(
-                ui_spec.page_models
-            )
+        for feature in getattr(
+            context.spec,
+            "feature_models",
+            [],
+        ):
 
-        if getattr(context.spec, "features", None):
+            for page in feature.pages:
 
-            for feature in context.spec.features:
-
-                if isinstance(feature, str):
-
-                    pages.append(
-                        {
-                            "name": (
-                                feature
-                                .replace("_", " ")
-                                .title()
-                            ),
-                            "route": (
-                                "/" + feature
-                                .lower()
-                            ),
-                            "feature": feature.lower(),
-                        }
-                    )
-
-        for page in pages:
-
-            if isinstance(page, dict):
-
-                page_name = (
-                    page["name"]
+                filename = (
+                    page
+                    .lower()
                     .replace(" ", "")
                 )
 
-                path = page["route"]
-
-            else:
-
-                page_name = page.name
-                path = page.route
-
-            if isinstance(page, dict):
-
-                import_path = (
-                    f'./features/{page_name.lower()}'
+                component_name = page.replace(
+                    " ",
+                    ""
                 )
 
-            else:
+                routes.append(
+                    {
+                        "path": f"/{filename}",
 
-                import_path = (
-                    f'./pages/{page_name}'
+                        "page": component_name,
+
+                        "import_path": (
+                            f"./features/"
+                            f"{feature.slug}/pages/"
+                            f"{filename}"
+                        ),
+                    }
                 )
 
-            routes.append(
-                {
-                    "path": path,
-                    "page": page_name,
-                    "import_path": import_path,
-                }
-            )
+                feature_pages.add(page)
+
+
+        #
+        # Global UI pages only
+        #
+
+        ui_spec = context.spec.ui_spec
+
+        if ui_spec:
+
+            for page in ui_spec.page_models:
+
+                if page.name in feature_pages:
+                    continue
+
+
+                routes.append(
+                    {
+                        "path": page.route,
+
+                        "page": page.name,
+
+                        "import_path": (
+                            f"./pages/{page.name}"
+                        ),
+                    }
+                )
+
 
         context.builder.template(
             template="react/routes.tsx.j2",

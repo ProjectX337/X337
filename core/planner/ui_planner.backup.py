@@ -81,95 +81,24 @@ class UIPlanner:
             for match in capabilities
         ]
 
-        if "authentication" in capability_names:
+    
 
-                page_models.append(
-                    UIPage(
-                        name="Login",
-                        route="/login",
-                        layout="default",
-                    )
-                )
-
-        if (
-            intent
-            and getattr(intent, "category", None) == "saas"
-        ):
-
-            sidebar = UIComponent(
-                name="Sidebar",
-                component_type="navigation",
-            )
-
-            data_card = UIComponent(
-                name="DataCard",
-                component_type="data",
-            )
-
-            page_models.append(
-                UIPage(
-                    name="Dashboard",
-                    route="/dashboard",
-                    layout="dashboard",
-                    components=[
-                        sidebar,
-                        data_card,
-                    ],
-                    composition=UILayoutNode(
-                        name="DashboardRoot",
-                        node_type="layout",
-                        children=[
-                            UILayoutNode(
-                                name="SidebarRegion",
-                                component=sidebar,
-                            ),
-                            UILayoutNode(
-                                name="MainContent",
-                                node_type="container",
-                                children=[
-                                    UILayoutNode(
-                                        name="DataCardRegion",
-                                        component=data_card,
-                                    )
-                                ],
-                            ),
-                        ],
-                    ),
-                )
-            )
-
-            component_models.extend(
-                [
-                    UIComponent(
-                        name="Sidebar",
-                        component_type="navigation",
-                    ),
-                    UIComponent(
-                        name="DataCard",
-                        component_type="data",
-                    ),
-                ]
-            )
-
-            layout = "dashboard"
-
-        design_system = DesignSystem(
-            colors={
-                "primary": "cyan",
-                "background": "dark",
-            },
-            typography={
-                "style": "modern",
-            },
-            spacing={
-                "scale": "standard",
-            },
-        )
 
         return UISpec(
             layout=layout,
             theme="modern",
             page_models=page_models,
             component_models=component_models,
-            design_system=design_system,
-    )
+            design_system=DesignSystem(
+                colors={
+                    "primary": "cyan",
+                    "background": "dark",
+                },
+                typography={
+                    "style": "modern",
+                },
+                spacing={
+                    "scale": "standard",
+                },
+            ),
+        )

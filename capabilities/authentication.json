@@ -1,7 +1,6 @@
 {
   "name": "authentication",
   "description": "User authentication and authorization",
-
   "keywords": [
     "login",
     "signin",
@@ -10,18 +9,14 @@
     "auth",
     "jwt"
   ],
-
   "technologies": [
     "jwt",
     "bcrypt"
   ],
-
   "required_roles": [
     "backend"
   ],
-
   "priority": 100,
-
   "metadata": {
     "features": [
       {
@@ -42,5 +37,8 @@
         ]
       }
     ]
-  }
+  },
+  "depends_on": [],
+  "implies": [],
+  "conflicts_with": []
 }

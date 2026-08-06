@@ -1,0 +1,41 @@
+{
+  "name": "team_management",
+  "description": "Teams and members",
+  "keywords": [
+    "team",
+    "teams",
+    "members",
+    "organization"
+  ],
+  "technologies": [],
+  "required_roles": [
+    "backend"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Team Management",
+        "slug": "team_management",
+        "description": "Manage teams",
+        "pages": [
+          "Team"
+        ],
+        "components": [
+          "MemberTable",
+          "InviteDialog"
+        ],
+        "api_endpoints": [
+          "/api/team"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [
+    "notifications"
+  ],
+  "conflicts_with": []
+}

@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from core.planner.capability_planner import CapabilityPlanner
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.base_stage import PlanningStage
 
 
 class CapabilityPlannerStage(PlanningStage):
     """
     Executes the CapabilityPlanner and stores the
-    resulting capability matches in the PlanningContext.
+    resulting capability matches in the CognitiveState.
     """
 
     requires = {"parsed"}
@@ -23,7 +23,7 @@ class CapabilityPlannerStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.capabilities = self.planner.plan(

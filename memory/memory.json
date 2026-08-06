@@ -1,39 +1,39 @@
 {
-    "last_change": [
-        {
-            "feature": "dashboard",
-            "routes": [
-                "/dashboard"
+    "project_spec": {
+        "name": "",
+        "framework": "react",
+        "path": "workspace/projects/",
+        "architecture": "react",
+        "features": [
+            "Analytics",
+            "Dashboard"
+        ],
+        "dependencies": [
+            "react",
+            "react-dom",
+            "vite"
+        ],
+        "files": {
+            "App.jsx": "",
+            "index.html": "",
+            "package.json": "",
+            "vite.config.js": ""
+        },
+        "language": "javascript",
+        "version": "1.0.0",
+        "description": "Build SaaS dashboard application",
+        "author": "X337",
+        "warnings": [],
+        "errors": [],
+        "score": 0,
+        "generated": true,
+        "tested": false,
+        "reviewed": false,
+        "deployed": false,
+        "plan": {},
+        "metadata": {
+            "capabilities": [
+                "analytics",
+                "dashboard"
             ],
-            "components": [
-                "DashboardPage",
-                "AnalyticsCard"
-            ],
-            "state": [
-                "dashboard_metrics"
-            ],
-            "api_contracts": [
-                "GET /analytics"
-            ]
-        }
-    ],
-    "active_project": {
-        "name": "x337-app",
-        "description": "Create dashboard analytics",
-        "features": [],
-        "slug": "x337-app",
-        "build": {
-            "status": "complete",
-            "generated": {
-                "status": "generated",
-                "files": 18
-            }
-        }
-    },
-    "conversation_history": [
-        {
-            "message": "Add dashboard",
-            "intent": "modify"
-        }
-    ]
-}
+            "technologies": 

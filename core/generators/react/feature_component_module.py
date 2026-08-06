@@ -27,4 +27,9 @@ class FeatureComponentModule(BaseModule):
                     language="typescript",
                     component=component,
                     feature=feature.name,
+                    metadata=getattr(
+                        component,
+                        "metadata",
+                        {},
+                    ),
                 )

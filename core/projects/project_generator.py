@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.projects.specification.project_spec import ProjectSpec
+from core.spec.project_spec import ProjectSpec
 from core.projects.template_engine.template_engine import TemplateEngine
 
 

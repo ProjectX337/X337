@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 
 
 class PlanningStage(ABC):
     """
-    Base class for every planning stage.
+    Base class for every cognitive stage.
+
+    Each stage reads and writes the shared CognitiveState.
     """
 
     requires: set[str] = set()
@@ -17,9 +19,6 @@ class PlanningStage(ABC):
     @abstractmethod
     def run(
         self,
-        context: PlanningContext,
+        state: CognitiveState,
     ) -> None:
-        """
-        Execute the stage.
-        """
-        raise NotImplementedError
+        ...

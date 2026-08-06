@@ -11,14 +11,14 @@ def test_component_intelligence():
         "Build an AI SaaS"
     )
 
-    button = spec.ui_spec.component_models[1]
+    component = spec.ui_spec.component_models[0]
 
-    button.props = {
+    component.props = {
         "variant": "string",
         "size": "string",
     }
 
-    button.states = [
+    component.states = [
         "hover",
         "disabled",
     ]
@@ -38,14 +38,14 @@ def test_component_intelligence():
 
     files = context.builder.result().files
 
-    button_file = [
+    component_file = [
         f
         for f in files
-        if f.path.endswith("Button.tsx")
+        if f.path.endswith(f"{component.name}.tsx")
     ][0]
 
-    assert "variant" in button_file.content
-    assert "size" in button_file.content
+    assert "variant" in component_file.content
+    assert "size" in component_file.content
 
 
 if __name__ == "__main__":

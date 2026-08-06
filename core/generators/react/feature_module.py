@@ -18,7 +18,17 @@ class FeatureModule(BaseModule):
         context: GeneratorContext,
     ) -> None:
 
-        features = context.spec.feature_models
+        if getattr(context.spec, "features", None):
+            from core.spec.models.feature_spec import FeatureSpec
+            features = [
+                FeatureSpec(
+                    name=f,
+                    slug=f.lower().replace(" ", "_"),
+                )
+                for f in context.spec.features
+            ]
+        else:
+            features = context.spec.feature_models
 
         # Backward compatibility with legacy string features
         if not features:

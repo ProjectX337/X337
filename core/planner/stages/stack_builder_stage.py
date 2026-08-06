@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stack_builder import StackBuilder
 from core.planner.stages.base_stage import PlanningStage
 
@@ -28,7 +28,7 @@ class StackBuilderStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.stack = self.builder.build(

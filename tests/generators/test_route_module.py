@@ -3,6 +3,7 @@ from core.generators.file_builder import FileBuilder
 from core.generators.generator_context import GeneratorContext
 from core.generators.react.route_module import RouteModule
 from core.planner.project_planner import ProjectPlanner
+from core.spec.models.feature_spec import FeatureSpec
 
 
 def test_route_module():
@@ -13,8 +14,17 @@ def test_route_module():
         "Build an AI SaaS"
     )
 
-    spec.features = [
-        "authentication"
+    spec.feature_models = [
+        FeatureSpec(
+            name="authentication",
+            slug="authentication",
+            pages=[
+                "Authentication"
+            ],
+            routes=[
+                "/authentication"
+            ],
+        )
     ]
 
     context = GeneratorContext(

@@ -1,0 +1,33 @@
+{
+  "name": "notifications",
+  "description": "Notifications",
+  "keywords": [
+    "notification",
+    "notifications",
+    "alerts"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Notifications",
+        "slug": "notifications",
+        "description": "User notifications",
+        "pages": [],
+        "components": [
+          "NotificationBell"
+        ],
+        "api_endpoints": [
+          "/api/notifications"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

@@ -1,60 +1,37 @@
 from __future__ import annotations
 
 from core.agent.change_plan import ChangePlan
-from core.agent.feature_registry import FeatureRegistry
+from core.spec.models.feature_spec import FeatureSpec
 
 
 class ChangeEngine:
     """
-    Converts ordered capabilities into ChangePlans.
+    Converts FeatureSpec objects into ChangePlans.
     """
 
     def __init__(self):
-        self.registry = FeatureRegistry()
+        pass
 
 
     def detect(
         self,
-        features: list[str],
+        features: list[FeatureSpec],
     ) -> dict:
 
         plans = []
 
-
         for feature in features:
 
-            capability = self.registry.get(
-                feature
-            )
-
-
-            if capability:
-
-                plans.append(
-                    ChangePlan(
-                        feature=feature,
-                        routes=capability.get(
-                            "routes",
-                            []
-                        ),
-                        pages=capability.get(
-                            "pages",
-                            []
-                        ),
-                        components=capability.get(
-                            "components",
-                            []
-                        ),
-                        state=capability.get(
-                            "state",
-                            []
-                        ),
-                        api_contracts=capability.get(
-                            "api_contracts",
-                            []
-                        ),
-                    )
+            plans.append(
+                ChangePlan(
+                    feature=feature.name,
+                    routes=feature.routes,
+                    pages=feature.pages,
+                    components=feature.components,
+                    state=feature.state,
+                    api_contracts=feature.api_contracts,
                 )
+            )
 
 
         return {

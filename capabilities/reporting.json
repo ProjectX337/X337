@@ -1,0 +1,41 @@
+{
+  "name": "reporting",
+  "description": "Reporting",
+  "keywords": [
+    "report",
+    "reports",
+    "reporting"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Reports"
+  ],
+  "components": [
+    "ReportTable"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Reporting",
+        "slug": "reporting",
+        "description": "Reporting",
+        "pages": [
+          "Reports"
+        ],
+        "components": [
+          "ReportTable"
+        ],
+        "api_endpoints": [
+          "/api/reports"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "analytics"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

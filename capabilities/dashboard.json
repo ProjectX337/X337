@@ -1,0 +1,37 @@
+{
+  "name": "dashboard",
+  "description": "Application dashboard",
+  "keywords": [
+    "dashboard",
+    "overview",
+    "home"
+  ],
+  "technologies": [],
+  "required_roles": [
+    "frontend"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Dashboard",
+        "slug": "dashboard",
+        "description": "Main dashboard",
+        "pages": [
+          "Dashboard"
+        ],
+        "components": [
+          "Navbar",
+          "Sidebar",
+          "DashboardCard"
+        ],
+        "api_endpoints": []
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

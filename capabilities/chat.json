@@ -1,0 +1,40 @@
+{
+  "name": "chat",
+  "description": "Realtime chat",
+  "keywords": [
+    "chat",
+    "message",
+    "conversation"
+  ],
+  "technologies": [],
+  "required_roles": [
+    "frontend"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Chat",
+        "slug": "chat",
+        "description": "Realtime messaging",
+        "pages": [
+          "Chat"
+        ],
+        "components": [
+          "ChatPanel",
+          "MessageBubble"
+        ],
+        "api_endpoints": [
+          "/api/chat"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [
+    "notifications"
+  ],
+  "conflicts_with": []
+}

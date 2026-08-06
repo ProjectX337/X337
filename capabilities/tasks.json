@@ -1,0 +1,43 @@
+{
+  "name": "tasks",
+  "description": "Task management",
+  "keywords": [
+    "task",
+    "tasks",
+    "todo"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Tasks"
+  ],
+  "components": [
+    "TaskBoard"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Tasks",
+        "slug": "tasks",
+        "description": "Task management",
+        "pages": [
+          "Tasks"
+        ],
+        "components": [
+          "TaskBoard"
+        ],
+        "api_endpoints": [
+          "/api/tasks"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [
+    "notifications"
+  ],
+  "conflicts_with": []
+}

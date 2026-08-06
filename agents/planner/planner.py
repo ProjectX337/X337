@@ -5,6 +5,7 @@ from core.models.task_result import TaskResult
 from core.events.event import Event
 
 from core.events.event_types import EventTypes
+from core.planner.project_planner import ProjectPlanner
 
 
 
@@ -48,6 +49,9 @@ class PlannerAgent(BaseAgent):
             app=app
 
         )
+
+
+        self.project_planner = ProjectPlanner()
 
 
 
@@ -332,6 +336,23 @@ class PlannerAgent(BaseAgent):
             task
 
         )
+
+
+        # ---------------------------------
+        # Create canonical ProjectSpec
+        # Planner -> Coder contract
+        # ---------------------------------
+
+        if "coding" in analysis["capabilities"]:
+
+            print(
+                "🧠 Creating ProjectSpec..."
+            )
+
+            task.project_spec = self.project_planner.plan(
+                task.title
+            )
+
 
 
 

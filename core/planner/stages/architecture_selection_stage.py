@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from core.planner.architecture_selector import ArchitectureSelector
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.base_stage import PlanningStage
 
 
@@ -22,7 +22,7 @@ class ArchitectureSelectionStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.architecture_candidates = self.selector.select(

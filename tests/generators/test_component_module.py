@@ -33,20 +33,11 @@ def test_component_module():
         for file in result.files
     ]
 
-    assert (
-        "frontend/src/components/Navbar.tsx"
-        in paths
-    )
-
-    assert (
-        "frontend/src/components/Button.tsx"
-        in paths
-    )
-
-    assert (
-        "frontend/src/components/Card.tsx"
-        in paths
-    )
+    expected = {
+    f"frontend/src/components/{component.name}.tsx"
+    for component in spec.ui_spec.component_models
+}
+    assert expected.issubset(set(paths))
 
 
 if __name__ == "__main__":

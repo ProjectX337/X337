@@ -1,27 +1,55 @@
 from __future__ import annotations
+from core.planner.stages.knowledge_graph_stage import KnowledgeGraphStage
+from core.planner.stages.technology_resolver_stage import TechnologyResolverStage
+from core.cognition.cognitive_state import CognitiveState
 
-from core.agent.capability_composer import CapabilityComposer
-from core.agent.dependency_resolver import DependencyResolver
+from core.planner.planning_pipeline import PlanningPipeline
+
+from core.planner.stages.prompt_parser_stage import PromptParserStage
+from core.planner.stages.intent_classifier_stage import IntentClassifierStage
+from core.planner.stages.architecture_selection_stage import ArchitectureSelectionStage
+from core.planner.stages.stack_builder_stage import StackBuilderStage
+from core.planner.stages.capability_planner_stage import CapabilityPlannerStage
+from core.planner.stages.feature_stage import FeatureStage
+from core.planner.stages.product_profile_stage import ProductProfileStage
+from core.planner.stages.design_inference_stage import DesignInferenceStage
+from core.planner.stages.ui_spec_stage import UISpecStage
+from core.planner.stages.project_spec_stage import ProjectSpecStage
 
 
 class ProjectPlanner:
     """
-    Converts user intent into ordered capabilities.
+    Converts a user prompt into a ProjectSpec using the CognitiveState.
     """
 
     def __init__(self):
-        self.composer = CapabilityComposer()
-        self.resolver = DependencyResolver()
+
+        self.pipeline = PlanningPipeline(
+            [
+                PromptParserStage(),
+                IntentClassifierStage(),
+                ArchitectureSelectionStage(),
+                StackBuilderStage(),
+                CapabilityPlannerStage(),
+                FeatureStage(),
+            KnowledgeGraphStage(),
+                TechnologyResolverStage(),
+                ProductProfileStage(),
+                DesignInferenceStage(),
+                UISpecStage(),
+                ProjectSpecStage(),
+            ]
+        )
 
     def plan(
         self,
         message: str,
-    ) -> list[str]:
+    ):
 
-        capabilities = self.composer.compose(
-            message
+        state = CognitiveState(
+            prompt=message
         )
 
-        return self.resolver.resolve(
-            capabilities
-        )
+        self.pipeline.run(state)
+
+        return state.project_spec

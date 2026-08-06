@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from core.planner.architecture_selector import ArchitectureCandidate
 from core.planner.capability_match import CapabilityMatch
@@ -13,6 +14,8 @@ from core.planner.stack_builder import ArchitectureStack
 from core.spec.project_spec import ProjectSpec
 from core.spec.ui_spec import UISpec
 from core.spec.models.feature_spec import FeatureSpec
+from core.spec.models.design_spec import DesignSpec
+from core.knowledge.product_profile import ProductProfile
 
 
 @dataclass(slots=True)
@@ -28,6 +31,10 @@ class PlanningContext:
     intent: Intent | None = None
 
     capabilities: list[CapabilityMatch] = field(
+        default_factory=list
+    )
+
+    features: list[str] = field(
         default_factory=list
     )
 
@@ -47,3 +54,10 @@ class PlanningContext:
         default_factory=list
     )
 
+    design_spec: DesignSpec | None = None
+
+    task_graph: Any = None
+
+
+
+    product_profile: ProductProfile | None = None

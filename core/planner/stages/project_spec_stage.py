@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-from core.planner.planning_context import PlanningContext
 from core.planner.stages.base_stage import PlanningStage
+from core.cognition.cognitive_state import CognitiveState
 from core.spec.project_spec import ProjectSpec
 
 
 class ProjectSpecStage(PlanningStage):
-    """
-    Builds the final ProjectSpec from the PlanningContext.
-    """
+
+    name = "project_spec"
 
     requires = {
         "parsed",
         "intent",
-        "stack",
+        "capabilities",
+        "feature_models",
         "technologies",
     }
 
@@ -21,29 +21,51 @@ class ProjectSpecStage(PlanningStage):
         "project_spec",
     }
 
-    # ---------------------------------------------------------
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.project_spec = ProjectSpec(
 
-            prompt=context.prompt,
+            name=context.parsed.project_name,
 
             parsed=context.parsed,
 
             intent=context.intent,
 
-            architecture=context.stack,
+            architecture=getattr(
+            context,
+            "architecture",
+            context.stack,
+        ),
 
             capabilities=context.capabilities,
 
-        feature_models=context.feature_models,
-
             technologies=context.technologies,
 
+            feature_models=context.feature_models,
+
             ui_spec=context.ui_spec,
+
+            design_spec=context.design_spec,
+
+    
+
+            framework=(
+                context.stack.frontend
+                or context.stack.backend
+                or context.stack.ai
+                or ""
+            ),
+
+            metadata={
+                "task_graph": getattr(
+                    context,
+                    "task_graph",
+                    None,
+                ),
+            },
 
         )

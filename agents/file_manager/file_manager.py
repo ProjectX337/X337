@@ -4,10 +4,8 @@ import os
 
 from agents.base.base_agent import BaseAgent
 from core.models.task_result import TaskResult
-from core.projects.specification.project_spec import (
-    ProjectSpec,
-    GeneratedFile,
-)
+from core.spec.project_spec import ProjectSpec
+from core.generators.generated_file import GeneratedFile
 
 
 class FileManagerAgent(BaseAgent):
@@ -71,19 +69,17 @@ class FileManagerAgent(BaseAgent):
 
         written = []
 
-        for file in files:
+        
+        for relative_path, content in files.items():
 
             full_path = os.path.join(
                 project_path,
-                file.path,
+                relative_path,
             )
 
-            directory = os.path.dirname(
-                full_path
-            )
+            directory = os.path.dirname(full_path)
 
             if directory:
-
                 os.makedirs(
                     directory,
                     exist_ok=True,
@@ -94,23 +90,12 @@ class FileManagerAgent(BaseAgent):
                 "w",
                 encoding="utf-8",
             ) as output:
+                output.write(content)
 
-                output.write(
-                    file.content
-                )
-
-            if file.executable:
-
-                os.chmod(
-                    full_path,
-                    0o755,
-                )
-
-            written.append(
-                file.path
-            )
+            written.append(relative_path)
 
         return written
+
 
     # =====================================================
     # Execute
@@ -125,9 +110,7 @@ class FileManagerAgent(BaseAgent):
             "Writing generated project..."
         )
 
-        spec: ProjectSpec | None = self.recall(
-            "project_spec"
-        )
+        spec: ProjectSpec | None = task.project_spec
 
         if spec is None:
 

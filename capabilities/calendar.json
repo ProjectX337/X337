@@ -1,0 +1,41 @@
+{
+  "name": "calendar",
+  "description": "Calendar",
+  "keywords": [
+    "calendar",
+    "schedule",
+    "events"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Calendar"
+  ],
+  "components": [
+    "CalendarView"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Calendar",
+        "slug": "calendar",
+        "description": "Calendar",
+        "pages": [
+          "Calendar"
+        ],
+        "components": [
+          "CalendarView"
+        ],
+        "api_endpoints": [
+          "/api/calendar"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

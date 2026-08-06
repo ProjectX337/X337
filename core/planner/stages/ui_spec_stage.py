@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from core.planner.stages.base_stage import PlanningStage
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.ui_planner import UIPlanner
 
 
@@ -26,7 +26,7 @@ class UISpecStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.ui_spec = (
@@ -34,5 +34,8 @@ class UISpecStage(PlanningStage):
                 intent=context.intent,
                 capabilities=context.capabilities,
             features=context.feature_models,
+            design=context.design_spec,
+            product_profile=context.product_profile,
+        graph=context.task_graph,
             )
         )

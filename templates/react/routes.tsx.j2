@@ -1,3 +1,5 @@
+import React from "react";
+
 {% for route in routes %}
 import {{ route.page }} from "{{ route.import_path }}";
 {% endfor %}
@@ -5,8 +7,8 @@ import {{ route.page }} from "{{ route.import_path }}";
 export const routes = [
 {% for route in routes %}
 {
-  path: "{{ route.path }}",
-  element: <{{ route.page }} />,
+    path: "{{ route.path }}",
+    element: React.createElement({{ route.page }}),
 },
 {% endfor %}
 ];

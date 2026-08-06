@@ -1,0 +1,28 @@
+export default function {{ page_name }}() {
+
+  return (
+
+    <main>
+
+      <h1>
+        {{ page_name }}
+      </h1>
+
+      {% if composition %}
+
+      {{ composition }}
+
+      {% else %}
+
+      {% for component in components %}
+
+      <{{ component.name }} />
+
+      {% endfor %}
+
+      {% endif %}
+
+    </main>
+
+  );
+}

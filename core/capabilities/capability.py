@@ -7,15 +7,6 @@ from dataclasses import dataclass, field
 class Capability:
     """
     Represents a reusable product capability.
-
-    A capability is independent of any framework.
-    Examples:
-        - authentication
-        - payments
-        - realtime
-        - notifications
-        - search
-        - ai_chat
     """
 
     name: str
@@ -28,16 +19,18 @@ class Capability:
 
     required_roles: list[str] = field(default_factory=list)
 
-    pages: list[str] = field(
-        default_factory=list
-    )
+    pages: list[str] = field(default_factory=list)
 
-    components: list[str] = field(
-        default_factory=list
-    )
+    components: list[str] = field(default_factory=list)
 
     priority: int = 100
 
     confidence: float = 1.0
+
+    depends_on: list[str] = field(default_factory=list)
+
+    implies: list[str] = field(default_factory=list)
+
+    conflicts_with: list[str] = field(default_factory=list)
 
     metadata: dict = field(default_factory=dict)

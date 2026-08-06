@@ -113,13 +113,14 @@ class PersistentMemory:
         value
     ):
 
+        # Automatically serialize ProjectSpec/dataclasses
+        if hasattr(value, 'as_dict') and callable(value.as_dict):
+            value = value.as_dict()
+        elif hasattr(value, 'to_dict') and callable(value.to_dict):
+            value = value.to_dict()
 
         self.data[key] = value
-
-
         self.save()
-
-
 
     def recall(
         self,
@@ -127,17 +128,13 @@ class PersistentMemory:
         default=None
     ):
 
-
         return self.data.get(
             key,
             default
         )
 
-
-
     def all(
         self
     ):
-
 
         return self.data

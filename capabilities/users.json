@@ -1,0 +1,41 @@
+{
+  "name": "users",
+  "description": "User management",
+  "keywords": [
+    "user",
+    "users",
+    "account"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Users"
+  ],
+  "components": [
+    "UserTable"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Users",
+        "slug": "users",
+        "description": "User management",
+        "pages": [
+          "Users"
+        ],
+        "components": [
+          "UserTable"
+        ],
+        "api_endpoints": [
+          "/api/users"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

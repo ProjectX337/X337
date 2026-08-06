@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from core.planner.intent_classifier import IntentClassifier
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.base_stage import PlanningStage
 
 
 class IntentClassifierStage(PlanningStage):
     """
     Executes the IntentClassifier and stores the result
-    in the PlanningContext.
+    in the CognitiveState.
     """
 
     requires = {"parsed"}
@@ -23,7 +23,7 @@ class IntentClassifierStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.intent = self.classifier.classify(

@@ -1,0 +1,42 @@
+{
+  "name": "ai",
+  "description": "AI assistant",
+  "keywords": [
+    "ai",
+    "assistant",
+    "llm",
+    "openai",
+    "copilot"
+  ],
+  "technologies": [
+    "openai"
+  ],
+  "required_roles": [
+    "backend"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "AI Assistant",
+        "slug": "ai",
+        "description": "LLM powered assistant",
+        "pages": [
+          "AI"
+        ],
+        "components": [
+          "ChatPanel",
+          "PromptBox"
+        ],
+        "api_endpoints": [
+          "/api/chat"
+        ]
+      }
+    ]
+  },
+  "depends_on": [],
+  "implies": [
+    "search"
+  ],
+  "conflicts_with": []
+}

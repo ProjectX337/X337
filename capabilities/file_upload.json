@@ -1,0 +1,33 @@
+{
+  "name": "file_upload",
+  "description": "File uploads",
+  "keywords": [
+    "upload",
+    "file",
+    "attachment"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "File Upload",
+        "slug": "file_upload",
+        "description": "Upload files",
+        "pages": [],
+        "components": [
+          "FileUploader"
+        ],
+        "api_endpoints": [
+          "/api/upload"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "authentication"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

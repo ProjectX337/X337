@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from core.ai.planner_agent import PlannerAgent
 from core.agent.update_agent import UpdateAgent
 from core.agent.autonomous_agent import AutonomousAgent
 from core.agent.factory.agent_factory import create_autonomous_agent
@@ -11,8 +10,8 @@ from core.memory.project_memory import ProjectMemory
 from core.memory.project_context_resolver import ProjectContextResolver
 from core.memory.conversation_memory import ConversationMemory
 from core.agent.router.intent_router import IntentRouter
-from core.planner.project_planner import ProjectPlanner
 from core.agent.change_engine import ChangeEngine
+from core.planner.project_planner import ProjectPlanner
 
 
 class ChatAgent:
@@ -21,8 +20,6 @@ class ChatAgent:
     """
 
     def __init__(self):
-
-        self.planner = PlannerAgent()
 
         self.project_planner = ProjectPlanner()
 
@@ -146,16 +143,12 @@ class ChatAgent:
 
 
 
-        features = self.project_planner.plan(
+        spec = self.project_planner.plan(
             message
         )
 
         plans = self.change_engine.detect(
-            features
-        )
-
-        spec = self.planner.build(
-            message
+            spec.feature_models
         )
 
         context = create_generator_context(

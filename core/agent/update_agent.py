@@ -50,12 +50,12 @@ class UpdateAgent:
                 project
             )
 
-        features = self.planner.plan(
+        spec = self.planner.plan(
             message
         )
 
         changes = self.engine.detect(
-            features
+            spec.feature_models
         )
 
         for plan in changes["plans"]:

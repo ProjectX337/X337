@@ -1,0 +1,40 @@
+{% for dependency in component.dependencies %}
+import { {{ dependency }} } from "lucide-react";
+{% endfor %}
+
+interface {{ component.name }}Props {
+
+{% for key, value in component.props.items() %}
+  {{ key }}?: {{ value }};
+{% endfor %}
+
+  children?: React.ReactNode;
+
+}
+
+
+export default function {{ component.name }}(
+{
+{% for key in component.props.keys() %}
+  {{ key }},
+{% endfor %}
+
+  children,
+
+}: {{ component.name }}Props
+) {
+
+
+  return (
+
+    <div
+      className="{{ component.name }}"
+    >
+
+      {children}
+
+    </div>
+
+  );
+
+}

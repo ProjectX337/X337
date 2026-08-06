@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from core.planner.stages.base_stage import PlanningStage
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.feature_planner import FeaturePlanner
 
 
@@ -25,7 +25,7 @@ class FeatureStage(PlanningStage):
 
     def run(
         self,
-        context: PlanningContext,
+        context: CognitiveState,
     ) -> None:
 
         context.feature_models = (

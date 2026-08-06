@@ -7,7 +7,7 @@ from core.models.task_result import TaskResult
 from core.events.event import Event
 from core.events.event_types import EventTypes
 
-from core.projects.specification.project_spec import ProjectSpec
+from core.spec.project_spec import ProjectSpec
 
 
 class ReviewerAgent(BaseAgent):
@@ -30,7 +30,9 @@ class ReviewerAgent(BaseAgent):
         self,
         app=None,
     ):
-        super().__init__(app=app)
+        super().__init__(
+            app
+        )
 
     # =====================================================
     # Score Calculation
@@ -59,11 +61,19 @@ class ReviewerAgent(BaseAgent):
         ) * 25
 
         score -= len(
-            spec.warnings
+            getattr(
+                spec,
+                "warnings",
+                [],
+            )
         ) * 5
 
         score -= len(
-            spec.errors
+            getattr(
+                spec,
+                "errors",
+                [],
+            )
         ) * 10
 
         score = max(
@@ -147,66 +157,60 @@ class ReviewerAgent(BaseAgent):
 
             "score": score,
 
-            "warnings": spec.warnings,
-
-            "errors": spec.errors,
-
-            "generated_files": len(
-                spec.files
+            "warnings": getattr(
+                spec,
+                "warnings",
+                [],
             ),
 
-            "framework": spec.framework,
+            "errors": getattr(
+                spec,
+                "errors",
+                [],
+            ),
+
+            "generated_files": len(
+                getattr(
+                    spec,
+                    "files",
+                    [],
+                )
+            ),
+
+            "framework": getattr(
+                spec,
+                "framework",
+                None,
+            ),
 
         }
-
-        #
-        # Publish Events
-        #
 
         if approved:
 
             self.bus.publish(
-
                 Event(
-
                     EventTypes.REVIEW_APPROVED,
-
                     self.name,
-
                     result,
-
                 )
-
             )
 
         else:
 
             self.bus.publish(
-
                 Event(
-
                     EventTypes.TASK_FAILED,
-
                     self.name,
-
                     result,
-
                 )
-
             )
 
         self.bus.publish(
-
             Event(
-
                 EventTypes.TASK_COMPLETED,
-
                 self.name,
-
                 result,
-
             )
-
         )
 
         task.history.append(
@@ -218,14 +222,8 @@ class ReviewerAgent(BaseAgent):
         )
 
         return TaskResult(
-
             success=approved,
-
             agent=self.name,
-
             task=task.title,
-
             result=result,
-
         )
-        

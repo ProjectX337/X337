@@ -7,16 +7,10 @@ from core.planner.models import ParsedPrompt
 
 class CapabilityPlanner:
     """
-    Discovers and ranks capabilities for a prompt.
-
-    The planner itself contains no hardcoded knowledge
-    about authentication, payments, search, etc.
-
-    All domain knowledge lives in capability JSON files.
+    Discovers and expands capabilities using the capability graph.
     """
 
     def __init__(self):
-
         self.registry = CapabilityRegistry()
 
     # ---------------------------------------------------------
@@ -38,54 +32,61 @@ class CapabilityPlanner:
             ]
         ).lower()
 
-        scores: dict[str, tuple] = {}
+        scores: dict[str, int] = {}
 
-        for word in searchable.split():
+        for capability in self.registry.all():
+            score = sum(
+                keyword in searchable
+                for keyword in capability.keywords
+            )
 
-            for capability in self.registry.find_by_keyword(word):
+            if score:
+                scores[capability.name] = score
 
-                if capability.name not in scores:
+        expanded: dict[str, object] = {}
+        visited: set[str] = set()
 
-                    scores[capability.name] = (
-                        capability,
-                        0,
-                    )
+        def expand(capability):
+            if capability.name in visited:
+                return
 
-                cap, score = scores[capability.name]
+            visited.add(capability.name)
+            expanded[capability.name] = capability
 
-                scores[capability.name] = (
-                    cap,
-                    score + 1,
-                )
+            for dep in capability.depends_on:
+                dep_cap = self.registry.get(dep)
+                if dep_cap:
+                    expand(dep_cap)
 
-        ranked = sorted(
-            scores.values(),
-            key=lambda item: (
-                -item[1],
-                -item[0].priority,
-                item[0].name,
-            ),
-        )
+            for implied in capability.implies:
+                imp_cap = self.registry.get(implied)
+                if imp_cap:
+                    expand(imp_cap)
+
+        for name in scores:
+            cap = self.registry.get(name)
+            if cap:
+                expand(cap)
 
         matches: list[CapabilityMatch] = []
 
-        for capability, score in ranked:
-
+        for capability in sorted(
+            expanded.values(),
+            key=lambda c: (
+                -scores.get(c.name, 0),
+                -c.priority,
+                c.name,
+            ),
+        ):
             matches.append(
-
                 CapabilityMatch(
-
                     capability=capability,
-
-                    score=score,
-
+                    score=scores.get(capability.name, 1),
                     confidence=min(
                         1.0,
-                        score / 5,
+                        scores.get(capability.name, 1) / 5,
                     ),
-
                 )
-
             )
 
         return matches

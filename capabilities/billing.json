@@ -1,0 +1,41 @@
+{
+  "name": "billing",
+  "description": "Billing",
+  "keywords": [
+    "billing",
+    "invoice",
+    "subscription"
+  ],
+  "technologies": [],
+  "required_roles": [],
+  "pages": [
+    "Billing"
+  ],
+  "components": [
+    "BillingTable"
+  ],
+  "priority": 100,
+  "metadata": {
+    "features": [
+      {
+        "name": "Billing",
+        "slug": "billing",
+        "description": "Billing",
+        "pages": [
+          "Billing"
+        ],
+        "components": [
+          "BillingTable"
+        ],
+        "api_endpoints": [
+          "/api/billing"
+        ]
+      }
+    ]
+  },
+  "depends_on": [
+    "payments"
+  ],
+  "implies": [],
+  "conflicts_with": []
+}

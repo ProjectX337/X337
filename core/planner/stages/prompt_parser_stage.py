@@ -1,31 +1,25 @@
 from __future__ import annotations
 
-from core.planner.planning_context import PlanningContext
-from core.planner.prompt_parser import PromptParser
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.base_stage import PlanningStage
+from core.planner.prompt_parser import PromptParser
 
 
 class PromptParserStage(PlanningStage):
-    """
-    Executes the PromptParser and stores the result
-    in the PlanningContext.
-    """
 
     requires = set()
 
-    provides = {"parsed"}
+    provides = {"parsed_prompt"}
 
     def __init__(self):
 
         self.parser = PromptParser()
 
-    # ---------------------------------------------------------
-
     def run(
         self,
-        context: PlanningContext,
-    ) -> None:
+        state: CognitiveState,
+    ):
 
-        context.parsed = self.parser.parse(
-            context.prompt,
+        state.parsed_prompt = self.parser.parse(
+            state.prompt
         )
