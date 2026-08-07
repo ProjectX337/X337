@@ -1,0 +1,131 @@
+
+# 🚀 X337 Multi-Agent System
+
+Enter a task: Traceback (most recent call last):
+  File "/Users/jacklamaina/X337/agents/coder/coder.py", line 113, in execute
+    self.remember(
+    ~~~~~~~~~~~~~^
+        "project_spec",
+        ^^^^^^^^^^^^^^^
+        spec,
+        ^^^^^
+    )
+    ^
+  File "/Users/jacklamaina/X337/agents/base/base_agent.py", line 166, in remember
+    self.memory.remember(
+    ~~~~~~~~~~~~~~~~~~~~^
+        key,
+        ^^^^
+        value
+        ^^^^^
+    )
+    ^
+  File "/Users/jacklamaina/X337/core/memory/memory_manager.py", line 32, in remember
+    self.persistent.remember(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+    
+    
+    ...<3 lines>...
+    
+    
+    )
+    ^
+  File "/Users/jacklamaina/X337/core/memory/persistent_memory.py", line 123, in remember
+    self.save()
+    ~~~~~~~~~^^
+  File "/Users/jacklamaina/X337/core/memory/persistent_memory.py", line 98, in save
+    json.dump(
+    ~~~~~~~~~^
+    
+    
+    ...<5 lines>...
+    
+    
+    )
+    ^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 181, in dump
+    for chunk in iterable:
+                 ^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/encoder.py", line 444, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/encoder.py", line 413, in _iterencode_dict
+    yield from chunks
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/encoder.py", line 413, in _iterencode_dict
+    yield from chunks
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/encoder.py", line 451, in _iterencode
+    newobj = _default(o)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type UISpec is not JSON serializable
+when serializing dict item 'ui_spec'
+when serializing dict item 'project_spec'
+Loaded agent: Coder
+Loaded agent: Director
+Loaded agent: Planner
+Loaded agent: Researcher
+Loaded agent: Tester
+Loaded agent: <core.application.application_context.ApplicationContext object at 0x107c46a50>
+Loaded agent: Writer
+Loaded agent: FileManager
+⚡ Queue: Planner added
+⚡ QueueExecutor running: Planner
+Reason: TaskStarted
+[Planner] Creating execution workflow...
+🧠 Creating ProjectSpec...
+
+🧠 Execution Workflow
+============================================================
+01. Coder
+02. FileManager
+03. Tester
+04. Reviewer
+============================================================
+[Planner] Generated execution workflow with 4 step(s).
+📡 Planner    WorkflowCreated
+⚡ Workflow received. Adding agents to queue.
+➕ Queue <- Coder
+➕ Queue <- FileManager
+➕ Queue <- Tester
+➕ Queue <- Reviewer
+✅ Planner completed
+⚡ QueueExecutor running: Coder
+Reason: WorkflowCreated
+[Coder] Starting engineering pipeline...
+[Coder] Planning complete.
+[Coder] Designing architecture...
+[Coder] Resolving dependencies...
+[Coder] Generating project...
+
+================================================================================
+CODER AGENT EXCEPTION
+================================================================================
+
+✅ Coder completed
+⚡ QueueExecutor running: FileManager
+Reason: WorkflowCreated
+[FileManager] Writing generated project...
+⚡ QueueExecutor running: Tester
+Reason: WorkflowCreated
+[Tester] Running project validation...
+⚡ QueueExecutor running: Reviewer
+Reason: WorkflowCreated
+⚠️ Agent not found: Reviewer
+🧠 Workflow learned and stored.
+
+==================================================
+✅ WORKFLOW COMPLETE
+==================================================
+
+Agent: Orchestrator
+
+Success: True
+
+Task History:
+• Queue execution started
+• Planner created intelligent workflow
+• Planner executed from queue
+• Coder executed from queue
+• FileManager failed: Object of type UISpec is not JSON serializable
+• Tester failed: 'dict' object has no attribute 'framework'
+• Queue execution completed

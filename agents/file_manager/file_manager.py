@@ -110,7 +110,7 @@ class FileManagerAgent(BaseAgent):
             "Writing generated project..."
         )
 
-        spec: ProjectSpec | None = task.project_spec
+        spec = task.project_spec
 
         if spec is None:
 

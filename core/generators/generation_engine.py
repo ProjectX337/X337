@@ -53,9 +53,18 @@ class GenerationEngine:
                 builder=FileBuilder(),
             )
 
+        try:
             result = generator.generate(
                 context,
             )
+        except Exception:
+            import traceback
+
+            print("\n" + "=" * 80)
+            print(f"GENERATOR FAILED: {generator.__class__.__name__}")
+            traceback.print_exc()
+            print("=" * 80 + "\n")
+            raise
 
             final_result.files.extend(
                 result.files,

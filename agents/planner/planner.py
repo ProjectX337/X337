@@ -322,161 +322,55 @@ class PlannerAgent(BaseAgent):
         task
     ):
 
+        self.log(
+            "Creating execution workflow..."
+        )
+
+        from core.orchestrator.execution_planner import ExecutionPlanner
+
+        print("🧠 Creating ProjectSpec...")
+
+        task.project_spec = self.project_planner.plan(task.title)
+
+        analysis = self.analyze_task(task)
+
+        workflow = (
+    self.get_learned_workflow()
+    or ExecutionPlanner().plan(task.project_spec)
+    or []
+)
+        print("\n🧠 Execution Workflow")
+        print("=" * 60)
+
+        for i, step in enumerate(workflow, start=1):
+            print(f"{i:02d}. {step}")
+
+        print("=" * 60)
 
         self.log(
-
-            "Creating execution workflow..."
-
+            f"Generated execution workflow with {len(workflow)} step(s)."
         )
-
-
-
-        analysis = self.analyze_task(
-
-            task
-
-        )
-
-
-        # ---------------------------------
-        # Create canonical ProjectSpec
-        # Planner -> Coder contract
-        # ---------------------------------
-
-        if "coding" in analysis["capabilities"]:
-
-            print(
-                "🧠 Creating ProjectSpec..."
-            )
-
-            task.project_spec = self.project_planner.plan(
-                task.title
-            )
-
-
-
-
-        print(
-
-            "🧠 Task analysis:"
-
-        )
-
-
-        print(
-
-            analysis
-
-        )
-
-
-
-        workflow = self.get_learned_workflow()
-
-
-
-
-
-        if workflow:
-
-
-            print(
-
-                "🧠 Brain using learned workflow."
-
-            )
-
-
-
-        else:
-
-
-            workflow = analysis[
-
-                "capabilities"
-
-            ]
-
-
-
-            print(
-
-                "🧠 New workflow generated:"
-
-            )
-
-
-            print(
-
-                workflow
-
-            )
-
-
-
-
-
-
-        print(
-
-            "[Planner] Brain plan:",
-
-            workflow
-
-        )
-
-
-
-
-
 
         self.bus.publish(
-
             Event(
-
                 EventTypes.WORKFLOW_CREATED,
-
                 self.name,
-
                 {
-
                     "workflow": workflow
-
                 }
-
             )
-
         )
-
-
-
-
 
         task.history.append(
-
             "Planner created intelligent workflow"
-
         )
 
-
-
-
-
-
         return TaskResult(
-
             success=True,
-
             agent=self.name,
-
             task=task.title,
-
             result={
-
                 "workflow": workflow,
-
-                "analysis": analysis
-
-            }
-
+                "analysis": analysis,
+            },
         )

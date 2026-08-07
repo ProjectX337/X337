@@ -1,3 +1,4 @@
+import traceback
 import time
 
 from core.memory.memory_manager import MemoryManager
@@ -318,16 +319,7 @@ class QueueExecutor:
 
 
 
-
             except Exception as error:
-
-
-                print(
-
-                    f"❌ {agent_name} failed: {error}"
-
-                )
-
 
 
                 self.performance.record(

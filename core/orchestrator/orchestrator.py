@@ -132,89 +132,39 @@ class Orchestrator:
         event
     ):
 
+        workflow = event.data.get("workflow", [])
 
-        print(
+        print("⚡ Workflow received. Adding agents to queue.")
 
-            "⚡ Workflow received. Adding agents to queue."
-
-        )
-
-
-
-        workflow = event.data.get(
-
-            "workflow",
-
-            []
-
-        )
-
-
-
-        agent_map = {
-
-
-            "research": "Researcher",
-
-
-            "writing": "Writer",
-
-
-            "coding": "Coder",
-
-
-            "file_management": "FileManager",
-
-
-            "testing": "Tester",
-
-
-            "review": "Reviewer"
-
-
-        }
-
-
-
-
-        for capability in workflow:
-
-
-            agent_name = agent_map.get(
-
-                capability
-
+        for agent_name in workflow:
+            print(f"➕ Queue <- {agent_name}")
+            self.execution_queue.add(
+                {
+                    "agent": agent_name,
+                    "reason": "WorkflowCreated",
+                }
             )
 
+        agent_map = {
+            "research": "Researcher",
+            "writing": "Writer",
+            "coding": "Coder",
+            "file_management": "FileManager",
+            "testing": "Tester",
+            "review": "Reviewer",
+        }
 
+        for capability in workflow:
+            agent_name = agent_map.get(capability)
 
             if agent_name:
-
-
-                print(
-
-                    f"⚡ Adding agent: {agent_name}"
-
-                )
-
-
-
+                print(f"⚡ Adding agent: {agent_name}")
                 self.execution_queue.add(
-
                     {
-
                         "agent": agent_name,
-
-                        "reason": "WorkflowCreated"
-
+                        "reason": "WorkflowCreated",
                     }
-
                 )
-
-
-
-
-
 
 
     # ---------------------------------

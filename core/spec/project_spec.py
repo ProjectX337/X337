@@ -224,7 +224,7 @@ class ProjectSpec:
             "architecture": self.architecture,
             "features": self.features,
             "feature_models": [
-                f.__dict__
+                f.as_dict()
                 for f in self.feature_models
             ],
             "technologies":

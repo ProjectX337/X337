@@ -1,13 +1,96 @@
 {
     "project_spec": {
+        "prompt": "",
         "name": "",
         "framework": "react",
-        "path": "workspace/projects/",
         "architecture": "react",
-        "features": [
-            "Analytics",
-            "Dashboard"
+        "features": [],
+        "feature_models": [
+            {
+                "name": "Analytics",
+                "slug": "analytics",
+                "description": "Analytics dashboards",
+                "routes": [],
+                "pages": [
+                    "Analytics"
+                ],
+                "components": [
+                    "MetricCard",
+                    "Chart",
+                    "ReportTable"
+                ],
+                "state": [],
+                "api_contracts": [
+                    "/api/analytics"
+                ],
+                "metadata": {
+                    "source_capability": "analytics"
+                }
+            },
+            {
+                "name": "Dashboard",
+                "slug": "dashboard",
+                "description": "Main dashboard",
+                "routes": [],
+                "pages": [
+                    "Dashboard"
+                ],
+                "components": [
+                    "Navbar",
+                    "Sidebar",
+                    "DashboardCard"
+                ],
+                "state": [],
+                "api_contracts": [],
+                "metadata": {
+                    "source_capability": "dashboard"
+                }
+            },
+            {
+                "name": "File Upload",
+                "slug": "file_upload",
+                "description": "Upload files",
+                "routes": [],
+                "pages": [],
+                "components": [
+                    "FileUploader"
+                ],
+                "state": [],
+                "api_contracts": [
+                    "/api/upload"
+                ],
+                "metadata": {
+                    "source_capability": "file_upload"
+                }
+            }
         ],
+        "technologies": {
+            "database": null,
+            "orm": null,
+            "authentication": null,
+            "authorization": null,
+            "api_style": null,
+            "validation": null,
+            "styling": "tailwindcss",
+            "state_management": "zustand",
+            "routing": "react-router",
+            "ui_library": null,
+            "llm_provider": null,
+            "vector_database": null,
+            "embeddings": null,
+            "cache": null,
+            "message_queue": null,
+            "containerization": null,
+            "deployment": null,
+            "ci_cd": null,
+            "testing_backend": null,
+            "testing_frontend": "vitest",
+            "formatter": "black",
+            "linter": "ruff",
+            "package_manager_backend": "pip",
+            "package_manager_frontend": "npm",
+            "technologies": []
+        },
         "dependencies": [
             "react",
             "react-dom",
@@ -19,21 +102,4 @@
             "package.json": "",
             "vite.config.js": ""
         },
-        "language": "javascript",
-        "version": "1.0.0",
-        "description": "Build SaaS dashboard application",
-        "author": "X337",
-        "warnings": [],
-        "errors": [],
-        "score": 0,
-        "generated": true,
-        "tested": false,
-        "reviewed": false,
-        "deployed": false,
-        "plan": {},
-        "metadata": {
-            "capabilities": [
-                "analytics",
-                "dashboard"
-            ],
-            "technologies": 
+        "ui_spec": 

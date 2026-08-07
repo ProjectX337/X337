@@ -78,3 +78,28 @@ class UISpec:
         return len(
             self.component_models
         )
+
+
+    def as_dict(self):
+        return {
+            "layout": self.layout,
+            "theme": self.theme,
+            "navigation": self.navigation,
+            "metadata": self.metadata,
+            "page_models": [
+                p.as_dict() if hasattr(p, "as_dict") else vars(p)
+                for p in self.page_models
+            ],
+            "component_models": [
+                c.as_dict() if hasattr(c, "as_dict") else vars(c)
+                for c in self.component_models
+            ],
+            "design_system": (
+                self.design_system.as_dict()
+                if hasattr(self.design_system, "as_dict")
+                else vars(self.design_system)
+            ),
+        }
+
+    def to_dict(self):
+        return self.as_dict()

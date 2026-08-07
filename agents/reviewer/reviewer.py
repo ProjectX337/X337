@@ -101,7 +101,7 @@ class ReviewerAgent(BaseAgent):
             "Reviewing generated project..."
         )
 
-        spec: ProjectSpec | None = self.recall(
+        spec = self.recall(
             "project_spec"
         )
 

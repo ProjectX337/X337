@@ -17,3 +17,14 @@ class DesignSystem:
     spacing: dict[str, str] = field(
         default_factory=dict
     )
+
+
+    def as_dict(self):
+        return {
+            "colors": self.colors,
+            "typography": self.typography,
+            "spacing": self.spacing,
+        }
+
+    def to_dict(self):
+        return self.as_dict()

@@ -141,7 +141,7 @@ class TesterAgent(BaseAgent):
             "Running project validation..."
         )
 
-        spec: ProjectSpec | None = self.recall(
+        spec = self.recall(
             "project_spec"
         )
 
