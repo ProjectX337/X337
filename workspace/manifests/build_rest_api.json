@@ -1,0 +1,12 @@
+{
+  "name": "build_rest_api",
+  "type": "api",
+  "path": "workspace/projects/build_rest_api",
+  "framework": "python",
+  "install_commands": [
+    "pip install -r requirements.txt"
+  ],
+  "run_commands": [
+    "python app.py"
+  ]
+}

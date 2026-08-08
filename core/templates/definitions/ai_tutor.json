@@ -1,0 +1,28 @@
+{
+    "name": "ai_tutor",
+    "category": "education",
+
+    "pages": [
+        "Landing",
+        "Login",
+        "Dashboard",
+        "Lesson",
+        "Profile"
+    ],
+
+    "components": [
+        "Navbar",
+        "Hero",
+        "AIChat",
+        "ProgressChart",
+        "LessonCard",
+        "ProfileCard"
+    ],
+
+    "features": [
+        "authentication",
+        "ai_tutor",
+        "progress_tracking",
+        "analytics"
+    ]
+}

@@ -1,56 +1,44 @@
-from __future__ import annotations
-
-from pathlib import Path
-
-from jinja2 import Environment
-from jinja2 import FileSystemLoader
-from jinja2 import StrictUndefined
+from core.templates.template_registry import (
+    TemplateRegistry
+)
 
 
 class TemplateEngine:
-    """
-    Loads and renders Jinja2 templates.
 
-    All project generators share one template engine.
-    """
 
-    def __init__(
+    def __init__(self):
+
+        self.registry = TemplateRegistry()
+
+
+
+    def select_template(
         self,
-        template_directory: str = "templates",
+        features
     ):
 
-        self.directory = Path(template_directory)
+        best_template = None
 
-        self.environment = Environment(
+        best_score = 0
 
-            loader=FileSystemLoader(
-                self.directory,
-            ),
 
-            autoescape=False,
+        for template in self.registry.list():
 
-            trim_blocks=True,
+            score = 0
 
-            lstrip_blocks=True,
 
-            undefined=StrictUndefined,
+            for feature in features:
 
-        )
+                if feature in template.features:
 
-    # ---------------------------------------------------------
+                    score += 1
 
-    def render(
-        self,
-        template: str,
-        **variables,
-    ) -> str:
 
-        return (
+            if score > best_score:
 
-            self.environment
+                best_score = score
 
-            .get_template(template)
+                best_template = template
 
-            .render(**variables)
 
-        )
+        return best_template

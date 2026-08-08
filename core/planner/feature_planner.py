@@ -1,62 +1,109 @@
-from __future__ import annotations
+from core.features.feature_engine import (
+    FeatureEngine
+)
 
-from core.planner.capability_match import CapabilityMatch
-from core.spec.models.feature_spec import FeatureSpec
+from core.planner.models import (
+    ParsedPrompt
+)
+
+from core.templates.template_composer import (
+    ApplicationBlueprint,
+    PageBlueprint
+)
+
 
 
 class FeaturePlanner:
     """
-    Converts capabilities into structured product features.
+    Converts discovered features
+    into application blueprints.
     """
+
+
+    def __init__(self):
+
+        self.engine = FeatureEngine()
+
+
 
     def plan(
         self,
-        parsed,
-        capabilities: list[CapabilityMatch],
-    ) -> list[FeatureSpec]:
+        prompt: ParsedPrompt
+    ):
 
-        features: list[FeatureSpec] = []
 
-        for match in capabilities:
-
-            capability = match.capability
-
-            definitions = capability.metadata.get(
-                "features",
-                [],
+        features = (
+            self.engine.analyze(
+                prompt.original
             )
+        )
 
-            for item in definitions:
 
-                features.append(
-                    FeatureSpec(
-                        name=item["name"],
-                        slug=item.get(
-                            "slug",
-                            item["name"]
-                            .lower()
-                            .replace(" ", "_")
-                        ),
-                        description=item.get(
-                            "description",
-                            "",
-                        ),
-                        pages=item.get(
-                            "pages",
-                            [],
-                        ),
-                        components=item.get(
-                            "components",
-                            [],
-                        ),
-                        api_contracts=item.get(
-                            "api_endpoints",
-                            [],
-                        ),
-                        metadata={
-                            "source_capability": capability.name
-                        },
+        pages = []
+
+        components = []
+
+        services = []
+
+
+
+        for feature in features:
+
+
+            for page in feature.pages:
+
+                pages.append(
+
+                    PageBlueprint(
+
+                        name=page,
+
+                        route=
+                        "/" +
+                        page.lower(),
+
+                        components=[]
                     )
+
                 )
 
-        return features
+
+
+            components.extend(
+                feature.components
+            )
+
+
+            services.extend(
+                feature.services
+            )
+
+
+
+        for page in pages:
+
+            page.components = (
+                components
+            )
+
+
+
+        return {
+
+            "features":
+                features,
+
+            "pages":
+                pages,
+
+            "components":
+                list(
+                    set(components)
+                ),
+
+            "services":
+                list(
+                    set(services)
+                )
+
+        }

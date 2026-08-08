@@ -1,31 +1,17 @@
-# Python
-__pycache__/
-*.py[cod]
-*.so
+*.zip
 
-# Virtual environments
+__pycache__/
+
+*.pyc
+
 .venv/
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
+workspace/runs/
 
-# Node
-node_modules/
-dist/
-build/
+workspace/logs/
 
-# Logs
-logs/*.log
+*.bak
 
-# Environment
-.env
-.env.*
+*.before_traceback
 
-# OS
-.DS_Store
-
-# Editors
-.vscode/
-.idea/
+error.log
