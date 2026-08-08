@@ -1,123 +1,358 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
+
+
+import {
+    getFiles,
+    getFile
+} from "../api/code";
+
 
 
 export default function CodeExplorer(){
 
+
     const [files,setFiles] = useState<string[]>([]);
+
     const [selected,setSelected] = useState("");
+
     const [code,setCode] = useState("");
+
+    const [loading,setLoading] = useState(false);
+
+    const [error,setError] = useState("");
+
 
 
     useEffect(()=>{
 
-        fetch(
-            "http://localhost:9001/api/files"
-        )
-        .then(res=>res.json())
+
+        getFiles()
+
         .then(data=>{
+
+
+            console.log(
+                "FILES FROM X337:",
+                data
+            );
+
 
             setFiles(data);
 
+
+        })
+
+
+        .catch(err=>{
+
+
+            console.error(err);
+
+            setError(
+                "Could not load files"
+            );
+
+
         });
+
 
 
     },[]);
 
 
 
-    async function openFile(
-        file:string
-    ){
 
-        setSelected(file);
+    async function openFile(path:string){
 
 
-        const response = await fetch(
-            `http://localhost:9001/api/file?path=${file}`
+        console.log(
+            "OPENING FILE:",
+            path
         );
 
 
-        const data = await response.json();
+        setSelected(path);
+
+        setLoading(true);
+
+        setError("");
 
 
-        setCode(
-            data.code
-        );
+
+        try{
+
+
+            const result = await getFile(path);
+
+
+
+            console.log(
+                "FILE RESPONSE:",
+                result
+            );
+
+
+
+            setCode(
+                result.code || "No code returned"
+            );
+
+
+
+        }
+
+        catch(err){
+
+
+            console.error(err);
+
+
+            setError(
+                "Could not load file"
+            );
+
+
+        }
+
+
+        finally{
+
+
+            setLoading(false);
+
+
+        }
+
 
     }
 
 
 
-    return (
 
-        <div
-        style={{
-            display:"flex",
-            height:"600px"
-        }}
-        >
+return (
 
+<div
 
-            <div
-            style={{
-                width:"300px",
-                borderRight:"1px solid #ccc",
-                padding:"20px"
-            }}
-            >
+style={{
 
-            <h3>
-                Generated Files
-            </h3>
+display:"flex",
 
+height:"75vh",
 
-            {
-                files.map(file=>(
+border:"1px solid #ddd",
 
-                    <div
-                    key={file}
-                    onClick={()=>openFile(file)}
-                    style={{
-                        cursor:"pointer",
-                        marginBottom:"8px"
-                    }}
-                    >
+borderRadius:"12px",
 
-                    {file}
+overflow:"hidden",
 
-                    </div>
+background:"#fff"
 
-                ))
-            }
+}}
 
-
-            </div>
+>
 
 
 
-            <div
-            style={{
-                flex:1,
-                padding:"20px",
-                overflow:"auto"
-            }}
-            >
+{/* FILE TREE */}
 
-            <h3>
-                {selected}
-            </h3>
+<div
 
+style={{
 
-            <pre>
-                {code}
-            </pre>
+width:"320px",
 
+borderRight:"1px solid #ddd",
 
-            </div>
+padding:"20px",
+
+overflowY:"auto"
+
+}}
+
+>
 
 
-        </div>
+<h2>
 
-    )
+Generated Files
+
+</h2>
+
+
+
+{
+error &&
+
+<p style={{color:"red"}}>
+
+{error}
+
+</p>
+
+}
+
+
+
+{
+files.map(file=>(
+
+
+<button
+
+key={file}
+
+onClick={()=>openFile(file)}
+
+style={{
+
+display:"block",
+
+width:"100%",
+
+padding:"10px",
+
+marginBottom:"8px",
+
+textAlign:"left",
+
+borderRadius:"6px",
+
+border:"1px solid #ddd",
+
+background:
+
+selected===file
+
+?
+
+"#dbeafe"
+
+:
+
+"#f8fafc",
+
+cursor:"pointer"
+
+}}
+
+>
+
+
+{file}
+
+
+</button>
+
+
+
+))
+
+}
+
+
+
+</div>
+
+
+
+
+
+{/* CODE VIEWER */}
+
+
+<div
+
+style={{
+
+flex:1,
+
+padding:"20px",
+
+overflow:"auto"
+
+}}
+
+>
+
+
+<h2>
+
+{
+
+selected ||
+
+"Select a file"
+
+}
+
+</h2>
+
+
+
+
+{
+
+loading &&
+
+<p>
+
+Loading code...
+
+</p>
+
+}
+
+
+
+
+<pre
+
+style={{
+
+background:"#111827",
+
+color:"#f8fafc",
+
+padding:"20px",
+
+borderRadius:"10px",
+
+minHeight:"500px",
+
+overflow:"auto",
+
+fontSize:"14px",
+
+lineHeight:"1.6"
+
+}}
+
+>
+
+
+{
+
+code ||
+
+"Select a file from the left panel"
+
+}
+
+
+</pre>
+
+
+
+</div>
+
+
+
+</div>
+
+
+)
 
 }

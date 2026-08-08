@@ -1,102 +1,81 @@
-import {useState} from "react";
+import { useState } from "react";
+import PromptConsole from "./components/PromptConsole";
+import PreviewPanel from "./components/PreviewPanel";
 
-import ModeSwitcher from "./components/ModeSwitcher";
+export default function App() {
 
-import type {DashboardMode} from "./state/dashboardMode";
+    const [previewUrl, setPreviewUrl] = useState(
+        "http://localhost:9100"
+    );
 
+    return (
+        <div
+            style={{
+                minHeight: "100vh",
+                padding: "30px",
+                background: "#f5f7fb",
+                fontFamily: "Inter, sans-serif"
+            }}
+        >
 
-function App(){
+            <h1>
+                X337
+            </h1>
 
-const [mode,setMode] = useState<DashboardMode>(
-    "overview"
-);
+            <p>
+                AI Project Generation Dashboard
+            </p>
 
+            <div
+                style={{
+                    marginTop: "30px",
+                    marginBottom: "30px"
+                }}
+            >
+                <PromptConsole />
+            </div>
 
-return (
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 2fr",
+                    gap: "20px"
+                }}
+            >
 
-<div style={{
-    padding:"40px",
-    fontFamily:"Arial"
-}}>
+                <div
+                    style={{
+                        background: "white",
+                        padding: "20px",
+                        borderRadius: "12px",
+                        border: "1px solid #ddd"
+                    }}
+                >
 
+                    <h2>
+                        Generated Project
+                    </h2>
 
-<h1>
-X337 Dashboard
-</h1>
+                    <p>
+                        ADHD Learning Assistant
+                    </p>
 
+                    <p>
+                        Preview runtime:
+                    </p>
 
-<ModeSwitcher
-    mode={mode}
-    setMode={setMode}
-/>
+                    <code>
+                        {previewUrl}
+                    </code>
 
+                </div>
 
+                <PreviewPanel
+                    url={previewUrl}
+                />
 
-{
-mode==="overview" &&
-<div>
+            </div>
 
-<h2>
-Project Overview
-</h2>
-
-<p>
-X337 Generated Application Dashboard
-</p>
-
-</div>
+        </div>
+    );
 }
-
-
-
-{
-mode==="code" &&
-<div>
-
-<h2>
-Code Explorer
-</h2>
-
-<p>
-Generated files will appear here.
-</p>
-
-</div>
-}
-
-
-
-{
-mode==="preview" &&
-<div>
-
-<h2>
-Generated App Preview
-</h2>
-
-</div>
-}
-
-
-
-{
-mode==="agents" &&
-<div>
-
-<h2>
-Agent Activity
-</h2>
-
-</div>
-}
-
-
-
-</div>
-
-)
-
-}
-
-
-export default App;
