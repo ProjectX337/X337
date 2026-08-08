@@ -1,12 +1,25 @@
-type PreviewPanelProps = {
+interface PreviewProject {
+    previewUrl?: string;
+    preview_url?: string;
     url?: string;
-};
+}
+
+interface PreviewPanelProps {
+    url?: string;
+    project?: PreviewProject;
+}
 
 export default function PreviewPanel({
-    url
+    url,
+    project,
 }: PreviewPanelProps) {
+    const previewUrl =
+        url ??
+        project?.previewUrl ??
+        project?.preview_url ??
+        project?.url;
 
-    if (!url) {
+    if (!previewUrl) {
         return (
             <div
                 style={{
@@ -17,7 +30,7 @@ export default function PreviewPanel({
                     alignItems: "center",
                     justifyContent: "center",
                     color: "#777",
-                    background: "#fafafa"
+                    background: "#fafafa",
                 }}
             >
                 <div>
@@ -38,16 +51,16 @@ export default function PreviewPanel({
                 border: "1px solid #ddd",
                 borderRadius: "12px",
                 overflow: "hidden",
-                background: "white"
+                background: "white",
             }}
         >
             <iframe
-                src={url}
+                src={previewUrl}
                 title="X337 Generated Application"
                 style={{
                     width: "100%",
                     height: "100%",
-                    border: "none"
+                    border: "none",
                 }}
             />
         </div>

@@ -1,53 +1,49 @@
-import type {DashboardMode} from "../state/dashboardMode";
-
+import type { DashboardMode } from "../state/dashboardMode";
 
 interface Props {
-
-mode:DashboardMode;
-
-setMode:(mode:DashboardMode)=>void;
-
+    mode: DashboardMode;
+    setMode: (mode: DashboardMode) => void;
 }
 
+export default function ModeSwitcher({ mode, setMode }: Props) {
+    return (
+        <div
+            style={{
+                display: "flex",
+                gap: "8px",
+            }}
+        >
+            <button
+                type="button"
+                onClick={() => setMode("overview")}
+                aria-pressed={mode === "overview"}
+            >
+                Overview
+            </button>
 
-export default function ModeSwitcher({
-mode,
-setMode
-}:Props){
+            <button
+                type="button"
+                onClick={() => setMode("code")}
+                aria-pressed={mode === "code"}
+            >
+                Code
+            </button>
 
+            <button
+                type="button"
+                onClick={() => setMode("preview")}
+                aria-pressed={mode === "preview"}
+            >
+                Preview
+            </button>
 
-return (
-
-<div>
-
-
-<button onClick={()=>setMode("overview")}>
-Overview
-</button>
-
-
-<button onClick={()=>setMode("code")}>
-Code
-</button>
-
-
-<button onClick={()=>setMode("preview")}>
-Preview
-</button>
-
-
-<button onClick={()=>setMode("agents")}>
-Agents
-</button>
-
-
-<h3>
-Current Mode: {mode}
-</h3>
-
-
-</div>
-
-)
-
+            <button
+                type="button"
+                onClick={() => setMode("agents")}
+                aria-pressed={mode === "agents"}
+            >
+                Agents
+            </button>
+        </div>
+    );
 }

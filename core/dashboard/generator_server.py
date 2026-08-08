@@ -189,7 +189,7 @@ class GeneratorHandler(BaseHTTPRequestHandler):
 
 def start_generator_server(
     host="localhost",
-    port=9002
+    port=9000
 ):
 
     server = HTTPServer(

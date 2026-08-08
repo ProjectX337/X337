@@ -8,7 +8,6 @@ import Profile from "./pages/Profile";
 export default function App() {
 
     return (
-
         <div
             style={{
                 minHeight: "100vh",
@@ -29,6 +28,5 @@ export default function App() {
             <Profile />
 
         </div>
-
     );
 }
