@@ -1,13 +1,24 @@
 from .models import (
     ParsedPrompt,
     Intent,
-    TechnologyPlan,
     PlanningResult,
+    ProductSpec,
+    FeatureSpec,
+    UIPageSpec,
+    UIComponentSpec,
+)
+
+from .technology_plan import (
+    TechnologyPlan,
 )
 
 __all__ = [
     "ParsedPrompt",
     "Intent",
-    "TechnologyPlan",
     "PlanningResult",
+    "ProductSpec",
+    "FeatureSpec",
+    "UIPageSpec",
+    "UIComponentSpec",
+    "TechnologyPlan",
 ]

@@ -3,6 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional
 
+from core.planner.technology_plan import TechnologyPlan
+
+from core.planner.technology_plan import TechnologyPlan
+
 
 # ============================================================
 # Parsed User Prompt
