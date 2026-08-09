@@ -8,17 +8,21 @@ from core.capabilities.capability import Capability
 
 class CapabilityLoader:
     """
-    Loads canonical capability definitions from JSON files.
+    Loads capability definitions from JSON files.
     """
 
     def __init__(
         self,
         directory: str = "capabilities",
-    ) -> None:
+    ):
 
         self.directory = Path(directory)
 
-    def load(self) -> list[Capability]:
+    # ---------------------------------------------------------
+
+    def load(
+        self,
+    ) -> list[Capability]:
 
         capabilities: list[Capability] = []
 
@@ -32,66 +36,58 @@ class CapabilityLoader:
             with file.open(
                 "r",
                 encoding="utf-8",
-            ) as handle:
+            ) as f:
 
-                data = json.load(handle)
-
-            metadata = dict(
-                data.get(
-                    "metadata",
-                    {},
-                )
-            )
+                data = json.load(f)
 
             capabilities.append(
+
                 Capability(
+
                     name=data["name"],
+
                     description=data.get(
                         "description",
                         "",
                     ),
+
                     keywords=data.get(
                         "keywords",
                         [],
                     ),
+
                     technologies=data.get(
                         "technologies",
                         [],
                     ),
+
                     required_roles=data.get(
                         "required_roles",
                         [],
                     ),
+
                     pages=data.get(
                         "pages",
                         [],
                     ),
+
                     components=data.get(
                         "components",
                         [],
                     ),
+
                     priority=data.get(
                         "priority",
                         100,
                     ),
-                    confidence=data.get(
-                        "confidence",
-                        1.0,
+
+                    metadata=data.get(
+                        "metadata",
+                        {},
                     ),
-                    depends_on=data.get(
-                        "depends_on",
-                        [],
-                    ),
-                    implies=data.get(
-                        "implies",
-                        [],
-                    ),
-                    conflicts_with=data.get(
-                        "conflicts_with",
-                        [],
-                    ),
-                    metadata=metadata,
+
                 )
+
             )
 
         return capabilities

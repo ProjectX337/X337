@@ -1,13 +1,13 @@
 from __future__ import annotations
 
+from core.planner.stages.base_stage import PlanningStage
 from core.cognition.cognitive_state import CognitiveState
 from core.planner.feature_planner import FeaturePlanner
-from core.planner.stages.base_stage import PlanningStage
 
 
 class FeatureStage(PlanningStage):
     """
-    Creates canonical FeatureSpec objects from capability matches.
+    Creates canonical FeatureSpec objects.
     """
 
     requires = {
@@ -27,7 +27,9 @@ class FeatureStage(PlanningStage):
         context: CognitiveState,
     ) -> None:
 
-        context.feature_models = self.planner.plan(
-            parsed=context.parsed,
-            capabilities=context.capabilities,
+        context.feature_models = (
+            self.planner.plan(
+                parsed=context.parsed,
+                capabilities=context.capabilities,
+            )
         )

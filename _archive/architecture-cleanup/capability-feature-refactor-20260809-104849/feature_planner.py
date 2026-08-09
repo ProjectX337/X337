@@ -1,84 +1,75 @@
 from __future__ import annotations
 
-from core.planner.capability_match import CapabilityMatch
+from core.features.feature_engine import FeatureEngine
 from core.planner.models import ParsedPrompt
+from core.planner.capability_match import CapabilityMatch
 from core.spec.models.feature_spec import FeatureSpec
 
 
 class FeaturePlanner:
     """
-    Converts canonical capability matches into canonical FeatureSpec objects.
+    Converts feature intelligence into canonical FeatureSpec objects.
 
-    Pipeline:
+    Canonical pipeline:
 
-        CapabilityMatch[]
-              ↓
-          FeatureSpec[]
-              ↓
-        downstream planners
+        Prompt
+            ↓
+        FeatureEngine
+            ↓
+        FeatureBlueprint
+            ↓
+        FeatureSpec
+            ↓
+        downstream planners / generators
     """
 
     def __init__(self) -> None:
-        pass
+        self.engine = FeatureEngine()
 
     # ---------------------------------------------------------
-    # Capability → FeatureSpec
+    # Blueprint → FeatureSpec
     # ---------------------------------------------------------
 
     def _to_feature_spec(
         self,
-        match: CapabilityMatch,
+        blueprint,
     ) -> FeatureSpec:
 
-        capability = match.capability
-
-        metadata = dict(
-            capability.metadata
-        )
-
-        metadata.update(
-            {
-                "capability": capability.name,
-                "capability_score": match.score,
-                "capability_confidence": match.confidence,
-                "dependencies": list(
-                    capability.depends_on
-                ),
-                "implied_capabilities": list(
-                    capability.implies
-                ),
-                "conflicts": list(
-                    capability.conflicts_with
-                ),
-                "technologies": list(
-                    capability.technologies
-                ),
-                "required_roles": list(
-                    capability.required_roles
-                ),
-            }
+        slug = (
+            blueprint.name
+            .lower()
+            .strip()
+            .replace(" ", "-")
+            .replace("_", "-")
         )
 
         routes = [
             f"/{page.lower().replace(' ', '-')}"
-            for page in capability.pages
+            for page in blueprint.pages
         ]
 
+        metadata = {
+            "category": blueprint.category,
+            "services": list(blueprint.services),
+            "ai_capabilities": list(
+                blueprint.ai_capabilities
+            ),
+            "analytics": list(
+                blueprint.analytics
+            ),
+        }
+
         return FeatureSpec(
-            name=capability.name,
-            slug=capability.slug,
-            description=capability.description,
+            name=blueprint.name,
+            slug=slug,
+            description=(
+                f"{blueprint.name} application capability."
+            ),
             routes=routes,
-            pages=list(
-                capability.pages
-            ),
-            components=list(
-                capability.components
-            ),
+            pages=list(blueprint.pages),
+            components=list(blueprint.components),
             state=[],
-            api_contracts=list(
-                capability.api_endpoints
-            ),
+            api_contracts=list(blueprint.services),
             metadata=metadata,
         )
 
@@ -94,15 +85,23 @@ class FeaturePlanner:
         prompt: str | None = None,
     ) -> list[FeatureSpec]:
 
-        matches = capabilities or []
+        if prompt is None and parsed is not None:
+            prompt = parsed.original
+
+        if prompt is None:
+            prompt = ""
+
+        blueprints = self.engine.analyze(prompt)
 
         return [
-            self._to_feature_spec(match)
-            for match in matches
+            self._to_feature_spec(
+                blueprint
+            )
+            for blueprint in blueprints
         ]
 
     # ---------------------------------------------------------
-    # Compatibility adapter
+    # Compatibility helper
     # ---------------------------------------------------------
 
     def plan_application(
@@ -111,6 +110,11 @@ class FeaturePlanner:
         capabilities: list[CapabilityMatch] | None = None,
         prompt: str | None = None,
     ) -> dict:
+        """
+        Compatibility adapter for older ApplicationComposer code.
+
+        New code should use plan(), which returns FeatureSpec[].
+        """
 
         features = self.plan(
             parsed=parsed,
@@ -119,7 +123,9 @@ class FeaturePlanner:
         )
 
         pages = []
+
         components = []
+
         services = []
 
         for feature in features:
