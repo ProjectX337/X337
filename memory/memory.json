@@ -2,68 +2,9 @@
     "project_spec": {
         "prompt": "",
         "name": "",
-        "framework": "react",
-        "architecture": "react",
+        "framework": "ai_agent",
+        "architecture": "ai_agent",
         "features": [],
-        "feature_models": [
-            {
-                "name": "Analytics",
-                "slug": "analytics",
-                "description": "Analytics dashboards",
-                "routes": [],
-                "pages": [
-                    "Analytics"
-                ],
-                "components": [
-                    "MetricCard",
-                    "Chart",
-                    "ReportTable"
-                ],
-                "state": [],
-                "api_contracts": [
-                    "/api/analytics"
-                ],
-                "metadata": {
-                    "source_capability": "analytics"
-                }
-            },
-            {
-                "name": "Dashboard",
-                "slug": "dashboard",
-                "description": "Main dashboard",
-                "routes": [],
-                "pages": [
-                    "Dashboard"
-                ],
-                "components": [
-                    "Navbar",
-                    "Sidebar",
-                    "DashboardCard"
-                ],
-                "state": [],
-                "api_contracts": [],
-                "metadata": {
-                    "source_capability": "dashboard"
-                }
-            },
-            {
-                "name": "File Upload",
-                "slug": "file_upload",
-                "description": "Upload files",
-                "routes": [],
-                "pages": [],
-                "components": [
-                    "FileUploader"
-                ],
-                "state": [],
-                "api_contracts": [
-                    "/api/upload"
-                ],
-                "metadata": {
-                    "source_capability": "file_upload"
-                }
-            }
-        ],
         "technologies": {
             "database": null,
             "orm": null,
@@ -71,35 +12,29 @@
             "authorization": null,
             "api_style": null,
             "validation": null,
-            "styling": "tailwindcss",
-            "state_management": "zustand",
-            "routing": "react-router",
+            "styling": null,
+            "state_management": null,
+            "routing": null,
             "ui_library": null,
-            "llm_provider": null,
-            "vector_database": null,
-            "embeddings": null,
+            "llm_provider": "openai",
+            "vector_database": "pgvector",
+            "embeddings": "text-embedding-3-large",
             "cache": null,
             "message_queue": null,
             "containerization": null,
             "deployment": null,
             "ci_cd": null,
             "testing_backend": null,
-            "testing_frontend": "vitest",
+            "testing_frontend": null,
             "formatter": "black",
             "linter": "ruff",
             "package_manager_backend": "pip",
-            "package_manager_frontend": "npm",
+            "package_manager_frontend": null,
             "technologies": []
         },
-        "dependencies": [
-            "react",
-            "react-dom",
-            "vite"
-        ],
+        "dependencies": [],
         "files": {
-            "App.jsx": "",
-            "index.html": "",
-            "package.json": "",
-            "vite.config.js": ""
+            "README.md": "",
+            "agent.py": ""
         },
         "ui_spec": 

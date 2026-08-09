@@ -35,4 +35,9 @@ class UISpecStage(PlanningStage):
                 "feature_models",
                 None,
             ),
+            product_profile=getattr(
+                context,
+                "product_profile",
+                None,
+            ),
         )

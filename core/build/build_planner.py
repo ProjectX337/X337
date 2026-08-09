@@ -7,6 +7,9 @@ from core.spec.project_spec import ProjectSpec
 class BuildPlanner:
     """
     Converts a ProjectSpec into an ordered BuildPlan.
+
+    Dependencies are only created when the dependency
+    actually exists in the generated build plan.
     """
 
     def build(
@@ -17,7 +20,6 @@ class BuildPlanner:
         plan = BuildPlan()
 
         if spec.architecture.frontend:
-
             plan.add(
                 name="Frontend",
                 generator=spec.architecture.frontend,
@@ -27,7 +29,6 @@ class BuildPlanner:
             )
 
         if spec.architecture.backend:
-
             plan.add(
                 name="Backend",
                 generator=spec.architecture.backend,
@@ -37,6 +38,10 @@ class BuildPlanner:
             )
 
         if spec.architecture.ai:
+            ai_dependencies: list[str] = []
+
+            if spec.architecture.backend:
+                ai_dependencies.append("Backend")
 
             plan.add(
                 name="AI",
@@ -44,11 +49,10 @@ class BuildPlanner:
                 description="Generate AI components",
                 output_directory="backend/ai",
                 priority=30,
-                depends_on=["Backend"],
+                depends_on=ai_dependencies,
             )
 
         if spec.architecture.static_site:
-
             plan.add(
                 name="Website",
                 generator=spec.architecture.static_site,
@@ -58,7 +62,6 @@ class BuildPlanner:
             )
 
         if spec.architecture.scripting:
-
             plan.add(
                 name="Utilities",
                 generator=spec.architecture.scripting,
