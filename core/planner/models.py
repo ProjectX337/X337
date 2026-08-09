@@ -190,39 +190,14 @@ class ProductSpec:
 # ============================================================
 # Feature Specification
 # ============================================================
-
-
-@dataclass
-class FeatureSpec:
-    """
-    Individual application capability.
-    """
-
-    name: str
-
-    slug: str
-
-
-    pages: List[str] = field(
-        default_factory=list
-    )
-
-
-    components: List[str] = field(
-        default_factory=list
-    )
-
-
-    backend_requirements: List[str] = field(
-        default_factory=list
-    )
-
-
-    quality_requirements: List[str] = field(
-        default_factory=list
-    )
-
-
+#
+# FeatureSpec is defined canonically in:
+# core.spec.models.feature_spec
+#
+# Keep this import here temporarily for backwards compatibility
+# with existing planner imports.
+#
+from core.spec.models.feature_spec import FeatureSpec
 
 # ============================================================
 # UI Planning Models

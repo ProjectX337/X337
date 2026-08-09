@@ -1,72 +1,99 @@
 from __future__ import annotations
 
 from core.planner.models import Intent
+from core.spec.models.feature_spec import FeatureSpec
 from core.planner.capability_match import CapabilityMatch
 
-from core.spec.models.feature_spec import FeatureSpec
-from core.spec.models.design_spec import DesignSpec
-from core.knowledge.product_profile import ProductProfile
-from core.graph.graph import Graph
-
 from core.spec.ui_spec import UISpec
-from core.planner.layout_templates import create_landing_layout
 from core.spec.models.ui_page import UIPage
 from core.spec.models.ui_component import UIComponent
-from core.spec.models.design_system import DesignSystem
+
+from core.planner.design import (
+    DesignComposer,
+    DesignComposition
+)
+
+from core.planner.design.ui_blueprint_builder import (
+    UIBlueprintBuilder
+)
 
 
 class UIPlanner:
+    """
+    Converts planner intelligence into
+    frontend-consumable UISpec objects.
+
+    Pipeline:
+
+    Capability
+        ↓
+    FeatureSpec
+        ↓
+    DesignComposition
+        ↓
+    UIBlueprint
+        ↓
+    UISpec
+    """
+
+    def __init__(self):
+
+        self.design_composer = DesignComposer()
+
+        self.blueprint_builder = (
+            UIBlueprintBuilder()
+        )
 
 
+    # ------------------------------------------------
+    # Deduplication
+    # ------------------------------------------------
 
     def _dedupe_pages(
         self,
-        pages: list[UIPage],
+        pages: list[UIPage]
     ) -> list[UIPage]:
 
-        seen_routes = set()
+        seen = set()
 
         result = []
 
         for page in pages:
 
-            route_key = (
+            key = (
                 page.route
                 .lower()
                 .strip()
             )
 
-            if route_key not in seen_routes:
+            if key not in seen:
 
-                seen_routes.add(route_key)
+                seen.add(key)
 
                 result.append(page)
 
         return result
 
+
+
     def _dedupe_components(
         self,
-        components: list[UIComponent],
+        components: list[UIComponent]
     ) -> list[UIComponent]:
 
         seen = set()
 
         result = []
 
+
         for component in components:
 
-            graph_id = (
-                component.metadata.get(
-                    "graph_node"
-                )
-                if component.metadata
-                else None
+            key = (
+                component.name
+                .lower()
+                .strip()
             )
 
-            key = (
-                graph_id
-                or component.name.lower().strip()
-            )
 
             if key not in seen:
 
@@ -74,11 +101,14 @@ class UIPlanner:
 
                 result.append(component)
 
+
         return result
 
-    """
-    Converts planner outputs into a UISpec.
-    """
+
+
+    # ------------------------------------------------
+    # Main Planner
+    # ------------------------------------------------
 
     def plan(
         self,
@@ -86,145 +116,134 @@ class UIPlanner:
         intent: Intent,
         capabilities: list[CapabilityMatch],
         features: list[FeatureSpec] | None = None,
-        design: DesignSpec | None = None,
-        product_profile: ProductProfile | None = None,
-        graph=None,
     ) -> UISpec:
 
-        if product_profile:
 
-            layout = product_profile.layout
-            theme = product_profile.theme
+        #
+        # 1. Build design intelligence
+        #
 
-        elif design:
-
-            layout = design.layout
-            theme = design.theme
-
-        else:
-
-            layout = "default"
-            theme = "modern"
-
-
-        if product_profile and product_profile.default_pages:
-
-            page_models = [
-                UIPage(
-                    name=page,
-                    route="/" if page == "Landing" else f"/{page.lower()}",
-                    layout=layout,
-                )
-                for page in product_profile.default_pages
-            ]
-
-        else:
-
-            page_models = [
-                UIPage(
-                    name="Landing",
-                    route="/",
-                    layout=layout,
-                composition=create_landing_layout(),
-                )
-            ]
-
-        if product_profile and product_profile.default_components:
-
-            component_models = [
-                UIComponent(
-                    name=component,
-                    component_type="product",
-                )
-                for component in product_profile.default_components
-            ]
-
-        else:
-
-            component_models = [
-                UIComponent(
-                    name="Navbar",
-                    component_type="navigation",
-                ),
-                UIComponent(
-                    name="Button",
-                    component_type="button",
-                ),
-                UIComponent(
-                    name="Card",
-                    component_type="card",
-                ),
-            ]
-
-    
-    
-        if graph:
-
-            for node in graph.nodes.values():
-
-                if node.kind == "page":
-
-                    page_models.append(
-                        UIPage(
-                            name=node.label,
-                            route=f"/{node.label.lower()}",
-                            layout=layout,
-                            metadata={
-                                "graph_node": node.id,
-                                "source": "knowledge_graph",
-                            },
-                        )
-                    )
-
-                elif node.kind == "component":
-
-                    component_models.append(
-                        UIComponent(
-                            name=node.label,
-                            component_type="graph",
-                            metadata={
-                                "graph_node": node.id,
-                                "source": "knowledge_graph",
-                            },
-                        )
-                    )
-
-
-        page_models = self._dedupe_pages(
-            page_models
+        application_name = (
+            intent.project_name
+            if hasattr(intent,"project_name")
+            else "AI Application"
         )
 
-        component_models = self._dedupe_components(
-            component_models
+
+        composition: DesignComposition = (
+            self.design_composer.compose(
+                application_name
+            )
         )
+
+
+        #
+        # 2. Generate UI Blueprint
+        #
+
+        blueprint = (
+            self.blueprint_builder.build(
+                composition,
+                application_name
+            )
+        )
+
+
+        #
+        # 3. Convert Blueprint → UISpec
+        #
+
+        pages = []
+
+
+        components = []
+
+
+        for page in blueprint.pages:
+
+
+            ui_page = UIPage(
+                name=page.name,
+                route=(
+                    "/"
+                    if page.name == "Dashboard"
+                    else
+                    f"/{page.name.lower()}"
+                ),
+                layout=page.layout
+            )
+
+
+            pages.append(
+                ui_page
+            )
+
+
+
+            for component_name in page.components:
+
+
+                components.append(
+                    UIComponent(
+                        name=component_name,
+                        component_type="generated"
+                    )
+                )
+
+
+
+        pages = self._dedupe_pages(
+            pages
+        )
+
+
+        components = self._dedupe_components(
+            components
+        )
+
+
+
+        #
+        # 4. Return Universal UI Spec
+        #
 
         return UISpec(
-            layout=layout,
-            theme=theme,
-            page_models=page_models,
-            component_models=component_models,
-            design_system=DesignSystem(
-                colors={
-                    "primary": (
-                        design.primary_color
-                        if design
-                        else "cyan"
-                    ),
-                    "background": (
-                        design.background
-                        if design
-                        else "dark"
-                    ),
-                },
-                typography={
-                    "style": (
-                        design.typography
-                        if design
-                        else "modern"
-                    ),
-                },
-                spacing={
-                    "scale": "standard",
-                },
+
+            layout=(
+                composition
+                .layout
+                .layout_pattern
             ),
+
+            theme=(
+                composition
+                .design_system
+                .theme
+            ),
+
+            navigation=[
+                composition
+                .layout
+                .navigation
+            ],
+
+            metadata={
+
+                "generated_by":
+                    "X337 Design Intelligence",
+
+                "application":
+                    application_name
+
+            },
+
+            page_models=pages,
+
+            component_models=components,
+
+            design_system=(
+                composition
+                .design_system
+            )
+
         )

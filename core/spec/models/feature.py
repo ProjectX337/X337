@@ -1,40 +1,9 @@
-from __future__ import annotations
+"""Backward-compatible FeatureSpec import.
 
-from dataclasses import dataclass, field
+The canonical FeatureSpec model lives in
+``core.spec.models.feature_spec``.
+"""
 
+from core.spec.models.feature_spec import FeatureSpec
 
-@dataclass(slots=True)
-class FeatureSpec:
-    """
-    Application feature definition.
-    """
-
-    name: str
-
-    description: str = ""
-
-    routes: list[str] = field(
-        default_factory=list
-    )
-
-    components: list[str] = field(
-        default_factory=list
-    )
-
-    state: list[str] = field(
-        default_factory=list
-    )
-
-    api_contracts: list[str] = field(
-        default_factory=list
-    )
-
-@property
-def slug(self) -> str:
-
-    return (
-        self.name
-        .lower()
-        .replace(" ", "_")
-        .replace("-", "_")
-    )
+__all__ = ["FeatureSpec"]
