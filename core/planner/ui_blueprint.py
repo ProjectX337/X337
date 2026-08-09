@@ -1,44 +1,33 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import List, Dict
+from typing import Any
 
-
-@dataclass
-class UIPage:
-
-    name: str
-
-    layout: str
-
-    components: List[str] = field(default_factory=list)
-
-
-    def to_dict(self):
-
-        return {
-            "name": self.name,
-            "layout": self.layout,
-            "components": self.components
-        }
-
+from core.spec.models.ui_page import UIPage
 
 
 @dataclass
 class UIBlueprint:
+    """
+    Transitional UI blueprint.
+
+    UIPage is canonical and lives under core.spec.models.
+    This class remains as a planner-level transport object while
+    the planner pipeline is being consolidated.
+    """
 
     application: str
 
-    pages: List[UIPage] = field(default_factory=list)
+    pages: list[UIPage] = field(default_factory=list)
 
-    theme: Dict = field(default_factory=dict)
+    theme: dict[str, Any] = field(default_factory=dict)
 
-
-    def to_dict(self):
-
+    def to_dict(self) -> dict[str, Any]:
         return {
             "application": self.application,
             "pages": [
                 page.to_dict()
                 for page in self.pages
             ],
-            "theme": self.theme
+            "theme": self.theme,
         }

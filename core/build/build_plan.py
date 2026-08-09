@@ -9,27 +9,17 @@ class BuildStep:
     A single generation task.
     """
 
-    # Human-readable name
     name: str
-
-    # Generator responsible for this step
     generator: str
-
-    # Short description
     description: str
-
-    # Output directory relative to the project root
     output_directory: str
 
-    # Execution priority (lower runs first)
     priority: int = 100
 
-    # Names of BuildSteps that must complete first
     depends_on: list[str] = field(
         default_factory=list
     )
 
-    # Whether this step is optional
     optional: bool = False
 
 
@@ -37,6 +27,8 @@ class BuildStep:
 class BuildPlan:
     """
     Ordered generation plan produced from a ProjectSpec.
+
+    Build ordering is dependency-aware and deterministic.
     """
 
     steps: list[BuildStep] = field(
@@ -56,30 +48,75 @@ class BuildPlan:
     ) -> None:
 
         self.steps.append(
-
             BuildStep(
-
                 name=name,
-
                 generator=generator,
-
                 description=description,
-
                 output_directory=output_directory,
-
                 priority=priority,
-
                 depends_on=depends_on or [],
-
                 optional=optional,
-
             )
-
         )
 
     def ordered_steps(self) -> list[BuildStep]:
+        """
+        Return steps in dependency-safe deterministic order.
 
-        return sorted(
-            self.steps,
-            key=lambda step: step.priority,
-        )
+        Dependencies always execute before dependents.
+        Priority breaks ties between otherwise-independent steps.
+        """
+
+        if not self.steps:
+            return []
+
+        by_name = {
+            step.name: step
+            for step in self.steps
+        }
+
+        missing: set[str] = set()
+
+        for step in self.steps:
+            for dependency in step.depends_on:
+                if dependency not in by_name:
+                    missing.add(dependency)
+
+        if missing:
+            raise ValueError(
+                "Build plan contains missing dependencies: "
+                + ", ".join(sorted(missing))
+            )
+
+        ordered: list[BuildStep] = []
+        remaining = set(by_name)
+
+        while remaining:
+            ready = [
+                by_name[name]
+                for name in remaining
+                if all(
+                    dependency not in remaining
+                    for dependency in by_name[name].depends_on
+                )
+            ]
+
+            if not ready:
+                cycle = sorted(remaining)
+                raise ValueError(
+                    "Build plan contains a dependency cycle involving: "
+                    + ", ".join(cycle)
+                )
+
+            ready.sort(
+                key=lambda step: (
+                    step.priority,
+                    step.name,
+                )
+            )
+
+            for step in ready:
+                ordered.append(step)
+                remaining.remove(step.name)
+
+        return ordered

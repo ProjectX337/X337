@@ -32,6 +32,8 @@ class UIPlanner:
               ↓
         UIBlueprint
               ↓
+        Canonical UIPage / UIComponent / UILayoutNode
+              ↓
         UISpec
     """
 
@@ -123,55 +125,38 @@ class UIPlanner:
         components: list[UIComponent] = []
 
         # -----------------------------------------------------
-        # 3. Blueprint → UI models
+        # 3. Blueprint → canonical UI models
         # -----------------------------------------------------
 
         for blueprint_page in blueprint.pages:
 
-            route = (
-                "/"
-                if blueprint_page.name == "Dashboard"
-                else f"/{blueprint_page.name.lower()}"
+            pages.append(
+                blueprint_page
             )
 
-            page_components: list[UIComponent] = []
-
-            for component_name in blueprint_page.components:
-
-                component = UIComponent(
-                    name=component_name,
-                    component_type="generated",
-                )
-
-                page_components.append(component)
-                components.append(component)
-
-            pages.append(
-                UIPage(
-                    name=blueprint_page.name,
-                    route=route,
-                    layout=blueprint_page.layout,
-                    components=page_components,
-                )
+            components.extend(
+                blueprint_page.components
             )
 
         # -----------------------------------------------------
-        # 4. FeatureSpec → UI models
+        # 4. FeatureSpec → canonical UI models
         # -----------------------------------------------------
 
         for feature in features:
 
-            for page_name in feature.pages:
+            for index, page_name in enumerate(
+                feature.pages
+            ):
 
-                route = (
-                    feature.routes[
-                        feature.pages.index(page_name)
-                    ]
-                    if feature.routes
-                    and feature.pages.index(page_name)
-                    < len(feature.routes)
-                    else f"/{page_name.lower().replace(' ', '-')}"
-                )
+                if (
+                    feature.routes
+                    and index < len(feature.routes)
+                ):
+                    route = feature.routes[index]
+                else:
+                    route = (
+                        f"/{page_name.lower().replace(' ', '-')}"
+                    )
 
                 feature_components: list[UIComponent] = []
 
@@ -185,14 +170,21 @@ class UIPlanner:
                         },
                     )
 
-                    feature_components.append(component)
-                    components.append(component)
+                    feature_components.append(
+                        component
+                    )
+
+                    components.append(
+                        component
+                    )
 
                 pages.append(
                     UIPage(
                         name=page_name,
                         route=route,
-                        layout=composition.layout.layout_pattern,
+                        layout=(
+                            composition.layout.layout_pattern
+                        ),
                         components=feature_components,
                         metadata={
                             "feature": feature.slug,
@@ -204,15 +196,22 @@ class UIPlanner:
         # 5. Deduplicate
         # -----------------------------------------------------
 
-        pages = self._dedupe_pages(pages)
-        components = self._dedupe_components(components)
+        pages = self._dedupe_pages(
+            pages
+        )
+
+        components = self._dedupe_components(
+            components
+        )
 
         # -----------------------------------------------------
         # 6. Canonical UISpec
         # -----------------------------------------------------
 
         return UISpec(
-            layout=composition.layout.layout_pattern,
+            layout=(
+                composition.layout.layout_pattern
+            ),
             theme=(
                 getattr(
                     composition.design_system,
