@@ -1,0 +1,68 @@
+=== GIT STATUS ===
+## architecture-cleanup-manus
+?? .architecture/featurespec-references.txt
+?? .architecture/post-cleanup-baseline.txt
+
+=== FEATURE SPEC ===
+core/spec/models/feature_spec.py:8:class FeatureSpec:
+
+=== UISPEC ===
+core/planner/stages/ui_spec_stage.py:8:class UISpecStage(PlanningStage):
+core/spec/ui_spec.backup.py:11:class UISpec:
+
+=== BROKEN BACKUPS IN SOURCE ===
+agents/coder/coder.backup.py
+agents/coder/coder_backup.py
+agents/file_manager/file_manager_backup.py
+core/generators/default_registry.backup.py
+core/generators/default_registry.fastapi_backup.py
+core/generators/react/component_module.clean_backup.py
+core/generators/react/component_module.feature_backup.py
+core/generators/react/component_module.lineage_backup.py
+core/generators/react/component_module.metadata_backup.py
+core/generators/react/component_module.owner_backup.py
+core/generators/react/feature_component_module.backup.py
+core/generators/react/feature_component_module.owner_backup.py
+core/generators/react/generator.phase3.7_backup.py
+core/generators/react/generator_backup.py
+core/generators/react/page_module.lineage_backup.py
+core/generators/react/page_module.metadata_backup.py
+core/generators/react/page_module.phase3_backup.py
+core/generators/react/route_module.backup.py
+core/generators/react/route_module.lineage_backup.py
+core/generators/react/route_module.route_cleanup_backup.py
+core/orchestrator/orchestrator_backup.py
+core/orchestrator/queue_executor.py.bak
+core/orchestrator/queue_executor.py.debug.bak
+core/orchestrator/queue_executor_backup.py
+core/planner/design_reasoner.backup.py
+core/planner/design_reasoner.py.bak
+core/planner/stages/knowledge_graph_stage.backup.py
+core/planner/stages/project_spec_stage.broken_indent_backup.py
+core/planner/ui_planner.backup.graph.py
+core/planner/ui_planner.backup.py
+core/planner/ui_planner.broken_backup.py
+core/planner/ui_planner.component_backup.py
+core/planner/ui_planner.dedup_backup.py
+core/planner/ui_planner.feature_backup.py
+core/planner/ui_planner.metadata_backup.py
+core/planner/ui_planner.metadata_backup2.py
+core/planner/ui_planner.page_backup.py
+core/planner/ui_planner.phase2_backup.py
+core/planner/ui_planner.route_backup.py
+core/projects/project_generator_backup.py
+core/projects/project_generator_v3_backup.py
+core/spec/models/design_spec.backup.py
+core/spec/models/ui_component.backup.py
+core/spec/models/ui_page.backup.py
+core/spec/ui_spec.backup.py
+
+=== COMPILE ===
+*** Error compiling 'core/planner/stages/project_spec_stage.broken_indent_backup.py'...
+Sorry: IndentationError: unexpected indent (project_spec_stage.broken_indent_backup.py, line 63)
+*** Error compiling 'core/planner/ui_planner.broken_backup.py'...
+  File "core/planner/ui_planner.broken_backup.py", line 123
+    return UISpec(
+    ^^^^^^^^^^^^^^
+SyntaxError: 'return' outside function
+

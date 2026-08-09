@@ -1,0 +1,83 @@
+core/agent/change_engine.py:18:        features: list[FeatureSpec],
+core/agent/change_engine.py:4:from core.spec.models.feature_spec import FeatureSpec
+core/agent/change_engine.py:9:    Converts FeatureSpec objects into ChangePlans.
+core/agent/update_agent.py:5:from core.spec.models.feature_spec import FeatureSpec
+core/agent/update_agent.py:94:                    FeatureSpec(
+core/generators/react/feature_module.py:22:            from core.spec.models.feature_spec import FeatureSpec
+core/generators/react/feature_module.py:24:                FeatureSpec(
+core/generators/react/feature_module.py:36:            from core.spec.models.feature_spec import FeatureSpec
+core/generators/react/feature_module.py:39:                FeatureSpec(
+core/memory/project_context_resolver.py:49:            FeatureSpec(
+core/memory/project_context_resolver.py:5:from core.spec.models.feature_spec import FeatureSpec
+core/memory/project_rehydrator.py:3:from core.spec.models.feature_spec import FeatureSpec
+core/planner/__init__.py:20:    "FeatureSpec",
+core/planner/__init__.py:6:    FeatureSpec,
+core/planner/design_reasoner.backup.py:21:        features: list[FeatureSpec],
+core/planner/design_reasoner.backup.py:5:from core.spec.models.feature_spec import FeatureSpec
+core/planner/design_reasoner.py:26:        features: list[FeatureSpec],
+core/planner/design_reasoner.py:5:from core.spec.models.feature_spec import FeatureSpec
+core/planner/models.py:194:# FeatureSpec is defined canonically in:
+core/planner/models.py:200:from core.spec.models.feature_spec import FeatureSpec
+core/planner/models.py:271:    features: List[FeatureSpec] = field(
+core/planner/planning_context.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/planner/planning_context.py:53:    feature_models: list[FeatureSpec] = field(
+core/planner/stages/feature_stage.py:10:    Creates FeatureSpec objects from planner outputs.
+core/planner/ui_planner.backup.graph.py:27:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.backup.graph.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.backup.py:24:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.backup.py:5:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.broken_backup.py:27:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.broken_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.component_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.component_backup.py:72:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.dedup_backup.py:27:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.dedup_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.feature_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.feature_backup.py:87:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.metadata_backup.py:68:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.metadata_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.metadata_backup2.py:68:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.metadata_backup2.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.page_backup.py:45:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.page_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.py:118:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.py:30:    FeatureSpec
+core/planner/ui_planner.py:4:from core.spec.models.feature_spec import FeatureSpec
+core/planner/ui_planner.route_backup.py:68:        features: list[FeatureSpec] | None = None,
+core/planner/ui_planner.route_backup.py:6:from core.spec.models.feature_spec import FeatureSpec
+core/spec/models/feature.py:1:"""Backward-compatible FeatureSpec import.
+core/spec/models/feature.py:3:The canonical FeatureSpec model lives in
+core/spec/models/feature.py:7:from core.spec.models.feature_spec import FeatureSpec
+core/spec/models/feature.py:9:__all__ = ["FeatureSpec"]
+core/spec/models/feature_spec.py:8:class FeatureSpec:
+core/spec/project_spec.before_add_file.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_add_file.py:47:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_as_dict.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_as_dict.py:47:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_compat.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_compat.py:17:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_compat.py:44:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_contract_fix.py:10:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_contract_fix.py:63:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_dependencies.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_dependencies.py:43:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_framework_cleanup.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_framework_cleanup.py:17:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_framework_cleanup.py:44:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_generated.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_generated.py:51:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_hybrid_restore.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_hybrid_restore.py:57:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_plan_cleanup.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_plan_cleanup.py:17:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_plan_cleanup.py:44:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_property_fix.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_property_fix.py:63:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.before_restore.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.before_restore.py:57:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.current_bad.py:16:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.current_bad.py:63:    feature_models: list[FeatureSpec] = field(
+core/spec/project_spec.py:10:from core.spec.models.feature_spec import FeatureSpec
+core/spec/project_spec.py:63:    feature_models: list[FeatureSpec] = field(
+tests/generators/test_route_module.py:18:        FeatureSpec(
+tests/generators/test_route_module.py:6:from core.spec.models.feature_spec import FeatureSpec
