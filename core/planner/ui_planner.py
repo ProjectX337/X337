@@ -1,114 +1,85 @@
 from __future__ import annotations
 
 from core.planner.models import Intent
-from core.spec.models.feature_spec import FeatureSpec
 from core.planner.capability_match import CapabilityMatch
 
-from core.spec.ui_spec import UISpec
+from core.spec.models.feature_spec import FeatureSpec
 from core.spec.models.ui_page import UIPage
 from core.spec.models.ui_component import UIComponent
+from core.spec.ui_spec import UISpec
 
 from core.planner.design import (
     DesignComposer,
-    DesignComposition
+    DesignComposition,
 )
 
 from core.planner.design.ui_blueprint_builder import (
-    UIBlueprintBuilder
+    UIBlueprintBuilder,
 )
 
 
 class UIPlanner:
     """
-    Converts planner intelligence into
-    frontend-consumable UISpec objects.
+    Converts planner intelligence into the canonical UISpec.
 
     Pipeline:
 
-    Capability
-        ↓
-    FeatureSpec
-        ↓
-    DesignComposition
-        ↓
-    UIBlueprint
-        ↓
-    UISpec
+        CapabilityMatch
+              ↓
+        FeatureSpec
+              ↓
+        DesignComposition
+              ↓
+        UIBlueprint
+              ↓
+        UISpec
     """
 
-    def __init__(self):
-
+    def __init__(self) -> None:
         self.design_composer = DesignComposer()
+        self.blueprint_builder = UIBlueprintBuilder()
 
-        self.blueprint_builder = (
-            UIBlueprintBuilder()
-        )
-
-
-    # ------------------------------------------------
+    # ---------------------------------------------------------
     # Deduplication
-    # ------------------------------------------------
+    # ---------------------------------------------------------
 
     def _dedupe_pages(
         self,
-        pages: list[UIPage]
+        pages: list[UIPage],
     ) -> list[UIPage]:
 
-        seen = set()
-
-        result = []
+        seen: set[str] = set()
+        result: list[UIPage] = []
 
         for page in pages:
-
-            key = (
-                page.route
-                .lower()
-                .strip()
-            )
+            key = page.route.lower().strip()
 
             if key not in seen:
-
                 seen.add(key)
-
                 result.append(page)
 
         return result
 
-
-
     def _dedupe_components(
         self,
-        components: list[UIComponent]
+        components: list[UIComponent],
     ) -> list[UIComponent]:
 
-        seen = set()
-
-        result = []
-
+        seen: set[str] = set()
+        result: list[UIComponent] = []
 
         for component in components:
-
-            key = (
-                component.name
-                .lower()
-                .strip()
-            )
-
+            key = component.name.lower().strip()
 
             if key not in seen:
-
                 seen.add(key)
-
                 result.append(component)
-
 
         return result
 
-
-
-    # ------------------------------------------------
-    # Main Planner
-    # ------------------------------------------------
+    # ---------------------------------------------------------
+    # Main planner
+    # ---------------------------------------------------------
 
     def plan(
         self,
@@ -118,17 +89,20 @@ class UIPlanner:
         features: list[FeatureSpec] | None = None,
     ) -> UISpec:
 
-
-        #
-        # 1. Build design intelligence
-        #
-
         application_name = (
-            intent.project_name
-            if hasattr(intent,"project_name")
-            else "AI Application"
+            getattr(
+                intent,
+                "project_name",
+                None,
+            )
+            or "AI Application"
         )
 
+        features = features or []
+
+        # -----------------------------------------------------
+        # 1. Design intelligence
+        # -----------------------------------------------------
 
         composition: DesignComposition = (
             self.design_composer.compose(
@@ -136,114 +110,130 @@ class UIPlanner:
             )
         )
 
+        # -----------------------------------------------------
+        # 2. Blueprint
+        # -----------------------------------------------------
 
-        #
-        # 2. Generate UI Blueprint
-        #
-
-        blueprint = (
-            self.blueprint_builder.build(
-                composition,
-                application_name
-            )
+        blueprint = self.blueprint_builder.build(
+            composition,
+            application_name,
         )
 
+        pages: list[UIPage] = []
+        components: list[UIComponent] = []
 
-        #
-        # 3. Convert Blueprint → UISpec
-        #
+        # -----------------------------------------------------
+        # 3. Blueprint → UI models
+        # -----------------------------------------------------
 
-        pages = []
+        for blueprint_page in blueprint.pages:
 
-
-        components = []
-
-
-        for page in blueprint.pages:
-
-
-            ui_page = UIPage(
-                name=page.name,
-                route=(
-                    "/"
-                    if page.name == "Dashboard"
-                    else
-                    f"/{page.name.lower()}"
-                ),
-                layout=page.layout
+            route = (
+                "/"
+                if blueprint_page.name == "Dashboard"
+                else f"/{blueprint_page.name.lower()}"
             )
 
+            page_components: list[UIComponent] = []
+
+            for component_name in blueprint_page.components:
+
+                component = UIComponent(
+                    name=component_name,
+                    component_type="generated",
+                )
+
+                page_components.append(component)
+                components.append(component)
 
             pages.append(
-                ui_page
+                UIPage(
+                    name=blueprint_page.name,
+                    route=route,
+                    layout=blueprint_page.layout,
+                    components=page_components,
+                )
             )
 
+        # -----------------------------------------------------
+        # 4. FeatureSpec → UI models
+        # -----------------------------------------------------
 
+        for feature in features:
 
-            for component_name in page.components:
+            for page_name in feature.pages:
 
+                route = (
+                    feature.routes[
+                        feature.pages.index(page_name)
+                    ]
+                    if feature.routes
+                    and feature.pages.index(page_name)
+                    < len(feature.routes)
+                    else f"/{page_name.lower().replace(' ', '-')}"
+                )
 
-                components.append(
-                    UIComponent(
+                feature_components: list[UIComponent] = []
+
+                for component_name in feature.components:
+
+                    component = UIComponent(
                         name=component_name,
-                        component_type="generated"
+                        component_type="feature",
+                        metadata={
+                            "feature": feature.slug,
+                        },
+                    )
+
+                    feature_components.append(component)
+                    components.append(component)
+
+                pages.append(
+                    UIPage(
+                        name=page_name,
+                        route=route,
+                        layout=composition.layout.layout_pattern,
+                        components=feature_components,
+                        metadata={
+                            "feature": feature.slug,
+                        },
                     )
                 )
 
+        # -----------------------------------------------------
+        # 5. Deduplicate
+        # -----------------------------------------------------
 
+        pages = self._dedupe_pages(pages)
+        components = self._dedupe_components(components)
 
-        pages = self._dedupe_pages(
-            pages
-        )
-
-
-        components = self._dedupe_components(
-            components
-        )
-
-
-
-        #
-        # 4. Return Universal UI Spec
-        #
+        # -----------------------------------------------------
+        # 6. Canonical UISpec
+        # -----------------------------------------------------
 
         return UISpec(
-
-            layout=(
-                composition
-                .layout
-                .layout_pattern
-            ),
-
+            layout=composition.layout.layout_pattern,
             theme=(
-                composition
-                .design_system
-                .theme
+                getattr(
+                    composition.design_system,
+                    "theme",
+                    "modern",
+                )
             ),
-
             navigation=[
-                composition
-                .layout
-                .navigation
+                composition.layout.navigation
             ],
-
             metadata={
-
                 "generated_by":
                     "X337 Design Intelligence",
-
                 "application":
-                    application_name
-
+                    application_name,
+                "capability_count":
+                    len(capabilities),
+                "feature_count":
+                    len(features),
             },
-
             page_models=pages,
-
             component_models=components,
-
-            design_system=(
-                composition
-                .design_system
-            )
-
+            design_system=composition.design_system,
         )

@@ -6,6 +6,10 @@ from typing import Any
 
 @dataclass(slots=True)
 class UIComponent:
+    """
+    Canonical frontend component model.
+    """
+
     name: str
 
     component_type: str = "component"
@@ -33,3 +37,18 @@ class UIComponent:
     metadata: dict[str, Any] = field(
         default_factory=dict
     )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "component_type": self.component_type,
+            "props": self.props,
+            "variants": self.variants,
+            "states": self.states,
+            "children": self.children,
+            "dependencies": self.dependencies,
+            "metadata": self.metadata,
+        }
+
+    def to_dict(self) -> dict[str, Any]:
+        return self.as_dict()

@@ -7,7 +7,7 @@ from core.planner.feature_planner import FeaturePlanner
 
 class FeatureStage(PlanningStage):
     """
-    Creates FeatureSpec objects from planner outputs.
+    Creates canonical FeatureSpec objects.
     """
 
     requires = {
@@ -19,8 +19,7 @@ class FeatureStage(PlanningStage):
         "feature_models",
     }
 
-    def __init__(self):
-
+    def __init__(self) -> None:
         self.planner = FeaturePlanner()
 
     def run(

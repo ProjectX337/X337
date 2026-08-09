@@ -20,22 +20,19 @@ class UISpecStage(PlanningStage):
     }
 
     def __init__(self):
-
         self.planner = UIPlanner()
-
 
     def run(
         self,
         context: CognitiveState,
     ) -> None:
 
-        context.ui_spec = (
-            self.planner.plan(
-                intent=context.intent,
-                capabilities=context.capabilities,
-            features=context.feature_models,
-            design=context.design_spec,
-            product_profile=context.product_profile,
-        graph=context.task_graph,
-            )
+        context.ui_spec = self.planner.plan(
+            intent=context.intent,
+            capabilities=context.capabilities,
+            features=getattr(
+                context,
+                "feature_models",
+                None,
+            ),
         )

@@ -1,19 +1,13 @@
 from dataclasses import dataclass, field
 
-from core.planner.feature_planner import (
-    FeaturePlanner
-)
-
+from core.planner.feature_planner import FeaturePlanner
 from core.templates.template_composer import (
-    ApplicationBlueprint,
-    PageBlueprint
+    PageBlueprint,
 )
-
 
 
 @dataclass
 class ApplicationPlan:
-
     name: str
 
     pages: list = field(
@@ -33,60 +27,50 @@ class ApplicationPlan:
     )
 
 
-
 class ApplicationComposer:
     """
-    Combines features into a complete
-    application architecture.
+    Compatibility adapter for older application composition code.
+
+    The canonical feature representation is FeatureSpec.
     """
 
-
-    def __init__(self):
-
-        self.feature_planner = (
-            FeaturePlanner()
-        )
-
-
+    def __init__(self) -> None:
+        self.feature_planner = FeaturePlanner()
 
     def compose(
         self,
-        prompt
-    ):
+        prompt,
+    ) -> ApplicationPlan:
 
-
-        result = (
-            self.feature_planner.plan(
-                prompt
+        if hasattr(prompt, "original"):
+            result = self.feature_planner.plan_application(
+                parsed=prompt
             )
-        )
-
-
-
-        feature_names = []
-
-
-        for feature in result["features"]:
-
-            feature_names.append(
-                feature.name
+        else:
+            result = self.feature_planner.plan_application(
+                prompt=prompt
             )
 
+        pages = []
 
+        for page in result["pages"]:
+            pages.append(
+                PageBlueprint(
+                    name=page["name"],
+                    route=page["route"],
+                    components=page["components"],
+                )
+            )
 
-        blueprint = ApplicationPlan(
+        feature_names = [
+            feature.name
+            for feature in result["features"]
+        ]
 
+        return ApplicationPlan(
             name="generated_app",
-
-            pages=result["pages"],
-
+            pages=pages,
             components=result["components"],
-
             services=result["services"],
-
-            features=feature_names
-
+            features=feature_names,
         )
-
-
-        return blueprint
