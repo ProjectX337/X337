@@ -1,0 +1,8 @@
+*** Error compiling 'core/planner/stages/project_spec_stage.broken_indent_backup.py'...
+Sorry: IndentationError: unexpected indent (project_spec_stage.broken_indent_backup.py, line 63)
+*** Error compiling 'core/planner/ui_planner.broken_backup.py'...
+  File "core/planner/ui_planner.broken_backup.py", line 123
+    return UISpec(
+    ^^^^^^^^^^^^^^
+SyntaxError: 'return' outside function
+

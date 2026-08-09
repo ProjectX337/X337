@@ -1,0 +1,273 @@
+
+==================================== ERRORS ====================================
+______ ERROR collecting tests/architecture/test_project_spec_contract.py _______
+ImportError while importing test module '/Users/jacklamaina/X337/tests/architecture/test_project_spec_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/architecture/test_project_spec_contract.py:3: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_________ ERROR collecting tests/generation/test_generation_engine.py __________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generation/test_generation_engine.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generation/test_generation_engine.py:1: in <module>
+    from core.planner.project_planner import ProjectPlanner
+core/planner/project_planner.py:16: in <module>
+    from core.planner.stages.ui_spec_stage import UISpecStage
+core/planner/stages/ui_spec_stage.py:5: in <module>
+    from core.planner.ui_planner import UIPlanner
+core/planner/ui_planner.py:7: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_____________ ERROR collecting tests/generators/test_app_module.py _____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_app_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_app_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+__________ ERROR collecting tests/generators/test_app_shell_module.py __________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_app_shell_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_app_shell_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_______ ERROR collecting tests/generators/test_component_intelligence.py _______
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_component_intelligence.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_component_intelligence.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+__________ ERROR collecting tests/generators/test_component_module.py __________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_component_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_component_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+___________ ERROR collecting tests/generators/test_feature_module.py ___________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_feature_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_feature_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+____________ ERROR collecting tests/generators/test_page_module.py _____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_page_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_page_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+____________ ERROR collecting tests/generators/test_route_module.py ____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_route_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_route_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+___________ ERROR collecting tests/generators/test_router_module.py ____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_router_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_router_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+____________ ERROR collecting tests/generators/test_style_module.py ____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_style_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_style_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_________ ERROR collecting tests/generators/test_typescript_module.py __________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_typescript_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_typescript_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+____________ ERROR collecting tests/generators/test_vite_module.py _____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/generators/test_vite_module.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/generators/test_vite_module.py:3: in <module>
+    from core.generators.generator_context import GeneratorContext
+core/generators/generator_context.py:7: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_________ ERROR collecting tests/planner/test_product_profile_stage.py _________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/planner/test_product_profile_stage.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/planner/test_product_profile_stage.py:1: in <module>
+    from core.planner.planning_context import PlanningContext
+core/planner/planning_context.py:14: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_______ ERROR collecting tests/planner/test_project_spec_ui_contract.py ________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/planner/test_project_spec_ui_contract.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/planner/test_project_spec_ui_contract.py:1: in <module>
+    from core.planner.project_planner import ProjectPlanner
+core/planner/project_planner.py:16: in <module>
+    from core.planner.stages.ui_spec_stage import UISpecStage
+core/planner/stages/ui_spec_stage.py:5: in <module>
+    from core.planner.ui_planner import UIPlanner
+core/planner/ui_planner.py:7: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+________ ERROR collecting tests/planner/test_ui_design_intelligence.py _________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/planner/test_ui_design_intelligence.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/planner/test_ui_design_intelligence.py:1: in <module>
+    from core.planner.ui_planner import UIPlanner
+core/planner/ui_planner.py:7: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+______________ ERROR collecting tests/planner/test_ui_planner.py _______________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/planner/test_ui_planner.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/planner/test_ui_planner.py:1: in <module>
+    from core.planner.ui_planner import UIPlanner
+core/planner/ui_planner.py:7: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+_____________ ERROR collecting tests/planner/test_ui_spec_stage.py _____________
+ImportError while importing test module '/Users/jacklamaina/X337/tests/planner/test_ui_spec_stage.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/importlib/__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/planner/test_ui_spec_stage.py:1: in <module>
+    from core.planner.planning_context import PlanningContext
+core/planner/planning_context.py:14: in <module>
+    from core.spec.project_spec import ProjectSpec
+core/spec/project_spec.py:9: in <module>
+    from core.spec.ui_spec import UISpec
+E   ImportError: cannot import name 'UISpec' from 'core.spec.ui_spec' (/Users/jacklamaina/X337/core/spec/ui_spec.py)
+=========================== short test summary info ============================
+ERROR tests/architecture/test_project_spec_contract.py
+ERROR tests/generation/test_generation_engine.py
+ERROR tests/generators/test_app_module.py
+ERROR tests/generators/test_app_shell_module.py
+ERROR tests/generators/test_component_intelligence.py
+ERROR tests/generators/test_component_module.py
+ERROR tests/generators/test_feature_module.py
+ERROR tests/generators/test_page_module.py
+ERROR tests/generators/test_route_module.py
+ERROR tests/generators/test_router_module.py
+ERROR tests/generators/test_style_module.py
+ERROR tests/generators/test_typescript_module.py
+ERROR tests/generators/test_vite_module.py
+ERROR tests/planner/test_product_profile_stage.py
+ERROR tests/planner/test_project_spec_ui_contract.py
+ERROR tests/planner/test_ui_design_intelligence.py
+ERROR tests/planner/test_ui_planner.py
+ERROR tests/planner/test_ui_spec_stage.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 18 errors during collection !!!!!!!!!!!!!!!!!!!
+18 errors in 0.16s
