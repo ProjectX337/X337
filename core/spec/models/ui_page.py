@@ -51,3 +51,15 @@ class UIPage:
 
     def to_dict(self) -> dict[str, Any]:
         return self.as_dict()
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, UIPage):
+            return (
+                self.name == other.name
+                and self.route == other.route
+            )
+
+        if isinstance(other, str):
+            return self.name == other
+
+        return NotImplemented

@@ -395,7 +395,7 @@ class UIPlanner:
                     else None
                 ),
             },
-            page_models=pages,
-            component_models=components,
+            pages=pages,
+            components=components,
             design_system=design_system,
         )

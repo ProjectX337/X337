@@ -1,46 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Iterable
+from typing import Any
 
 from core.spec.models.ui_page import UIPage
 from core.spec.models.ui_component import UIComponent
 from core.spec.models.design_system import DesignSystem
-
-
-class _ModelCollection(list):
-    """
-    Compatibility collection for canonical UI models.
-
-    The canonical representation remains a list of model objects,
-    but legacy callers may test membership using model names:
-
-        "Landing" in spec.pages
-        "Navbar" in spec.components
-
-    Iteration still yields the underlying model objects, preserving
-    compatibility with generators and planner code.
-    """
-
-    def __init__(self, values: Iterable[Any] = ()):
-        super().__init__(values)
-
-    def __contains__(self, value: object) -> bool:
-        if isinstance(value, str):
-            normalized = value.strip().lower()
-
-            for item in self:
-                name = getattr(item, "name", None)
-
-                if (
-                    isinstance(name, str)
-                    and name.strip().lower() == normalized
-                ):
-                    return True
-
-            return False
-
-        return super().__contains__(value)
 
 
 @dataclass(slots=True)
@@ -62,12 +27,9 @@ class UISpec:
         UIPlanner
             ↓
         UISpec
-            ├── page_models
-            ├── component_models
+            ├── pages
+            ├── components
             └── design_system
-
-    `pages` and `components` remain compatibility views over the
-    canonical model collections.
     """
 
     layout: str = "default"
@@ -99,34 +61,12 @@ class UISpec:
     # ---------------------------------------------------------
 
     @property
-    def pages(self) -> _ModelCollection:
-        """
-        Compatibility view of canonical page models.
-
-        Supports both:
-
-            spec.pages[0].name
-
-        and legacy membership:
-
-            "Landing" in spec.pages
-        """
-        return _ModelCollection(self.page_models)
+    def pages(self) -> list[UIPage]:
+        return self.page_models
 
     @property
-    def components(self) -> _ModelCollection:
-        """
-        Compatibility view of canonical component models.
-
-        Supports both:
-
-            spec.components[0].name
-
-        and legacy membership:
-
-            "Navbar" in spec.components
-        """
-        return _ModelCollection(self.component_models)
+    def components(self) -> list[UIComponent]:
+        return self.component_models
 
     @property
     def page_count(self) -> int:
