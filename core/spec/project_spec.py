@@ -6,6 +6,7 @@ from typing import Any
 from core.planner.models import Intent, ParsedPrompt
 from core.planner.capability_match import CapabilityMatch
 from core.planner.technology_plan import TechnologyPlan
+from core.planner.stack_builder import ArchitectureStack
 
 from core.spec.ui_spec import UISpec
 from core.spec.models.feature_spec import FeatureSpec
@@ -44,7 +45,7 @@ class ProjectSpec:
 
     intent: Intent | None = None
 
-    architecture: Any = None
+    architecture: ArchitectureStack | None = None
 
     capabilities: list[CapabilityMatch] = field(
         default_factory=list

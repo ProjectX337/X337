@@ -4,8 +4,6 @@ from .models import (
     PlanningResult,
     ProductSpec,
     FeatureSpec,
-    UIPageSpec,
-    UIComponentSpec,
 )
 
 from .technology_plan import (
@@ -18,7 +16,5 @@ __all__ = [
     "PlanningResult",
     "ProductSpec",
     "FeatureSpec",
-    "UIPageSpec",
-    "UIComponentSpec",
     "TechnologyPlan",
 ]

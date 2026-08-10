@@ -8,8 +8,7 @@ class BuildPlanner:
     """
     Converts a ProjectSpec into an ordered BuildPlan.
 
-    Dependencies are only created when the dependency
-    actually exists in the generated build plan.
+    The architecture stack determines which generators are required.
     """
 
     def build(
@@ -17,54 +16,63 @@ class BuildPlanner:
         spec: ProjectSpec,
     ) -> BuildPlan:
 
+        if spec.architecture is None:
+            raise ValueError(
+                "ProjectSpec is missing architecture. "
+                "Run the planning pipeline before generation, "
+                "or provide an ArchitectureStack explicitly."
+            )
+
+        architecture = spec.architecture
+
         plan = BuildPlan()
 
-        if spec.architecture.frontend:
+        if architecture.frontend:
             plan.add(
                 name="Frontend",
-                generator=spec.architecture.frontend,
+                generator=architecture.frontend.lower(),
                 description="Generate the frontend application",
                 output_directory="frontend",
                 priority=10,
             )
 
-        if spec.architecture.backend:
+        if architecture.backend:
             plan.add(
                 name="Backend",
-                generator=spec.architecture.backend,
+                generator=architecture.backend.lower(),
                 description="Generate the backend application",
                 output_directory="backend",
                 priority=20,
             )
 
-        if spec.architecture.ai:
+        if architecture.ai:
             ai_dependencies: list[str] = []
 
-            if spec.architecture.backend:
+            if architecture.backend:
                 ai_dependencies.append("Backend")
 
             plan.add(
                 name="AI",
-                generator=spec.architecture.ai,
+                generator=architecture.ai.lower(),
                 description="Generate AI components",
                 output_directory="backend/ai",
                 priority=30,
                 depends_on=ai_dependencies,
             )
 
-        if spec.architecture.static_site:
+        if architecture.static_site:
             plan.add(
                 name="Website",
-                generator=spec.architecture.static_site,
+                generator=architecture.static_site.lower(),
                 description="Generate static website",
                 output_directory="website",
                 priority=40,
             )
 
-        if spec.architecture.scripting:
+        if architecture.scripting:
             plan.add(
                 name="Utilities",
-                generator=spec.architecture.scripting,
+                generator=architecture.scripting.lower(),
                 description="Generate utility scripts",
                 output_directory="scripts",
                 priority=50,

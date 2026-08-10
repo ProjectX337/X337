@@ -22,8 +22,8 @@ class PackageModule(BaseModule):
         spec = context.spec
 
         project_name = (
-            spec.parsed.project_name.strip()
-            if spec.parsed.project_name
+            spec.project_name.strip()
+            if spec.project_name
             else "x337-app"
         )
 

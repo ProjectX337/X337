@@ -200,52 +200,9 @@ class ProductSpec:
 from core.spec.models.feature_spec import FeatureSpec
 
 # ============================================================
-# UI Planning Models
-# ============================================================
-
-
-@dataclass
-class UIComponentSpec:
-    """
-    Component blueprint.
-    """
-
-    name: str
-
-    component_type: str
-
-    description: str
-
-
-    props: Dict[str, str] = field(
-        default_factory=dict
-    )
-
-
-
-@dataclass
-class UIPageSpec:
-    """
-    Application page blueprint.
-    """
-
-    name: str
-
-    route: str
-
-
-    components: List[UIComponentSpec] = field(
-        default_factory=list
-    )
-
-
-    layout: str = "default"
-
-
-
-# ============================================================
 # Final Planning Result
 # ============================================================
+
 
 
 @dataclass
@@ -269,10 +226,5 @@ class PlanningResult:
 
 
     features: List[FeatureSpec] = field(
-        default_factory=list
-    )
-
-
-    ui_pages: List[UIPageSpec] = field(
         default_factory=list
     )

@@ -52,3 +52,12 @@ class UIComponent:
 
     def to_dict(self) -> dict[str, Any]:
         return self.as_dict()
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, UIComponent):
+            return self.name == other.name
+
+        if isinstance(other, str):
+            return self.name == other
+
+        return NotImplemented
