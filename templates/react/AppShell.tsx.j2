@@ -4,11 +4,9 @@ interface AppShellProps {
   children: ReactNode;
 }
 
-export default function AppShell({
-  children,
-}: AppShellProps) {
+export default function AppShell({ children }: AppShellProps) {
   return (
-    <div className="app-shell">
+    <div className="min-h-screen bg-background text-foreground">
       {children}
     </div>
   );

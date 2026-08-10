@@ -1,0 +1,35 @@
+:root {
+
+
+  --color-background: #0B1020;
+
+  --color-surface: #111827;
+
+  --color-primary: #7C3AED;
+
+  --color-secondary: #06B6D4;
+
+  --color-accent: #22D3EE;
+
+  --color-text: #F8FAFC;
+
+  --color-muted: #94A3B8;
+
+
+
+  --spacing-unit: 4px;
+
+  --spacing-section: 64px;
+
+  --spacing-container: 1200px;
+
+
+
+  --font-heading: Inter;
+
+  --font-body: Inter;
+
+  --font-mono: JetBrains Mono;
+
+
+}

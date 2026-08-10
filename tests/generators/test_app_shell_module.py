@@ -1,8 +1,8 @@
-from core.build.build_plan import BuildStep
+from core.planner.project_planner import ProjectPlanner
 from core.generators.file_builder import FileBuilder
 from core.generators.generator_context import GeneratorContext
 from core.generators.react.app_shell_module import AppShellModule
-from core.planner.project_planner import ProjectPlanner
+from core.build.build_plan import BuildStep
 
 
 def test_app_shell_module():
@@ -31,11 +31,7 @@ def test_app_shell_module():
     file = result.files[0]
 
     assert file.path == "frontend/src/AppShell.tsx"
-
-    assert "RouterProvider" in file.content
-    assert "./router" in file.content
-
-
-if __name__ == "__main__":
-    test_app_shell_module()
-    print("✅ AppShellModule passed")
+    assert "ReactNode" in file.content
+    assert "children" in file.content
+    assert "app-shell" in file.content
+    assert "RouterProvider" not in file.content

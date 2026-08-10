@@ -9,7 +9,6 @@ from core.generators.fastapi.generator import FastAPIGenerator
 
 
 def create_default_registry() -> GeneratorRegistry:
-
     registry = GeneratorRegistry()
 
     registry.register(

@@ -1,14 +1,15 @@
 import React from "react";
+import type { RouteObject } from "react-router-dom";
 
 {% for route in routes %}
 import {{ route.page }} from "{{ route.import_path }}";
 {% endfor %}
 
-export const routes = [
+export const routes: RouteObject[] = [
 {% for route in routes %}
-{
+  {
     path: "{{ route.path }}",
-    element: React.createElement({{ route.page }}),
-},
+    element: <{{ route.page }} />,
+  },
 {% endfor %}
 ];

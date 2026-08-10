@@ -1,5 +1,5 @@
 {
-  "name": "{{ project_name | default("x337-app") | lower | replace(" ", "-") }}",
+  "name": "x337-app",
   "private": true,
   "version": "0.1.0",
   "type": "module",

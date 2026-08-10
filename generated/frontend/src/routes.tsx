@@ -1,8 +1,43 @@
 import React from "react";
+import type { RouteObject } from "react-router-dom";
 
-export const routes = [
+
+import Landing from "./pages/Landing";
+
+import Dashboard from "./pages/Dashboard";
+
+import Settings from "./pages/Settings";
+
+import Billing from "./pages/Billing";
+
+import API from "./pages/API";
+
+
+export const routes: RouteObject[] = [
+
   {
     path: "/",
-    element: <div>Home</div>,
+    element: <Landing />,
   },
+
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
+
+  {
+    path: "/settings",
+    element: <Settings />,
+  },
+
+  {
+    path: "/billing",
+    element: <Billing />,
+  },
+
+  {
+    path: "/api",
+    element: <API />,
+  },
+
 ];
