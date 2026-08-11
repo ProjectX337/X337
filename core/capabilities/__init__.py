@@ -1,7 +1,15 @@
-from __future__ import annotations
+"""
+X337 canonical capability package.
 
-from core.capabilities.authentication import create_capability
-from core.capabilities.registry import CapabilityRegistry
+Capability definitions are loaded through CapabilityRegistry.
+The package initializer intentionally performs no registration
+and imports no legacy capability models.
+"""
 
-registry = CapabilityRegistry()
-registry.register(create_capability())
+from core.capabilities.capability import Capability
+from core.capabilities.capability_registry import CapabilityRegistry
+
+__all__ = [
+    "Capability",
+    "CapabilityRegistry",
+]

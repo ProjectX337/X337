@@ -1,31 +1,16 @@
-from __future__ import annotations
+"""
+Compatibility graph type exports.
 
-from enum import StrEnum
+NodeKind is the canonical node vocabulary.
+GraphNodeType remains as a compatibility alias while
+the planner migrates.
+"""
 
+from core.graph.models import NodeKind
 
-class GraphNodeType(StrEnum):
-    """
-    Canonical node categories used throughout X337.
+GraphNodeType = NodeKind
 
-    Every reasoning object should map to one of these.
-    """
-
-    PROMPT = "prompt"
-    INTENT = "intent"
-    CAPABILITY = "capability"
-    FEATURE = "feature"
-    PAGE = "page"
-    COMPONENT = "component"
-    ROUTE = "route"
-    API = "api"
-    DATABASE = "database"
-    TECHNOLOGY = "technology"
-    DESIGN = "design"
-    PRODUCT = "product"
-    PROJECT = "project"
-    FILE = "file"
-    TEST = "test"
-    TASK = "task"
-    DECISION = "decision"
-    OBSERVATION = "observation"
-    AGENT = "agent"
+__all__ = [
+    "NodeKind",
+    "GraphNodeType",
+]

@@ -110,17 +110,33 @@ class PersistentMemory:
     def remember(
         self,
         key,
-        value
+        value,
     ):
 
-        # Automatically serialize ProjectSpec/dataclasses
-        if hasattr(value, 'as_dict') and callable(value.as_dict):
+        if hasattr(value, "as_dict") and callable(
+            value.as_dict
+        ):
             value = value.as_dict()
-        elif hasattr(value, 'to_dict') and callable(value.to_dict):
+
+        elif hasattr(value, "to_dict") and callable(
+            value.to_dict
+        ):
             value = value.to_dict()
 
+        try:
+            json.dumps(value)
+        except TypeError as error:
+            raise TypeError(
+                f"Memory value for '{key}' "
+                f"is not JSON serializable: "
+                f"{type(value).__name__}"
+            ) from error
+
         self.data[key] = value
+
         self.save()
+
+        return value
 
     def recall(
         self,

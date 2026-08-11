@@ -8,7 +8,6 @@ from core.planner.models import Intent, ParsedPrompt
 from core.planner.capability_match import CapabilityMatch
 from core.planner.technology_plan import TechnologyPlan
 from core.planner.stack_builder import ArchitectureStack
-from core.graph.models import ApplicationGraph
 
 from core.spec.ui_spec import UISpec
 from core.spec.models.feature_spec import FeatureSpec
@@ -55,10 +54,6 @@ class ProjectSpec:
 
     technologies: TechnologyPlan = field(
         default_factory=TechnologyPlan
-    )
-
-    application_graph: ApplicationGraph = field(
-        default_factory=ApplicationGraph
     )
 
     # ---------------------------------------------------------
@@ -285,10 +280,6 @@ class ProjectSpec:
 
             "technologies": self._serialize_value(
                 self.technologies
-            ),
-
-            "application_graph": self._serialize_value(
-                self.application_graph
             ),
 
             "features": self._serialize_value(

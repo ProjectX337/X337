@@ -1,25 +1,9 @@
-from __future__ import annotations
+"""
+Compatibility exports.
 
-from dataclasses import dataclass, field
-from typing import Any
+GraphNode is defined canonically in core.graph.models.
+"""
 
-from .graph_types import GraphNodeType
+from core.graph.models import GraphNode
 
-
-@dataclass(slots=True)
-class GraphNode:
-    """
-    Base node used throughout X337.
-
-    Everything eventually becomes a GraphNode.
-    """
-
-    id: str
-
-    kind: GraphNodeType
-
-    label: str
-
-    data: dict[str, Any] = field(default_factory=dict)
-
-    metadata: dict[str, Any] = field(default_factory=dict)
+__all__ = ["GraphNode"]

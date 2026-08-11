@@ -8,9 +8,9 @@ export default function {{ page_name }}() {
   return (
     <AppShell>
       <main className="min-h-screen">
-        <h1>{{ page_name }}</h1>
-
         <section className="space-y-4">
+          <h1>{{ page_name }}</h1>
+
 {% for component in components %}
           <{{ component.name }} />
 {% endfor %}

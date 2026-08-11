@@ -1,8 +1,12 @@
 from __future__ import annotations
 
-from core.graph.graph import Graph
-from core.graph.node import GraphNode
-from core.graph.edge import GraphEdge
+from core.graph.models import (
+    ApplicationGraph,
+    EdgeRelation,
+    GraphEdge,
+    GraphNode,
+    NodeKind,
+)
 
 from .decision_node import DecisionNode
 from .evidence_node import EvidenceNode
@@ -11,16 +15,14 @@ from .evidence_node import EvidenceNode
 class DecisionGraph:
 
     def __init__(self):
-
-        self.graph = Graph()
+        self.graph = ApplicationGraph()
 
     def add_decision(self, decision: DecisionNode):
-
         self.graph.add_node(
             GraphNode(
                 id=decision.id,
-                kind="decision",
-                label=decision.winner,
+                kind=NodeKind.DECISION,
+                name=decision.winner,
                 data={
                     "confidence": decision.confidence,
                     "type": decision.decision_type,
@@ -33,12 +35,11 @@ class DecisionGraph:
         decision_id: str,
         evidence: EvidenceNode,
     ):
-
         self.graph.add_node(
             GraphNode(
                 id=evidence.id,
-                kind="evidence",
-                label=evidence.message,
+                kind=NodeKind.EVIDENCE,
+                name=evidence.message,
                 data={
                     "weight": evidence.weight,
                     "source": evidence.source,
@@ -50,7 +51,9 @@ class DecisionGraph:
             GraphEdge(
                 source=evidence.id,
                 target=decision_id,
-                relation="supports",
-                weight=evidence.weight,
+                relation=EdgeRelation.SUPPORTS,
+                metadata={
+                    "weight": evidence.weight,
+                },
             )
         )

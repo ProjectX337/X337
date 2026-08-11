@@ -2,33 +2,24 @@ from __future__ import annotations
 
 from collections import deque
 
-from .graph import Graph
-from .node import GraphNode
+from core.graph.models import ApplicationGraph, GraphNode
 
 
 class GraphTraversal:
     """
-    Basic graph traversal utilities.
-
-    Future planners and agents should use this
-    instead of manually walking relationships.
+    Graph traversal utilities operating on the canonical graph API.
     """
 
-    def __init__(self, graph: Graph):
-
+    def __init__(self, graph: ApplicationGraph):
         self.graph = graph
-
-    # ---------------------------------------------------------
 
     def bfs(
         self,
         start: str,
     ) -> list[GraphNode]:
 
-        visited = set()
-
+        visited: set[str] = set()
         queue = deque([start])
-
         order: list[GraphNode] = []
 
         while queue:
@@ -40,32 +31,28 @@ class GraphTraversal:
 
             visited.add(node_id)
 
-            if self.graph.has_node(node_id):
+            if not self.graph.has_node(node_id):
+                continue
 
-                node = self.graph.get(node_id)
+            node = self.graph.get(node_id)
+            order.append(node)
 
-                order.append(node)
+            for neighbor in self.graph.neighbors(node_id):
 
-                for neighbor in self.graph.neighbors(node_id):
-
-                    if neighbor.id not in visited:
-
-                        queue.append(neighbor.id)
+                if neighbor.id not in visited:
+                    queue.append(neighbor.id)
 
         return order
-
-    # ---------------------------------------------------------
 
     def dfs(
         self,
         start: str,
     ) -> list[GraphNode]:
 
-        visited = set()
-
+        visited: set[str] = set()
         order: list[GraphNode] = []
 
-        def visit(node_id: str):
+        def visit(node_id: str) -> None:
 
             if node_id in visited:
                 return
@@ -76,11 +63,9 @@ class GraphTraversal:
                 return
 
             node = self.graph.get(node_id)
-
             order.append(node)
 
             for neighbor in self.graph.neighbors(node_id):
-
                 visit(neighbor.id)
 
         visit(start)

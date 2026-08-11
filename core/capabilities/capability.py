@@ -12,6 +12,9 @@ class Capability:
     A capability represents a product-level capability that can be
     discovered from user intent and expanded through dependencies
     and implications.
+
+    This is the single canonical Capability model used throughout
+    X337.
     """
 
     name: str
@@ -70,12 +73,29 @@ class Capability:
 
     @property
     def api_endpoints(self) -> list[str]:
-        return list(
-            self.metadata.get(
+        """
+        Return API endpoints declared directly on the capability
+        and/or inside its feature definitions.
+        """
+
+        endpoints: list[str] = []
+
+        for endpoint in self.metadata.get(
+            "api_endpoints",
+            [],
+        ):
+            if endpoint not in endpoints:
+                endpoints.append(endpoint)
+
+        for feature in self.feature_definitions:
+            for endpoint in feature.get(
                 "api_endpoints",
                 [],
-            )
-        )
+            ):
+                if endpoint not in endpoints:
+                    endpoints.append(endpoint)
+
+        return endpoints
 
     @property
     def feature_definitions(self) -> list[dict[str, Any]]:

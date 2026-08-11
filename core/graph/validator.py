@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from core.graph.graph import Graph
+from core.graph.models import ApplicationGraph
 
 
 @dataclass(slots=True)
@@ -13,13 +13,12 @@ class GraphIssue:
 
 class GraphValidator:
 
-    def validate(self, graph: Graph) -> list[GraphIssue]:
+    def validate(
+        self,
+        graph: ApplicationGraph,
+    ) -> list[GraphIssue]:
 
         issues: list[GraphIssue] = []
-
-        #
-        # Missing nodes
-        #
 
         for edge in graph.edges:
 
@@ -39,10 +38,6 @@ class GraphValidator:
                     )
                 )
 
-        #
-        # Duplicate edges
-        #
-
         seen = set()
 
         for edge in graph.edges:
@@ -54,7 +49,6 @@ class GraphValidator:
             )
 
             if key in seen:
-
                 issues.append(
                     GraphIssue(
                         "warning",
@@ -64,24 +58,15 @@ class GraphValidator:
 
             seen.add(key)
 
-        #
-        # Self loops
-        #
-
         for edge in graph.edges:
 
             if edge.source == edge.target:
-
                 issues.append(
                     GraphIssue(
                         "warning",
                         f"Self-loop on {edge.source}",
                     )
                 )
-
-        #
-        # Orphan nodes
-        #
 
         connected = set()
 
@@ -92,17 +77,12 @@ class GraphValidator:
         for node_id in graph.nodes:
 
             if node_id not in connected:
-
                 issues.append(
                     GraphIssue(
                         "warning",
                         f"Orphan node: {node_id}",
                     )
                 )
-
-        #
-        # Isolated graph
-        #
 
         if graph.nodes and not graph.edges:
 

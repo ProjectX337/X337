@@ -108,6 +108,15 @@ class BaseAgent(ABC):
 
 
 
+    @property
+    def capabilities(self) -> list[str]:
+        """
+        Runtime capability view.
+
+        CAPABILITIES remains the canonical class-level declaration.
+        """
+        return list(self.CAPABILITIES)
+
     def start(self):
 
         self.status = "Online"

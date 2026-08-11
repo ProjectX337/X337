@@ -9,7 +9,7 @@ class PromptParserStage(PlanningStage):
 
     requires = set()
 
-    provides = {"parsed_prompt"}
+    provides = {"parsed"}
 
     def __init__(self):
 
@@ -20,6 +20,6 @@ class PromptParserStage(PlanningStage):
         state: CognitiveState,
     ):
 
-        state.parsed_prompt = self.parser.parse(
+        state.parsed = self.parser.parse(
             state.prompt
         )

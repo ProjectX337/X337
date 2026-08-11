@@ -45,8 +45,6 @@ class ProjectSpecStage(PlanningStage):
 
             technologies=context.technologies,
 
-        application_graph=context.application_graph,
-
             feature_models=context.feature_models,
 
             ui_spec=context.ui_spec,
@@ -55,15 +53,12 @@ class ProjectSpecStage(PlanningStage):
 
     
 
-        framework=(
-            (
+            framework=(
                 context.stack.frontend
                 or context.stack.backend
                 or context.stack.ai
-            )
-            if context.stack is not None
-            else ""
-        ),
+                or ""
+            ),
 
             metadata={
                 "task_graph": getattr(

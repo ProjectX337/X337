@@ -18,6 +18,7 @@ export default function {{ component.name }}({
 }: {{ component.name }}Props) {
   return (
     <section
+      className="{{ component.name | lower }}"
 {% if "hover" in states %}
       data-state="hover-enabled"
 {% endif %}

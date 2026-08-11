@@ -1,18 +1,9 @@
-from __future__ import annotations
+"""
+Compatibility exports.
 
-from dataclasses import dataclass
+GraphEdge is defined canonically in core.graph.models.
+"""
 
+from core.graph.models import GraphEdge
 
-@dataclass(slots=True)
-class GraphEdge:
-    """
-    Directed relationship between two nodes.
-    """
-
-    source: str
-
-    target: str
-
-    relation: str
-
-    weight: float = 1.0
+__all__ = ["GraphEdge"]

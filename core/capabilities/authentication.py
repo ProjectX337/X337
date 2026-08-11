@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-from core.capabilities.models import (
-    Capability,
-    ComponentTemplate,
-    FeatureTemplate,
-    PageTemplate,
-)
+from core.capabilities.capability import Capability
 
 
 def create_capability() -> Capability:
@@ -13,12 +8,13 @@ def create_capability() -> Capability:
         name="authentication",
         description="User authentication and authorization",
         keywords=[
-            "login",
-            "signin",
-            "signup",
-            "authentication",
             "auth",
-            "jwt",
+            "authentication",
+            "login",
+            "signup",
+            "register",
+            "password",
+            "user",
         ],
         technologies=[
             "jwt",
@@ -27,30 +23,39 @@ def create_capability() -> Capability:
         required_roles=[
             "backend",
         ],
-        priority=100,
-        features=[
-            FeatureTemplate(
-                name="Authentication",
-                slug="authentication",
-                description="User authentication flows",
-                pages=[
-                    PageTemplate(
-                        name="Login",
-                        components=["AuthForm"],
-                    ),
-                    PageTemplate(
-                        name="Signup",
-                        components=["AuthForm"],
-                    ),
-                ],
-                components=[
-                    ComponentTemplate("AuthForm"),
-                    ComponentTemplate("UserMenu"),
-                ],
-                api_endpoints=[
-                    "/api/auth/login",
-                    "/api/auth/signup",
-                ],
-            )
+        pages=[
+            "Login",
+            "Signup",
         ],
+        components=[
+            "AuthForm",
+            "UserMenu",
+        ],
+        priority=100,
+        confidence=1.0,
+        metadata={
+            "api_endpoints": [
+                "/api/auth/login",
+                "/api/auth/signup",
+            ],
+            "features": [
+                {
+                    "name": "Authentication",
+                    "slug": "authentication",
+                    "description": "User authentication flows",
+                    "pages": [
+                        "Login",
+                        "Signup",
+                    ],
+                    "components": [
+                        "AuthForm",
+                        "UserMenu",
+                    ],
+                    "api_endpoints": [
+                        "/api/auth/login",
+                        "/api/auth/signup",
+                    ],
+                }
+            ],
+        },
     )
