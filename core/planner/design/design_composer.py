@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from core.knowledge.product_profile import ProductProfile
+
 from .design_system import DesignSystem
 from .layout_strategy import LayoutStrategy
 from .component_strategy import ComponentStrategy
@@ -23,16 +25,31 @@ class DesignComposition:
 
 class DesignComposer:
     """
-    Produces coherent design intelligence for an application.
+    Produces coherent design intelligence from a canonical
+    ProductProfile.
+
+    ProductProfile is authoritative for product-level design
+    decisions. The composer translates that profile into the
+    design models consumed by the UI planner and blueprint builder.
     """
 
-    def compose(self, product_type: str) -> DesignComposition:
+    def compose(
+        self,
+        *,
+        product_profile: ProductProfile,
+    ) -> DesignComposition:
+
+        profile = product_profile
 
         design = DesignSystem(
             name="X337 Adaptive AI",
-            visual_style="futuristic SaaS",
-            theme="dark",
-            product_type=product_type,
+            visual_style=(
+                "futuristic SaaS"
+                if profile.theme == "futuristic"
+                else "modern"
+            ),
+            theme=profile.theme,
+            product_type=profile.name,
             colors={
                 "background": "#0B1020",
                 "surface": "#111827",
@@ -62,25 +79,52 @@ class DesignComposer:
         )
 
         layout = LayoutStrategy(
-            page_type="adaptive_dashboard",
-            structure=[
-                "sidebar",
-                "AI assistant",
-                "progress tracking",
-                "learning workspace",
-                "analytics",
-            ],
+            page_type=profile.layout,
+            structure=(
+            list(profile.layout_sections)
+            if profile.layout_sections
+            else (
+                [
+                    "Header",
+                    "Sidebar",
+                    "Content",
+                    "Footer",
+                ]
+                if profile.layout == "dashboard"
+                else (
+                    [
+                        "Navbar",
+                        "Hero",
+                        "Content",
+                        "Footer",
+                    ]
+                    if profile.layout == "marketing"
+                    else [
+                        "Header",
+                        "Content",
+                        "Footer",
+                    ]
+                )
+            )
+        ),
+            layout_pattern=profile.layout,
+            navigation=profile.navigation,
+            density=profile.density,
+            responsive_behavior="adaptive",
+            user_flow=list(profile.navigation_items),
         )
 
         components = ComponentStrategy(
-            component_type="AI learning interface",
-            components=[
-                "AITutorChat",
-                "ProgressCard",
-                "LearningModule",
-                "AnalyticsPanel",
-            ],
-            interaction_level="high",
+            component_type=f"{profile.name} interface",
+            components=list(profile.default_components),
+            interaction_level=(
+                "high"
+                if profile.motion == "smooth"
+                else "standard"
+            ),
+            animation_behavior=profile.motion,
+            responsive_behavior="adaptive",
+            state_management="local",
         )
 
         return DesignComposition(

@@ -157,10 +157,38 @@ ENTERPRISE = ProductProfile(
     ],
 )
 
+GENERIC_APPLICATION = ProductProfile(
+    name="Generic Application",
+    description="General-purpose application with adaptive UI structure.",
+    layout="marketing",
+    theme="modern",
+    navigation="top",
+    density="comfortable",
+    motion="standard",
+    default_pages=[
+        "Landing",
+    ],
+    default_components=[
+        "Navbar",
+        "Hero",
+        "Footer",
+    ],
+    navigation_items=[],
+    layout_sections=[
+        "Header",
+        "Content",
+        "Footer",
+    ],
+    required_features=[],
+    recommended_capabilities=[],
+)
+
+
 PRODUCT_PROFILES = {
     "ai_saas": AI_SAAS,
     "portfolio": PORTFOLIO,
     "enterprise": ENTERPRISE,
+    "generic_application": GENERIC_APPLICATION,
 }
 
 

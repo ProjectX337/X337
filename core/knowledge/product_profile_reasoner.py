@@ -9,6 +9,10 @@ from core.reasoning.reasoning_kernel import ReasoningKernel
 class ProductProfileReasoner(BaseReasoner):
     """
     Selects the best ProductProfile using the shared ReasoningKernel.
+
+    Resolution is registry-based and defensive:
+    the reasoning kernel may return an arbitrary decision label, while
+    ProductProfile names are controlled by PRODUCT_PROFILES.
     """
 
     def __init__(self):
@@ -22,24 +26,29 @@ class ProductProfileReasoner(BaseReasoner):
         features,
     ) -> ProductProfile:
 
-        # Fresh kernel for every inference
+        # Fresh kernel for every inference.
         self.kernel = ReasoningKernel()
 
         capability_names = {
             match.capability.name
             for match in capabilities
+            if getattr(match, "capability", None) is not None
         }
 
         feature_names = {
             feature.slug
             for feature in features
+            if getattr(feature, "slug", None)
         }
 
         for profile in PRODUCT_PROFILES.values():
 
             if intent:
 
-                if getattr(intent, "ai", False) and profile.name == "AI SaaS":
+                if (
+                    getattr(intent, "ai", False)
+                    and profile.name == "AI SaaS"
+                ):
                     self.kernel.vote(
                         profile.name,
                         weight=10,
@@ -99,8 +108,51 @@ class ProductProfileReasoner(BaseReasoner):
 
         decision = self.kernel.resolve()
 
-        return next(
-            profile
-            for profile in PRODUCT_PROFILES.values()
-            if profile.name == decision.winner
+        # ---------------------------------------------------------
+        # Canonical registry resolution
+        # ---------------------------------------------------------
+        #
+        # ReasoningKernel returns a decision label. ProductProfile
+        # registry keys are the canonical lookup mechanism.
+        #
+        # Support both:
+        #   "AI SaaS"  -> profile.name
+        #   "ai_saas"  -> registry key
+        #
+        winner = decision.winner
+
+        for profile in PRODUCT_PROFILES.values():
+            if profile.name == winner:
+                return profile
+
+        normalized_winner = (
+            str(winner)
+            .strip()
+            .lower()
+            .replace("-", "_")
+            .replace(" ", "_")
         )
+
+        profile = PRODUCT_PROFILES.get(normalized_winner)
+
+        if profile is not None:
+            return profile
+
+        # ---------------------------------------------------------
+        # Defensive fallback
+        # ---------------------------------------------------------
+        #
+        # A generic project may produce no votes. In that case the
+        # reasoning kernel can return a label that is not a product
+        # profile. Never allow that to crash planning.
+        #
+        fallback = PRODUCT_PROFILES.get("generic_application")
+
+        if fallback is None:
+            raise RuntimeError(
+                "ProductProfile registry is missing "
+                "'generic_application'; "
+                f"winner={winner!r}"
+            )
+
+        return fallback

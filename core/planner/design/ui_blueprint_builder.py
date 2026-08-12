@@ -1,24 +1,26 @@
 from __future__ import annotations
 
 from core.planner.ui_blueprint import UIBlueprint
-from core.spec.models.ui_page import UIPage
 from core.spec.models.ui_component import UIComponent
 from core.spec.models.ui_layout import UILayoutNode
 
 
 class UIBlueprintBuilder:
     """
-    Converts design intelligence into the canonical UI model.
+    Converts design intelligence into a planner-level UI blueprint.
 
-    The builder is intentionally responsible for creating the
-    structural UI composition. It does not generate React code.
+    Design composition is attached to canonical UIPage objects.
+    UIBlueprint remains a transitional transport object containing
+    application identity, pages, and theme only.
+
+    The builder owns design/composition intelligence.
+    It does not own application page identity or routes.
     """
 
     def _build_composition(
         self,
         composition,
     ) -> UILayoutNode:
-
         root = UILayoutNode(
             name="ApplicationShell",
             node_type="container",
@@ -31,7 +33,6 @@ class UIBlueprintBuilder:
         )
 
         for section_name in composition.layout.structure:
-
             section = UILayoutNode(
                 name=section_name,
                 node_type="section",
@@ -69,47 +70,52 @@ class UIBlueprintBuilder:
         composition,
         application_name: str,
     ) -> UIBlueprint:
+        """
+        Build the transitional blueprint.
 
-        composition_tree = self._build_composition(
-            composition
-        )
+        The blueprint itself does not own the composition tree.
+        Composition belongs to canonical UIPage.composition and is
+        attached by the UI planner when canonical pages are created.
+        """
 
-        components = [
-            UIComponent(
-                name=component_name,
-                component_type="generated",
-                metadata={
-                    "source": "design_intelligence",
-                },
-            )
-            for component_name
-            in composition.components.components
-        ]
+        composition_tree = self._build_composition(composition)
 
-        page = UIPage(
-            name="Dashboard",
-            route="/",
-            layout=composition.layout.layout_pattern,
-            components=components,
-            composition=composition_tree,
-            metadata={
-                "page_type": composition.layout.page_type,
-                "layout_pattern": composition.layout.layout_pattern,
-                "responsive_behavior": (
-                    composition.layout.responsive_behavior
-                ),
-                "density": composition.layout.density,
-                "navigation": composition.layout.navigation,
-            },
-        )
+        pages = []
 
-        return UIBlueprint(
+        # The design system does not define application page identity.
+        # UIPlanner owns that responsibility.
+        #
+        # We intentionally do not manufacture a page here.
+        # The composition tree is returned through the blueprint's
+        # canonical page construction path in UIPlanner.
+        #
+        # Store the composition temporarily in page metadata is NOT
+        # appropriate because UILayoutNode is a first-class structural
+        # model. The UIPlanner attaches it directly to UIPage.
+
+        blueprint = UIBlueprint(
             application=application_name,
-            pages=[
-                page
-            ],
+            pages=pages,
             theme={
                 "mode": composition.design_system.theme,
                 "style": composition.design_system.visual_style,
             },
         )
+
+        # Transitional transport attribute is intentionally avoided.
+        #
+        # The composition tree is exposed through a private builder
+        # result consumed by UIPlanner via build_composition().
+        return blueprint
+
+    def build_composition(
+        self,
+        composition,
+    ) -> UILayoutNode:
+        """
+        Build the canonical layout/composition tree.
+
+        This is intentionally separate from UIBlueprint because
+        composition belongs to UIPage, not UIBlueprint.
+        """
+        return self._build_composition(composition)

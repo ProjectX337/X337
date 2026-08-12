@@ -9,6 +9,7 @@ from core.spec.models.ui_component import UIComponent
 from core.spec.ui_spec import UISpec
 
 from core.knowledge.product_profile import ProductProfile
+from core.knowledge.product_profile_reasoner import ProductProfileReasoner
 
 from core.planner.design import (
     DesignComposer,
@@ -46,6 +47,7 @@ class UIPlanner:
     def __init__(self) -> None:
         self.design_composer = DesignComposer()
         self.blueprint_builder = UIBlueprintBuilder()
+        self.product_profile_reasoner = ProductProfileReasoner()
 
     # ---------------------------------------------------------
     # Deduplication
@@ -149,6 +151,21 @@ class UIPlanner:
         intent = intent or Intent()
         features = features or []
 
+        # -----------------------------------------------------
+        # Resolve ProductProfile before any design composition.
+        #
+        # DesignComposer requires a canonical ProductProfile.
+        # UIPlanner is responsible for resolving one when the
+        # caller has not already supplied it.
+        # -----------------------------------------------------
+
+        if product_profile is None:
+            product_profile = self.product_profile_reasoner.infer(
+                intent=intent,
+                capabilities=capabilities,
+                features=features,
+            )
+
         application_name = (
             getattr(intent, "project_name", None)
             or (
@@ -170,7 +187,9 @@ class UIPlanner:
         )
 
         composition: DesignComposition = (
-            self.design_composer.compose(product_type)
+            self.design_composer.compose(
+                product_profile=product_profile,
+            )
         )
 
         # -----------------------------------------------------
@@ -215,6 +234,13 @@ class UIPlanner:
             else application_name
         )
 
+        # Build a canonical composition for EVERY canonical page.
+        #
+        # A UIPage is a self-contained frontend contract. Therefore
+        # every canonical page must have a structural composition.
+        #
+        # Do not reuse the same mutable UILayoutNode instance across
+        # pages. Each page receives its own composition tree.
         for index, page_name in enumerate(profile_pages):
             route = (
                 "/"
@@ -235,11 +261,18 @@ class UIPlanner:
                             else "default_product"
                         ),
                         "product": product_name,
+                        "page": page_name,
                     },
                 )
 
                 page_components.append(component)
                 components.append(component)
+
+            composition_tree = (
+                self.blueprint_builder.build_composition(
+                    composition
+                )
+            )
 
             pages.append(
                 UIPage(
@@ -247,6 +280,7 @@ class UIPlanner:
                     route=route,
                     layout=page_layout,
                     components=page_components,
+                    composition=composition_tree,
                     metadata={
                         "source": (
                             "product_profile"
@@ -291,6 +325,16 @@ class UIPlanner:
                         components.append(component)
                         existing_names.add(component_key)
 
+
+            # Preserve structural composition when a
+            # blueprint targets an existing canonical page.
+            if (
+                existing_page.composition is None
+                and blueprint_page.composition is not None
+            ):
+                existing_page.composition = (
+                    blueprint_page.composition
+                )
                 continue
 
             pages.append(blueprint_page)
@@ -327,17 +371,73 @@ class UIPlanner:
                     feature_components.append(component)
                     components.append(component)
 
-                pages.append(
-                    UIPage(
-                        name=page_name,
-                        route=route,
-                        layout=page_layout,
-                        components=feature_components,
-                        metadata={
-                            "feature": feature.slug,
-                        },
-                    )
+                # -------------------------------------------------
+                # Feature pages converge into the same canonical
+                # UIPage contract as product-profile pages.
+                #
+                # A feature may target a page that already exists
+                # (for example Billing, Dashboard, or Settings).
+                # Merge into the existing canonical page rather than
+                # creating a competing page.
+                # -------------------------------------------------
+
+                existing_page = pages_by_route.get(
+                    route.lower().strip()
                 )
+
+                if existing_page is not None:
+                    existing_names = {
+                        component.name.lower().strip()
+                        for component in existing_page.components
+                    }
+
+                    for component in feature_components:
+                        component_key = component.name.lower().strip()
+
+                        if component_key not in existing_names:
+                            existing_page.components.append(component)
+                            existing_names.add(component_key)
+
+                    existing_page.metadata.setdefault(
+                        "features",
+                        [],
+                    )
+
+                    if feature.slug not in existing_page.metadata["features"]:
+                        existing_page.metadata["features"].append(
+                            feature.slug
+                        )
+
+                    # Existing canonical pages already have their
+                    # own independent composition tree.
+                    #
+                    # Do not replace it with a generic feature tree.
+
+                else:
+                    # Feature-owned pages still require a complete
+                    # canonical composition before generation.
+                    feature_composition = (
+                        self.blueprint_builder.build_composition(
+                            composition
+                        )
+                    )
+
+                    pages.append(
+                        UIPage(
+                            name=page_name,
+                            route=route,
+                            layout=page_layout,
+                            components=feature_components,
+                            composition=feature_composition,
+                            metadata={
+                                "feature": feature.slug,
+                            },
+                        )
+                    )
+
+                    pages_by_route[
+                        route.lower().strip()
+                    ] = pages[-1]
 
         # -----------------------------------------------------
         # 6. Deduplicate
