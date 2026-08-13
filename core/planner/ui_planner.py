@@ -365,45 +365,25 @@ class UIPlanner:
         # competing page.
         # -----------------------------------------------------
 
+        # -----------------------------------------------------
+        # Build route index for canonical pages.
+        #
+        # FeatureSpec pages merge into existing canonical UIPage
+        # objects instead of creating duplicates.
+        # -----------------------------------------------------
+
         pages_by_route = {
             page.route.lower().strip(): page
             for page in pages
         }
 
-        for blueprint_page in blueprint.pages:
-            route_key = blueprint_page.route.lower().strip()
-
-            existing_page = pages_by_route.get(route_key)
-
-            if existing_page is not None:
-                existing_names = {
-                    component.name.lower().strip()
-                    for component in existing_page.components
-                }
-
-                for component in blueprint_page.components:
-                    component_key = component.name.lower().strip()
-
-                    if component_key not in existing_names:
-                        existing_page.components.append(component)
-                        components.append(component)
-                        existing_names.add(component_key)
-
-
-            # Preserve structural composition when a
-            # blueprint targets an existing canonical page.
-            if (
-                existing_page.composition is None
-                and blueprint_page.composition is not None
-            ):
-                existing_page.composition = (
-                    blueprint_page.composition
-                )
-                continue
-
-            pages.append(blueprint_page)
-            pages_by_route[route_key] = blueprint_page
-            components.extend(blueprint_page.components)
+        # -----------------------------------------------------
+        # 4. Blueprint integration removed
+        #
+        # UIPage is canonical.
+        # UIBlueprintBuilder only supplies structural composition.
+        # It does not create or merge application pages.
+        # -----------------------------------------------------
 
         # -----------------------------------------------------
         # 5. FeatureSpec → canonical UI models

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from core.planner.ui_blueprint import UIBlueprint
 from core.spec.models.ui_component import UIComponent
 from core.spec.models.ui_layout import UILayoutNode
 
@@ -116,7 +115,7 @@ class UIBlueprintBuilder:
         self,
         composition,
         application_name: str,
-    ) -> UIBlueprint:
+    ) -> None:
         """
         Build the transitional blueprint.
 
@@ -144,20 +143,7 @@ class UIBlueprintBuilder:
         # appropriate because UILayoutNode is a first-class structural
         # model. The UIPlanner attaches it directly to UIPage.
 
-        blueprint = UIBlueprint(
-            application=application_name,
-            pages=pages,
-            theme={
-                "mode": composition.design_system.theme,
-                "style": composition.design_system.visual_style,
-            },
-        )
 
-        # Transitional transport attribute is intentionally avoided.
-        #
-        # The composition tree is exposed through a private builder
-        # result consumed by UIPlanner via build_composition().
-        return blueprint
 
     def build_composition(
         self,
