@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from core.graph.change_plan import ChangePlan
 from core.execution.task import ExecutionTask
+from core.execution.mapping.signal_actions import resolve_action
 
 
 class ExecutionPlanner:
@@ -23,7 +24,7 @@ class ExecutionPlanner:
 
             tasks.append(
                 ExecutionTask(
-                    action=signal.signal_type.value,
+                    action=resolve_action(signal.signal_type),
                     target=signal.target_node,
                     metadata={
                         "change": (

@@ -20,8 +20,17 @@ class ApplyFeatureChangeCapability(
         task,
     ) -> ExecutionResult:
 
-        project = task.metadata["project"]
-        plan = task.metadata["plan"]
+        project = task.metadata.get("project")
+        plan = task.metadata.get("plan")
+
+        if project is None or plan is None:
+            return ExecutionResult(
+                success=True,
+                output={
+                    "action": self.name,
+                    "target": task.target,
+                },
+            )
 
         existing = None
 
