@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 
 
 @dataclass
@@ -24,4 +24,4 @@ class ExecutionEvent:
 
     message: str = ""
 
-    timestamp: datetime = datetime.utcnow()
+    timestamp: datetime = datetime.now(UTC)
