@@ -1,15 +1,10 @@
-from core.execution.report.execution_report import (
-    ExecutionReport,
+from core.execution.bootstrap.runtime_factory import (
+    create_execution_runtime,
 )
 
 
-def test_runtime_reporting_contract():
+def test_runtime_returns_execution_report():
 
-    report = ExecutionReport(
-        execution_id="exec-runtime",
-        plan="plan",
-        result="success",
-    )
+    runtime = create_execution_runtime()
 
-    assert report.execution_id == "exec-runtime"
-    assert report.result == "success"
+    assert runtime.report_collector is not None

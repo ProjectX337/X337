@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from uuid import uuid4
+
 from core.execution.coordinator import (
     ExecutionCoordinator,
 )
@@ -14,6 +16,10 @@ from core.execution.learning.feedback_processor import (
 
 from core.execution.lifecycle.runtime_lifecycle import (
     RuntimeLifecycle,
+)
+
+from core.execution.report.report_collector import (
+    ExecutionReportCollector,
 )
 
 
@@ -34,12 +40,14 @@ class ExecutionRuntime:
         evolution_loop: EvolutionLoop,
         feedback_processor: FeedbackProcessor,
         lifecycle: RuntimeLifecycle,
+        report_collector: ExecutionReportCollector,
     ):
 
         self.coordinator = coordinator
         self.evolution_loop = evolution_loop
         self.feedback_processor = feedback_processor
         self.lifecycle = lifecycle
+        self.report_collector = report_collector
 
 
     def execute(
@@ -47,6 +55,8 @@ class ExecutionRuntime:
         plan,
         context=None,
     ):
+
+        execution_id = str(uuid4())
 
         self.lifecycle.before(
             plan
@@ -62,7 +72,11 @@ class ExecutionRuntime:
             plan,
         )
 
-        return result
+        return self.report_collector.collect(
+            execution_id=execution_id,
+            plan=plan,
+            result=result,
+        )
 
 
     def learn(

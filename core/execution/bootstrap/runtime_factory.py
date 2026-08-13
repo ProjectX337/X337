@@ -40,6 +40,10 @@ from core.execution.lifecycle.runtime_lifecycle import (
     RuntimeLifecycle,
 )
 
+from core.execution.report.report_collector import (
+    ExecutionReportCollector,
+)
+
 
 def create_execution_runtime():
 
@@ -72,9 +76,12 @@ def create_execution_runtime():
         feedback_processor=feedback_processor,
     )
 
+    report_collector = ExecutionReportCollector()
+
     return ExecutionRuntime(
         coordinator=coordinator,
         evolution_loop=evolution_loop,
         feedback_processor=feedback_processor,
         lifecycle=lifecycle,
+        report_collector=report_collector,
     )
