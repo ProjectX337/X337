@@ -5,6 +5,12 @@ from core.agent.change_engine import ChangeEngine
 from core.spec.models.feature_spec import FeatureSpec
 from core.planner.project_planner import ProjectPlanner
 
+from core.execution.coordinator import ExecutionCoordinator
+from core.execution.bootstrap.default_capabilities import (
+    create_default_router,
+)
+from core.execution.execution_state import ExecutionState
+
 
 class UpdateAgent:
     """
@@ -18,6 +24,12 @@ class UpdateAgent:
         self.engine = ChangeEngine()
 
         self.planner = ProjectPlanner()
+
+        self.executor = ExecutionCoordinator(
+            router=create_default_router()
+        )
+
+        self.execution_state = ExecutionState()
 
 
     def apply(
@@ -63,6 +75,15 @@ class UpdateAgent:
             self.state.record_change(
                 plan
             )
+
+            report = self.executor.execute(
+                plan
+            )
+
+            for result in report.results:
+                self.execution_state.record(
+                    result
+                )
 
 
             if not self.state.project:
