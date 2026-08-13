@@ -38,6 +38,10 @@ class ProductIntent:
         default_factory=list
     )
 
+    entities: list[str] = field(
+        default_factory=list
+    )
+
     metadata: dict = field(
         default_factory=dict
     )
@@ -51,5 +55,6 @@ class ProductIntent:
             "capabilities": self.capabilities,
             "constraints": self.constraints,
             "quality_attributes": self.quality_attributes,
+            "entities": self.entities,
             "metadata": self.metadata,
         }
