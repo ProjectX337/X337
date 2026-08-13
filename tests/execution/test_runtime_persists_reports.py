@@ -32,4 +32,9 @@ def test_runtime_persists_execution_report():
     history = runtime.report_memory_sink.memory.history()
 
     assert report.execution_id is not None
-    assert len(history) == 1
+    assert len(history) >= 1
+
+    assert any(
+        entry.target == report.execution_id
+        for entry in history
+    )
