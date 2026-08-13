@@ -109,9 +109,29 @@ class ExecutionRuntime:
             result=result,
         )
 
-        return self.report_enricher.enrich(
+        report = self.report_enricher.enrich(
             report,
         )
+
+        self.report_memory_sink.store(
+            report,
+        )
+
+        analysis = self.report_analyzer.analyze(
+            [report],
+        )
+
+        evolution_results = (
+            self.report_evolution_bridge.process(
+                analysis,
+                context=context,
+            )
+        )
+
+        report.feedback = analysis
+        report.evolution_plan = evolution_results
+
+        return report
 
 
     def learn(
