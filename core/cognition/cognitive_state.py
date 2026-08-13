@@ -12,6 +12,7 @@ from core.planner.technology_plan import TechnologyPlan
 from core.graph.graph import Graph
 from core.graph.models import ApplicationGraph
 from core.graph.change_plan import ChangePlan
+from core.intelligence.models import ProductIntent
 
 
 @dataclass
@@ -56,6 +57,10 @@ class CognitiveState:
     intent: Intent = field(
         default_factory=Intent
     )
+
+    # Canonical product understanding.
+    # Replaces keyword-only intent reasoning over time.
+    product_intent: ProductIntent | None = None
 
     # ---------------------------------------------------------
     # Architecture
