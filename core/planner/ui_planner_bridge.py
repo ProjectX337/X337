@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from core.planner.ui_blueprint import UIBlueprint
 from core.spec.models.ui_page import UIPage
 from core.spec.models.ui_component import UIComponent
 
@@ -53,19 +52,4 @@ class UIPlannerBridge:
                 )
             )
 
-        return UIBlueprint(
-            application=application_name,
-            pages=pages,
-            theme={
-                "mode": (
-                    design_composition
-                    .design_system
-                    .theme
-                ),
-                "style": (
-                    design_composition
-                    .design_system
-                    .visual_style
-                ),
-            },
-        )
+        return pages
