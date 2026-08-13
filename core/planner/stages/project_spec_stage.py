@@ -52,17 +52,9 @@ class ProjectSpecStage(PlanningStage):
 
             feature_models=context.feature_models,
 
-            product_spec=getattr(
-                context,
-                "product_spec",
-                None,
-            ),
+            product_spec=context.product_spec,
 
-            product_understanding=getattr(
-                context,
-                "product_understanding",
-                None,
-            ),
+            product_understanding=context.product_understanding,
 
             ui_spec=context.ui_spec,
 
