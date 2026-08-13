@@ -34,6 +34,10 @@ class ParsedPrompt:
 
     domain: str = ""
 
+    technologies: list[str] = field(
+        default_factory=list
+    )
+
 
 # ============================================================
 # User Intent

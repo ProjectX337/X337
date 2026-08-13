@@ -59,6 +59,15 @@ class PromptParser:
         "ecommerce",
     ]
 
+    TECHNOLOGIES = [
+        "ai",
+        "llm",
+        "openai",
+        "machine learning",
+        "blockchain",
+        "cloud",
+    ]
+
     def parse(self, prompt: str) -> ParsedPrompt:
 
         text = prompt.strip()
@@ -80,9 +89,13 @@ class PromptParser:
             self.STYLES,
         )
 
-        parsed.domain = self._find_match(
+        parsed.domain = self._find_domain(
             lower,
-            self.DOMAINS,
+        )
+
+        parsed.technologies = self._matches(
+            lower,
+            self.TECHNOLOGIES,
         )
 
         parsed.project_name = self._extract_name(text)
@@ -103,6 +116,36 @@ class PromptParser:
                 return option
 
         return ""
+
+    def _find_domain(
+        self,
+        text,
+    ):
+
+        for domain in self.DOMAINS:
+
+            if domain == "ai":
+                continue
+
+            if domain in text:
+                return domain
+
+        return ""
+
+    def _matches(
+        self,
+        text,
+        options,
+    ):
+
+        matches = []
+
+        for option in options:
+
+            if option in text:
+                matches.append(option)
+
+        return matches
 
     def _extract_name(
         self,
