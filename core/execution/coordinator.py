@@ -7,6 +7,7 @@ from core.execution.execution_planner import ExecutionPlanner
 from core.execution.action_router import ActionRouter
 from core.execution.capability import ExecutionResult
 from core.execution.context.execution_context import ExecutionContext
+from core.execution.validation.validator import ExecutionValidator
 
 
 @dataclass
@@ -42,6 +43,7 @@ class ExecutionCoordinator:
         self,
         router: ActionRouter,
         planner: ExecutionPlanner | None = None,
+        validator: ExecutionValidator | None = None,
     ):
 
         self.router = router
@@ -49,6 +51,11 @@ class ExecutionCoordinator:
         self.planner = (
             planner
             or ExecutionPlanner()
+        )
+
+        self.validator = (
+            validator
+            or ExecutionValidator()
         )
 
 
@@ -67,9 +74,21 @@ class ExecutionCoordinator:
 
         for task in tasks:
 
+            if not self.validator.before(
+                context,
+                task,
+            ):
+                continue
+
             result = self.router.execute(
                 task
             )
+
+            if not self.validator.after(
+                context,
+                result,
+            ):
+                continue
 
             results.append(
                 result
