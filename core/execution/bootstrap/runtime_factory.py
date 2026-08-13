@@ -52,16 +52,8 @@ from core.execution.report.report_memory_sink import (
     ReportMemorySink,
 )
 
-from core.execution.report.report_memory_sink import (
-    ReportMemorySink,
-)
-
-from core.execution.report.report_enricher import (
-    ExecutionReportEnricher,
-)
-
-from core.execution.report.report_memory_sink import (
-    ReportMemorySink,
+from core.execution.report.report_analyzer import (
+    ExecutionReportAnalyzer,
 )
 
 
@@ -104,6 +96,8 @@ def create_execution_runtime():
         memory=memory,
     )
 
+    report_analyzer = ExecutionReportAnalyzer()
+
     return ExecutionRuntime(
         coordinator=coordinator,
         evolution_loop=evolution_loop,
@@ -112,4 +106,5 @@ def create_execution_runtime():
         report_collector=report_collector,
         report_enricher=report_enricher,
         report_memory_sink=report_memory_sink,
+        report_analyzer=report_analyzer,
     )
