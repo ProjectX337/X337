@@ -12,6 +12,10 @@ from core.execution.learning.feedback_processor import (
     FeedbackProcessor,
 )
 
+from core.execution.lifecycle.runtime_lifecycle import (
+    RuntimeLifecycle,
+)
+
 
 class ExecutionRuntime:
     """
@@ -29,11 +33,13 @@ class ExecutionRuntime:
         coordinator: ExecutionCoordinator,
         evolution_loop: EvolutionLoop,
         feedback_processor: FeedbackProcessor,
+        lifecycle: RuntimeLifecycle,
     ):
 
         self.coordinator = coordinator
         self.evolution_loop = evolution_loop
         self.feedback_processor = feedback_processor
+        self.lifecycle = lifecycle
 
 
     def execute(
@@ -42,10 +48,21 @@ class ExecutionRuntime:
         context=None,
     ):
 
-        return self.coordinator.execute(
+        self.lifecycle.before(
+            plan
+        )
+
+        result = self.coordinator.execute(
             plan,
             context=context,
         )
+
+        self.lifecycle.after(
+            result,
+            plan,
+        )
+
+        return result
 
 
     def learn(
