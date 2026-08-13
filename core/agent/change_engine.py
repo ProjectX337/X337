@@ -12,8 +12,8 @@ class ChangeEngine:
     """
     Compatibility facade.
 
-    Historical agent API preserved while routing
-    evolution planning through ApplicationGraph.
+    Routes legacy change detection through
+    the canonical graph evolution planner.
     """
 
     def __init__(
@@ -31,7 +31,7 @@ class ChangeEngine:
 
         planner = (
             self.planner
-            or ChangePlanner()
+            or ChangePlanner(graph)
         )
 
         request = ChangeRequest(
@@ -39,7 +39,6 @@ class ChangeEngine:
             change_type=ChangeType.MODIFY,
         )
 
-        return planner.plan(
-            graph,
-            request,
+        return planner.create_plan(
+            request
         )
