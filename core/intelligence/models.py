@@ -69,7 +69,6 @@ class ProductIntent:
             "metadata": self.metadata,
         }
 
-from dataclasses import dataclass, field
 
 
 @dataclass
