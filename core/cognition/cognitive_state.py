@@ -82,6 +82,11 @@ class CognitiveState:
     # Product planning
     # ---------------------------------------------------------
 
+    # Semantic capability candidates produced by intelligence layer.
+    capability_candidates: list[str] = field(
+        default_factory=list
+    )
+
     capabilities: list[CapabilityMatch] = field(
         default_factory=list
     )
