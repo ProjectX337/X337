@@ -76,6 +76,10 @@ class CognitiveState:
 
     # Intelligence-derived capability hypotheses.
     # Produced before concrete capability matching.
+    capability_hypotheses: list = field(
+        default_factory=list
+    )
+
     capability_candidates: list[str] = field(
         default_factory=list
     )
