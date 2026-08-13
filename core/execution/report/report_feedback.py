@@ -21,14 +21,19 @@ class ReportFeedbackProcessor:
 
         signals = []
 
-        success_rate = analysis.get(
-            "success_rate",
+        failure_rate = analysis.get(
+            "failure_rate",
             0.0,
         )
 
+        success_rate = analysis.get(
+            "success_rate",
+            1.0,
+        )
+
         if (
-            analysis.get("total_reports", 0)
-            and success_rate < 1.0
+            failure_rate > 0.5
+            or success_rate < 1.0
         ):
             signals.append(
                 EngineeringSignal(
@@ -36,9 +41,10 @@ class ReportFeedbackProcessor:
                     target_node="execution_runtime",
                     metadata={
                         "reason": (
-                            "execution success rate "
+                            "execution reliability "
                             "requires investigation"
                         ),
+                        "failure_rate": failure_rate,
                         "success_rate": success_rate,
                     },
                 )
