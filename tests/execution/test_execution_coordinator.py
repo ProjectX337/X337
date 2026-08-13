@@ -52,5 +52,5 @@ def test_execution_coordinator_runs_plan():
     assert (
         report.results[0]
         .output["action"]
-        == "modify_component"
+        == "apply_feature_change"
     )

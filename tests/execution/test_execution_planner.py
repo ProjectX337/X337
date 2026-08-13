@@ -21,7 +21,7 @@ def test_execution_tasks_generated_from_change_plan():
     assert len(tasks) > 0
 
     assert tasks[0].action in [
-        "modify_component",
+        "apply_feature_change",
         "update_route",
         "run_tests",
     ]
