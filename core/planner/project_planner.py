@@ -15,6 +15,7 @@ from core.planner.stages.feature_stage import FeatureStage
 from core.planner.stages.product_profile_stage import ProductProfileStage
 from core.planner.stages.design_inference_stage import DesignInferenceStage
 from core.planner.stages.ui_spec_stage import UISpecStage
+from core.planner.stages.application_graph_stage import ApplicationGraphStage
 from core.planner.stages.project_spec_stage import ProjectSpecStage
 
 
@@ -39,6 +40,7 @@ class ProjectPlanner:
             ProductProfileStage(),
             DesignInferenceStage(),
             UISpecStage(),
+            ApplicationGraphStage(),
             ProjectSpecStage(),
         ]
         )
