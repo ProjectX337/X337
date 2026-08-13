@@ -69,6 +69,11 @@ from core.execution.report.report_evolution_bridge import (
 )
 
 
+from core.execution.intelligence.execution_intelligence_engine import (
+    ExecutionIntelligenceEngine,
+)
+
+
 def create_execution_runtime():
 
     router = create_default_router()
@@ -119,6 +124,13 @@ def create_execution_runtime():
         evolution_loop=evolution_loop,
     )
 
+
+    execution_intelligence = ExecutionIntelligenceEngine(
+        report_memory_sink=report_memory_sink,
+        report_history_analyzer=report_history_analyzer,
+        report_evolution_bridge=report_evolution_bridge,
+    )
+
     return ExecutionRuntime(
         coordinator=coordinator,
         evolution_loop=evolution_loop,
@@ -131,4 +143,5 @@ def create_execution_runtime():
         report_history_analyzer=report_history_analyzer,
         report_feedback_processor=report_feedback_processor,
         report_evolution_bridge=report_evolution_bridge,
+        execution_intelligence=execution_intelligence,
     )
