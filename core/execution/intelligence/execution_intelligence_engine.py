@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+from core.execution.intelligence.models import (
+    ExecutionIntelligenceResult,
+)
+
 
 class ExecutionIntelligenceEngine:
     """
@@ -56,7 +60,14 @@ class ExecutionIntelligenceEngine:
             )
         )
 
-        report.feedback = analysis
-        report.evolution_plan = evolution_results
+        intelligence_result = ExecutionIntelligenceResult(
+            analysis=analysis,
+            evolution_plan=evolution_results,
+            signals=[],
+            confidence=1.0,
+        )
+
+        report.feedback = intelligence_result.analysis
+        report.evolution_plan = intelligence_result.evolution_plan
 
         return report
