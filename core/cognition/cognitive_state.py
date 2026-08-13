@@ -97,6 +97,12 @@ class CognitiveState:
         default_factory=list
     )
 
+    # Intelligence-selected product capabilities.
+    # Used for ApplicationGraph synthesis.
+    capability_models: list = field(
+        default_factory=list
+    )
+
     feature_models: list = field(
         default_factory=list
     )

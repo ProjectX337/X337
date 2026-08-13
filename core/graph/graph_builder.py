@@ -107,3 +107,64 @@ class GraphBuilder:
                 )
 
         return graph
+
+    def add_capabilities(
+        self,
+        graph: ApplicationGraph,
+        capabilities: list,
+    ) -> None:
+        """
+        Expand product capabilities into
+        application architecture nodes.
+        """
+
+        for capability in capabilities:
+
+            capability_id = (
+                f"capability."
+                f"{capability.slug}"
+            )
+
+            graph.add_node(
+                GraphNode(
+                    id=capability_id,
+                    kind=NodeKind.CAPABILITY,
+                    name=capability.name,
+                    metadata={
+                        "description":
+                            capability.description,
+                    },
+                )
+            )
+
+            for dependency in capability.depends_on:
+                graph.add_edge(
+                    GraphEdge(
+                        source=capability_id,
+                        target=f"capability.{dependency}",
+                        relation=EdgeRelation.REQUIRES,
+                    )
+                )
+
+            for feature in capability.feature_definitions:
+
+                feature_id = (
+                    f"feature.{feature['name'].lower().replace(' ','_')}"
+                )
+
+                graph.add_node(
+                    GraphNode(
+                        id=feature_id,
+                        kind=NodeKind.FEATURE,
+                        name=feature["name"],
+                        metadata=feature,
+                    )
+                )
+
+                graph.add_edge(
+                    GraphEdge(
+                        source=capability_id,
+                        target=feature_id,
+                        relation=EdgeRelation.IMPLEMENTS,
+                    )
+                )

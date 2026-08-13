@@ -30,3 +30,8 @@ class CapabilityPlannerStage(PlanningStage):
             context.parsed,
             context.capability_candidates,
         )
+
+        context.capability_models = [
+            match.capability
+            for match in context.capabilities
+        ]

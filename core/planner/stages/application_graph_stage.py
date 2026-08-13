@@ -27,9 +27,16 @@ class ApplicationGraphStage(PlanningStage):
         state: CognitiveState,
     ) -> None:
 
+        builder = GraphBuilder()
+
         state.application_graph = (
-            GraphBuilder().build(
+            builder.build(
                 state.ui_spec,
                 state.feature_models,
             )
+        )
+
+        builder.add_capabilities(
+            state.application_graph,
+            state.capability_models,
         )
