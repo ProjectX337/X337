@@ -56,6 +56,10 @@ from core.execution.report.report_analyzer import (
     ExecutionReportAnalyzer,
 )
 
+from core.execution.report.report_history_analyzer import (
+    ReportHistoryAnalyzer,
+)
+
 from core.execution.report.report_feedback import (
     ReportFeedbackProcessor,
 )
@@ -106,6 +110,8 @@ def create_execution_runtime():
 
     report_analyzer = ExecutionReportAnalyzer()
 
+    report_history_analyzer = ReportHistoryAnalyzer()
+
     report_feedback_processor = ReportFeedbackProcessor()
 
     report_evolution_bridge = ReportEvolutionBridge(
@@ -122,6 +128,7 @@ def create_execution_runtime():
         report_enricher=report_enricher,
         report_memory_sink=report_memory_sink,
         report_analyzer=report_analyzer,
+        report_history_analyzer=report_history_analyzer,
         report_feedback_processor=report_feedback_processor,
         report_evolution_bridge=report_evolution_bridge,
     )

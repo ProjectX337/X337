@@ -38,6 +38,10 @@ from core.execution.report.report_analyzer import (
     ExecutionReportAnalyzer,
 )
 
+from core.execution.report.report_history_analyzer import (
+    ReportHistoryAnalyzer,
+)
+
 from core.execution.report.report_enricher import (
     ExecutionReportEnricher,
 )
@@ -65,6 +69,7 @@ class ExecutionRuntime:
         report_enricher: ExecutionReportEnricher,
         report_memory_sink: ReportMemorySink,
         report_analyzer: ExecutionReportAnalyzer,
+        report_history_analyzer: ReportHistoryAnalyzer,
         report_feedback_processor,
         report_evolution_bridge,
     ):
@@ -79,6 +84,7 @@ class ExecutionRuntime:
         self.report_feedback_processor = report_feedback_processor
         self.report_evolution_bridge = report_evolution_bridge
         self.report_analyzer = report_analyzer
+        self.report_history_analyzer = report_history_analyzer
 
 
     def execute(
@@ -117,8 +123,10 @@ class ExecutionRuntime:
             report,
         )
 
-        analysis = self.report_analyzer.analyze(
-            [report],
+        history = self.report_memory_sink.memory.history()
+
+        analysis = self.report_history_analyzer.analyze(
+            history,
         )
 
         evolution_results = (
