@@ -1,8 +1,9 @@
 from core.graph.change import (
     ChangeType,
     ChangeRequest,
-    ChangePlan,
 )
+
+from core.graph.change_plan import ChangePlan
 
 
 def test_change_request_creation():
@@ -21,20 +22,21 @@ def test_change_request_creation():
     )
 
 
-def test_change_plan_collection():
+def test_change_plan_creation():
 
-    plan = ChangePlan()
-
-    plan.add(
-        ChangeRequest(
-            target_node="page.login",
-            change_type=ChangeType.MODIFY,
-        )
+    change = ChangeRequest(
+        target_node="page.login",
+        change_type=ChangeType.MODIFY,
     )
 
-    assert plan.count == 1
-
-    assert (
-        plan.changes[0].target_node
-        == "page.login"
+    plan = ChangePlan(
+        change=change,
     )
+
+    assert plan.change.target_node == "page.login"
+
+    assert plan.status.value == "created"
+
+    assert plan.signal_count == 0
+
+    assert plan.affected_count == 0
