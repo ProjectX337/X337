@@ -1,22 +1,53 @@
+from __future__ import annotations
+
 from pathlib import Path
+import socket
 import subprocess
+import time
+import urllib.request
 
 
 class PreviewRuntime:
+    """
+    Starts Vite previews for canonical generated X337 applications.
+
+    Canonical generated project layout:
+
+        workspace/generated/<project_slug>/frontend/
+    """
 
     def __init__(self):
-        self.processes = {}
+        self.processes: dict[str, subprocess.Popen] = {}
 
-    def _project_dir(self, project_slug):
+    def _project_dir(self, project_slug: str) -> Path:
         return (
-            Path(__file__).resolve().parent.parent
-            / "generator"
-            / "generated_projects"
+            Path("workspace")
+            / "generated"
             / project_slug
+            / "frontend"
         )
 
-    def start(self, project_slug, port=9100):
+    def _find_free_port(self, preferred: int = 9100) -> int:
+        port = preferred
 
+        while True:
+            with socket.socket(
+                socket.AF_INET,
+                socket.SOCK_STREAM,
+            ) as sock:
+                try:
+                    sock.bind(("127.0.0.1", port))
+                except OSError:
+                    port += 1
+                    continue
+
+            return port
+
+    def start(
+        self,
+        project_slug: str,
+        port: int = 9100,
+    ) -> dict:
         project_dir = self._project_dir(project_slug)
 
         if not project_dir.exists():
@@ -31,18 +62,41 @@ class PreviewRuntime:
                 f"package.json not found: {package_json}"
             )
 
-        if project_slug in self.processes:
-            return {
-                "project": project_slug,
-                "status": "already_running",
-                "port": port,
-                "url": f"http://localhost:{port}"
-            }
+        existing = self.processes.get(project_slug)
+
+        if existing is not None:
+            if existing.poll() is None:
+                existing_port = getattr(
+                    existing,
+                    "_x337_port",
+                    port,
+                )
+
+                return {
+                    "project": project_slug,
+                    "status": "already_running",
+                    "port": existing_port,
+                    "url": f"http://127.0.0.1:{existing_port}",
+                }
+
+            self.processes.pop(project_slug, None)
+
+        actual_port = self._find_free_port(port)
 
         subprocess.run(
             ["npm", "install"],
             cwd=project_dir,
-            check=True
+            check=True,
+        )
+
+        log_path = (
+            Path("/tmp")
+            / f"x337-preview-{project_slug}.log"
+        )
+
+        log_file = log_path.open(
+            "w",
+            encoding="utf-8",
         )
 
         process = subprocess.Popen(
@@ -54,31 +108,98 @@ class PreviewRuntime:
                 "--host",
                 "127.0.0.1",
                 "--port",
-                str(port)
+                str(actual_port),
             ],
             cwd=project_dir,
-            stdout=subprocess.PIPE,
+            stdin=subprocess.DEVNULL,
+            stdout=log_file,
             stderr=subprocess.STDOUT,
-            text=True
+            text=True,
         )
 
+        process._x337_log_path = str(log_path)
+
+        process._x337_port = actual_port
+
         self.processes[project_slug] = process
+
+        url = f"http://127.0.0.1:{actual_port}"
+
+        deadline = time.time() + 30
+
+        while time.time() < deadline:
+            if process.poll() is not None:
+                log_path = getattr(
+                    process,
+                    "_x337_log_path",
+                    None,
+                )
+
+                detail = ""
+
+                if log_path:
+                    try:
+                        detail = Path(
+                            log_path
+                        ).read_text(
+                            encoding="utf-8",
+                        )
+                    except OSError:
+                        pass
+
+                raise RuntimeError(
+                    "Preview server exited before "
+                    f"becoming ready.\n{detail}"
+                )
+
+            try:
+                with urllib.request.urlopen(
+                    url,
+                    timeout=2,
+                ) as response:
+                    if response.status == 200:
+                        break
+            except Exception:
+                time.sleep(0.5)
+
+        else:
+            log_path = getattr(
+                process,
+                "_x337_log_path",
+                None,
+            )
+
+            detail = ""
+
+            if log_path:
+                try:
+                    detail = Path(
+                        log_path
+                    ).read_text(
+                        encoding="utf-8",
+                    )
+                except OSError:
+                    pass
+
+            raise RuntimeError(
+                "Preview server did not become ready "
+                f"within 30 seconds.\n{detail}"
+            )
 
         return {
             "project": project_slug,
             "status": "running",
-            "port": port,
-            "url": f"http://localhost:{port}"
+            "port": actual_port,
+            "url": f"http://127.0.0.1:{actual_port}",
         }
 
-    def stop(self, project_slug):
-
+    def stop(self, project_slug: str) -> dict:
         process = self.processes.get(project_slug)
 
         if not process:
             return {
                 "project": project_slug,
-                "status": "not_running"
+                "status": "not_running",
             }
 
         process.terminate()
@@ -88,11 +209,11 @@ class PreviewRuntime:
         except subprocess.TimeoutExpired:
             process.kill()
 
-        del self.processes[project_slug]
+        self.processes.pop(project_slug, None)
 
         return {
             "project": project_slug,
-            "status": "stopped"
+            "status": "stopped",
         }
 
 

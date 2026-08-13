@@ -41,6 +41,15 @@ class ProductProfile:
         default_factory=list
     )
 
+    # Canonical page-level component architecture.
+    #
+    # When present, each page resolves its own component set from
+    # this mapping. `default_components` remains a compatibility
+    # fallback for profiles that have not yet been migrated.
+    page_components: dict[str, list[str]] = field(
+        default_factory=dict
+    )
+
     navigation_items: list[str] = field(
         default_factory=list
     )

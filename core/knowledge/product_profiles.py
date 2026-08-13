@@ -30,6 +30,32 @@ AI_SAAS = ProductProfile(
         "CommandPalette",
     ],
 
+    page_components={
+        "Landing": [
+            "Navbar",
+            "ChatPanel",
+        ],
+        "Dashboard": [
+            "Navbar",
+            "Sidebar",
+            "MetricCard",
+            "DashboardCard",
+            "DataTable",
+        ],
+        "Settings": [
+            "Navbar",
+            "Sidebar",
+        ],
+        "Billing": [
+            "Navbar",
+            "Sidebar",
+        ],
+        "API": [
+            "Navbar",
+            "Sidebar",
+        ],
+    },
+
     navigation_items=[
         "Dashboard",
         "AI",
@@ -88,6 +114,26 @@ PORTFOLIO = ProductProfile(
         "Footer",
     ],
 
+    page_components={
+        "Landing": [
+            "Navbar",
+            "Hero",
+            "ProjectCard",
+        ],
+        "Projects": [
+            "Navbar",
+            "ProjectCard",
+        ],
+        "About": [
+            "Navbar",
+            "Timeline",
+        ],
+        "Contact": [
+            "Navbar",
+            "Footer",
+        ],
+    },
+
     navigation_items=[
         "Projects",
         "About",
@@ -128,6 +174,30 @@ ENTERPRISE = ProductProfile(
         "DataTable",
         "ReportCard",
     ],
+
+    page_components={
+        "Dashboard": [
+            "Sidebar",
+            "Navbar",
+            "DataTable",
+            "ReportCard",
+        ],
+        "Users": [
+            "Sidebar",
+            "Navbar",
+            "DataTable",
+        ],
+        "Reports": [
+            "Sidebar",
+            "Navbar",
+            "ReportCard",
+            "DataTable",
+        ],
+        "Settings": [
+            "Sidebar",
+            "Navbar",
+        ],
+    },
 
     navigation_items=[
         "Dashboard",
@@ -173,6 +243,13 @@ GENERIC_APPLICATION = ProductProfile(
         "Hero",
         "Footer",
     ],
+    page_components={
+        "Landing": [
+            "Navbar",
+            "Hero",
+            "Footer",
+        ],
+    },
     navigation_items=[],
     layout_sections=[
         "Header",
