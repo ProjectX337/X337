@@ -6,6 +6,10 @@ from core.graph.normalization.page_identity import (
     normalize_page_slug,
 )
 
+from core.graph.normalization.identity_migration import (
+    migrate_identity_keys,
+)
+
 
 class PageNormalizer:
 
@@ -73,30 +77,10 @@ class PageNormalizer:
                 ] = canonical_id
 
 
-        for old_id, new_id in replacements.items():
-
-            if old_id == new_id:
-                continue
-
-            node = graph.nodes.pop(
-                old_id
-            )
-
-            if new_id not in graph.nodes:
-                graph.nodes[new_id] = node
-
-
-        for edge in graph.edges:
-
-            if edge.source in replacements:
-                edge.source = replacements[
-                    edge.source
-                ]
-
-            if edge.target in replacements:
-                edge.target = replacements[
-                    edge.target
-                ]
+        migrate_identity_keys(
+            graph,
+            replacements,
+        )
 
 
         return graph
