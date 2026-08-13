@@ -7,6 +7,7 @@ from core.execution.execution_planner import ExecutionPlanner
 from core.execution.action_router import ActionRouter
 from core.execution.capability import ExecutionResult
 from core.execution.context.execution_context import ExecutionContext
+from core.execution.events.execution_event import ExecutionEvent
 from core.execution.validation.validator import ExecutionValidator
 
 
@@ -73,6 +74,13 @@ class ExecutionCoordinator:
             context=context,
         )
 
+        if context and context.event_bus:
+            context.event_bus.emit(
+                ExecutionEvent(
+                    event_type="execution_started"
+                )
+            )
+
         results = []
 
         for task in tasks:
@@ -95,6 +103,13 @@ class ExecutionCoordinator:
 
             results.append(
                 result
+            )
+
+        if context and context.event_bus:
+            context.event_bus.emit(
+                ExecutionEvent(
+                    event_type="execution_completed"
+                )
             )
 
         return ExecutionReport(

@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from core.spec.project_spec import ProjectSpec
 from core.graph.change_plan import ChangePlan
 from core.graph.application_graph import ApplicationGraph
+from core.execution.events.event_bus import ExecutionEventBus
 
 
 @dataclass
@@ -21,3 +22,5 @@ class ExecutionContext:
     change_plan: ChangePlan | None = None
 
     application_graph: ApplicationGraph | None = None
+
+    event_bus: ExecutionEventBus | None = None
