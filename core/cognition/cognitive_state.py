@@ -12,6 +12,7 @@ from core.planner.technology_plan import TechnologyPlan
 from core.graph.graph import Graph
 from core.graph.models import ApplicationGraph
 from core.graph.change_plan import ChangePlan
+from core.graph.evolution.models import EvolutionPlan
 from core.intelligence.models import (
     ProductIntent,
     ProductUnderstanding,
@@ -147,6 +148,12 @@ class CognitiveState:
     application_graph: ApplicationGraph = field(
         default_factory=ApplicationGraph
     )
+
+    # Architecture evolution intelligence output.
+    #
+    # Represents recommended changes
+    # after graph analysis.
+    evolution_plan: EvolutionPlan | None = None
 
     # Application evolution requests
     change_requests: list = field(
