@@ -1,3 +1,5 @@
+from core.planner.stages.base_stage import PlanningStage
+
 from core.intelligence.pipeline.product_intelligence_pipeline import (
     ProductIntelligencePipeline,
 )
@@ -5,18 +7,28 @@ from core.intelligence.pipeline.product_intelligence_pipeline import (
 from core.intelligence.models import ProductIntent
 
 
-class ProductIntelligenceStage:
+class ProductIntelligenceStage(PlanningStage):
     """
     Converts cognitive intent into
     product and architecture intelligence.
     """
+
+    requires = {
+        "product_intent",
+    }
+
+    provides = {
+        "product_understanding",
+        "product_spec",
+        "application_graph",
+    }
 
     def __init__(self):
         self.pipeline = (
             ProductIntelligencePipeline()
         )
 
-    def execute(
+    def run(
         self,
         state,
     ):
@@ -42,3 +54,11 @@ class ProductIntelligenceStage:
         )
 
         return state
+
+    # Backward compatibility for direct stage callers.
+    # PlanningPipeline uses run().
+    def execute(
+        self,
+        state,
+    ):
+        return self.run(state)
