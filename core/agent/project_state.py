@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from core.spec.project_spec import ProjectSpec
-from core.agent.change_plan import ChangePlan
+from core.graph.change_plan import ChangePlan
 
 
 @dataclass

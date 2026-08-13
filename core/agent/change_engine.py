@@ -1,39 +1,45 @@
 from __future__ import annotations
 
-from core.agent.change_plan import ChangePlan
-from core.spec.models.feature_spec import FeatureSpec
+from core.graph.change import (
+    ChangeRequest,
+    ChangeType,
+)
+
+from core.graph.change_planner import ChangePlanner
 
 
 class ChangeEngine:
     """
-    Converts FeatureSpec objects into ChangePlans.
+    Compatibility facade.
+
+    Historical agent API preserved while routing
+    evolution planning through ApplicationGraph.
     """
 
-    def __init__(self):
-        pass
+    def __init__(
+        self,
+        planner: ChangePlanner | None = None,
+    ):
+        self.planner = planner
 
 
     def detect(
         self,
-        features: list[FeatureSpec],
-    ) -> dict:
+        graph,
+        target_node: str,
+    ):
 
-        plans = []
+        planner = (
+            self.planner
+            or ChangePlanner()
+        )
 
-        for feature in features:
+        request = ChangeRequest(
+            target_node=target_node,
+            change_type=ChangeType.MODIFY,
+        )
 
-            plans.append(
-                ChangePlan(
-                    feature=feature.name,
-                    routes=feature.routes,
-                    pages=feature.pages,
-                    components=feature.components,
-                    state=feature.state,
-                    api_contracts=feature.api_contracts,
-                )
-            )
-
-
-        return {
-            "plans": plans
-        }
+        return planner.plan(
+            graph,
+            request,
+        )
