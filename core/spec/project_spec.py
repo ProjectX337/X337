@@ -79,6 +79,14 @@ class ProjectSpec:
         default_factory=list
     )
 
+    # ---------------------------------------------------------
+    # Intelligence
+    # ---------------------------------------------------------
+
+    product_spec: object | None = None
+
+    product_understanding: object | None = None
+
     ui_spec: UISpec | None = None
 
     design_spec: DesignSpec | None = None
