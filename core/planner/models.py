@@ -4,13 +4,6 @@ from dataclasses import dataclass, field
 from typing import List
 
 from core.planner.technology_plan import TechnologyPlan
-from core.product.models import (
-    ProductRequirement,
-    UserGoal,
-    UserFlow,
-    ProductFeature,
-    ProductSpec,
-)
 from core.spec.models.feature_spec import FeatureSpec
 from core.spec.models.design_system import DesignSystem
 
@@ -74,7 +67,7 @@ class PlanningResult:
     """
     Complete output from the legacy planner API.
 
-    ProductSpec and FeatureSpec are canonical domain models
+    FeatureSpec is the canonical feature domain model.
     imported from their owning packages.
     """
 
@@ -86,7 +79,6 @@ class PlanningResult:
         default_factory=TechnologyPlan
     )
 
-    product_spec: ProductSpec | None = None
 
     features: List[FeatureSpec] = field(
         default_factory=list
