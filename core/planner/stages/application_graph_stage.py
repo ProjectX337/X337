@@ -3,6 +3,7 @@ from __future__ import annotations
 from core.planner.stages.base_stage import PlanningStage
 from core.cognition.cognitive_state import CognitiveState
 from core.graph.graph_builder import GraphBuilder
+from core.graph.normalization.graph_normalizer import GraphNormalizer
 
 
 class ApplicationGraphStage(PlanningStage):
@@ -39,4 +40,11 @@ class ApplicationGraphStage(PlanningStage):
         builder.add_capabilities(
             state.application_graph,
             state.capability_models,
+        )
+
+        state.application_graph = (
+            GraphNormalizer()
+            .normalize(
+                state.application_graph
+            )
         )
