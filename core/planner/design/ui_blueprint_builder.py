@@ -9,8 +9,8 @@ class UIBlueprintBuilder:
     Converts design intelligence into a planner-level UI blueprint.
 
     Design composition is attached to canonical UIPage objects.
-    UIBlueprint remains a transitional transport object containing
-    application identity, pages, and theme only.
+    UIBlueprintBuilder is a design composition builder.
+    It produces structural UILayoutNode trees only.
 
     The builder owns design/composition intelligence.
     It does not own application page identity or routes.
