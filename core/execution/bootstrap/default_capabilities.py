@@ -14,6 +14,10 @@ from core.execution.capabilities.run_tests import (
     RunTestsCapability,
 )
 
+from core.execution.capabilities.apply_feature_change import (
+    ApplyFeatureChangeCapability,
+)
+
 
 def create_default_router() -> ActionRouter:
 
@@ -32,6 +36,11 @@ def create_default_router() -> ActionRouter:
     router.register(
         "run_tests",
         RunTestsCapability(),
+    )
+
+    router.register(
+        "apply_feature_change",
+        ApplyFeatureChangeCapability(),
     )
 
     return router
