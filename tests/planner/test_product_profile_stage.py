@@ -1,11 +1,11 @@
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.product_profile_stage import ProductProfileStage
 from core.planner.models import Intent
 
 
 def test_product_profile_stage():
 
-    context = PlanningContext(
+    context = CognitiveState(
         prompt="Build an AI SaaS"
     )
 

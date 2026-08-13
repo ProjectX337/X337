@@ -1,10 +1,10 @@
-from core.planner.planning_context import PlanningContext
+from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.ui_spec_stage import UISpecStage
 
 
 def test_ui_spec_stage():
 
-    context = PlanningContext(
+    context = CognitiveState(
         prompt="Build an AI SaaS"
     )
 
