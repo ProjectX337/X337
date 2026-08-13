@@ -37,7 +37,7 @@ class GraphAnalyzer:
 
         counts = defaultdict(int)
 
-        for node in self.graph.nodes.values():
+        for node in self.graph.nodes:
             counts[node.kind] += 1
 
         return dict(counts)
@@ -54,7 +54,7 @@ class GraphAnalyzer:
 
         return [
             node.id
-            for node in self.graph.nodes.values()
+            for node in self.graph.nodes
             if node.id not in connected
         ]
 
