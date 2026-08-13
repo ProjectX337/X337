@@ -87,9 +87,23 @@ class PlanningResult:
         default_factory=list
     )
 
-    # Intelligence artifacts
-    product_spec: object | None = None
+    # Canonical artifact owner
+    project_spec: object | None = None
 
-    product_understanding: object | None = None
+    @property
+    def product_spec(self):
+        if self.project_spec is None:
+            return None
+        return self.project_spec.product_spec
 
-    application_graph: object | None = None
+    @property
+    def product_understanding(self):
+        if self.project_spec is None:
+            return None
+        return self.project_spec.product_understanding
+
+    @property
+    def application_graph(self):
+        if self.project_spec is None:
+            return None
+        return self.project_spec.application_graph
