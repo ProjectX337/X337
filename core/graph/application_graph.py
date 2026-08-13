@@ -5,10 +5,12 @@ from enum import Enum
 
 
 class GraphNodeType(str, Enum):
+    PRODUCT = "product"
     FEATURE = "feature"
     PAGE = "page"
     COMPONENT = "component"
     STATE = "state"
+    ENTITY = "entity"
     API_ENDPOINT = "api_endpoint"
     DATABASE_MODEL = "database_model"
     SOURCE_FILE = "source_file"
