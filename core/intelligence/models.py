@@ -30,6 +30,10 @@ class ProductIntent:
         default_factory=list
     )
 
+    business_rules: list[str] = field(
+        default_factory=list
+    )
+
     capabilities: list[str] = field(
         default_factory=list
     )
@@ -57,6 +61,7 @@ class ProductIntent:
             "goals": self.goals,
             "workflows": self.workflows,
             "journeys": self.journeys,
+            "business_rules": self.business_rules,
             "capabilities": self.capabilities,
             "constraints": self.constraints,
             "quality_attributes": self.quality_attributes,

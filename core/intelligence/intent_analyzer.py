@@ -4,6 +4,9 @@ from core.intelligence.models import ProductIntent
 from core.planner.models import ParsedPrompt
 from core.intelligence.reasoning.entity_reasoner import infer_entities
 from core.intelligence.reasoning.journey_reasoner import infer_journeys
+from core.intelligence.reasoning.business_rule_reasoner import (
+    infer_business_rules,
+)
 
 from core.intelligence.reasoning.domain_rules import (
     infer_domain,
@@ -73,6 +76,10 @@ class ProductIntentAnalyzer:
             ),
 
             journeys=infer_journeys(
+                domain,
+            ),
+
+            business_rules=infer_business_rules(
                 domain,
             ),
 
