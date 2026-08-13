@@ -24,7 +24,6 @@ class ProductIntelligenceStage(PlanningStage):
     provides = {
         "product_understanding",
         "product_spec",
-        "application_graph",
         "capability_hypotheses",
     }
 
@@ -61,9 +60,14 @@ class ProductIntelligenceStage(PlanningStage):
             result["spec"]
         )
 
-        state.application_graph = (
-            result["graph"]
-        )
+        # Compatibility:
+        # Direct stage callers historically expected
+        # ProductIntelligenceStage to expose a graph.
+        # Canonical pipeline ownership belongs to ApplicationGraphStage.
+        if not hasattr(state, "application_graph") or not state.application_graph.nodes:
+            state.application_graph = (
+                result["graph"]
+            )
 
         return state
 

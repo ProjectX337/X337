@@ -22,7 +22,9 @@ class ApplicationGraphStage(PlanningStage):
         "feature_models",
     }
 
-    provides = set()
+    provides = {
+        "application_graph",
+    }
 
     def run(
         self,

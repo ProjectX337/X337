@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from core.cognition.cognitive_state import CognitiveState
 from core.planner.feature_planner import FeaturePlanner
-from core.graph.normalization.feature_normalizer import FeatureNormalizer
 from core.planner.stages.base_stage import PlanningStage
 from core.spec.models.feature_spec import FeatureSpec
 
@@ -32,7 +31,6 @@ class FeatureStage(PlanningStage):
 
     def __init__(self) -> None:
         self.planner = FeaturePlanner()
-        self.normalizer = FeatureNormalizer()
 
     @classmethod
     def _canonical_slug(cls, slug: str) -> str:
@@ -134,6 +132,6 @@ class FeatureStage(PlanningStage):
             capabilities=context.capabilities,
         )
 
-        context.feature_models = self.normalizer.normalize(
+        context.feature_models = self._canonicalize(
             features
         )

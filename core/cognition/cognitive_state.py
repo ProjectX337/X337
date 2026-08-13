@@ -18,6 +18,11 @@ from core.intelligence.models import (
     ProductUnderstanding,
 )
 
+from core.knowledge.product_profile import ProductProfile
+from core.spec.models.design_spec import DesignSpec
+from core.spec.ui_spec import UISpec
+from core.spec.project_spec import ProjectSpec
+
 
 @dataclass
 class CognitiveState:
@@ -71,7 +76,7 @@ class CognitiveState:
     product_understanding: ProductUnderstanding | None = None
 
     # Generated product specification.
-    product_spec = None
+    product_spec: object | None = None
 
 
     # Intelligence-derived capability hypotheses.
@@ -105,9 +110,6 @@ class CognitiveState:
     # ---------------------------------------------------------
 
     # Semantic capability candidates produced by intelligence layer.
-    capability_candidates: list[str] = field(
-        default_factory=list
-    )
 
     capabilities: list[CapabilityMatch] = field(
         default_factory=list
@@ -123,21 +125,21 @@ class CognitiveState:
         default_factory=list
     )
 
-    product_profile = None
+    product_profile: ProductProfile | None = None
 
     # ---------------------------------------------------------
     # Design
     # ---------------------------------------------------------
 
-    design_spec = None
+    design_spec: DesignSpec | None = None
 
-    ui_spec = None
+    ui_spec: UISpec | None = None
 
     # ---------------------------------------------------------
     # Final planning artifact
     # ---------------------------------------------------------
 
-    project_spec = None
+    project_spec: ProjectSpec | None = None
 
     # ---------------------------------------------------------
     # Semantic graph

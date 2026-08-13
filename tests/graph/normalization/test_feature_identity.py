@@ -1,7 +1,10 @@
-from core.graph.normalization.feature_normalizer import (
-    FeatureNormalizer,
+from core.planner.stages.feature_stage import (
+    FeatureStage,
 )
-from core.spec.models.feature_spec import FeatureSpec
+
+from core.spec.models.feature_spec import (
+    FeatureSpec,
+)
 
 
 def test_feature_identity_normalization():
@@ -17,7 +20,7 @@ def test_feature_identity_normalization():
         ),
     ]
 
-    normalized = FeatureNormalizer().normalize(
+    normalized = FeatureStage._canonicalize(
         features
     )
 

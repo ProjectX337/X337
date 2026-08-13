@@ -1,79 +1,90 @@
 from __future__ import annotations
 
-from core.spec.models.feature_spec import FeatureSpec
+from core.graph.models import NodeKind
+
 from core.graph.normalization.feature_identity import (
     normalize_feature_slug,
 )
 
+from core.graph.normalization.identity_migration import (
+    migrate_identity_keys,
+)
+
 
 class FeatureNormalizer:
-    """
-    Canonicalizes FeatureSpec identity.
 
-    Ensures semantically equivalent features
-    collapse into one canonical feature.
+    """
+    Normalizes duplicate feature identities
+    inside ApplicationGraph.
     """
 
     def normalize(
         self,
-        features: list[FeatureSpec],
-    ) -> list[FeatureSpec]:
+        graph,
+    ):
 
-        canonical: dict[str, FeatureSpec] = {}
+        canonical = {}
+        replacements = {}
 
-        for feature in features:
+        for node_id, node in list(
+            graph.nodes.items()
+        ):
 
-            slug = normalize_feature_slug(
-                feature.slug
-            )
-
-            existing = canonical.get(slug)
-
-            if existing is None:
-                feature.slug = slug
-                canonical[slug] = feature
+            if node.kind != NodeKind.FEATURE:
                 continue
 
-            self._merge(
-                existing,
-                feature,
+            slug = normalize_feature_slug(
+                node_id.replace(
+                    "feature.",
+                    "",
+                )
             )
 
-        return list(
-            canonical.values()
+            canonical_id = (
+                f"feature.{slug}"
+            )
+
+            if canonical_id not in canonical:
+
+                canonical[
+                    canonical_id
+                ] = node
+
+                replacements[
+                    node_id
+                ] = canonical_id
+
+                node.id = canonical_id
+
+                node.metadata.setdefault(
+                    "aliases",
+                    [],
+                )
+
+            else:
+
+                existing = canonical[
+                    canonical_id
+                ]
+
+                existing.metadata.setdefault(
+                    "aliases",
+                    [],
+                )
+
+                if node_id not in existing.metadata["aliases"]:
+                    existing.metadata["aliases"].append(
+                        node_id
+                    )
+
+                replacements[
+                    node_id
+                ] = canonical_id
+
+
+        migrate_identity_keys(
+            graph,
+            replacements,
         )
 
-    def _merge(
-        self,
-        target: FeatureSpec,
-        source: FeatureSpec,
-    ) -> None:
-
-        for attr in [
-            "pages",
-            "routes",
-            "components",
-            "state",
-            "api_contracts",
-        ]:
-            values = getattr(
-                source,
-                attr,
-                [],
-            )
-
-            target_values = getattr(
-                target,
-                attr,
-                [],
-            )
-
-            for value in values:
-                if value not in target_values:
-                    target_values.append(value)
-
-        if (
-            not target.description
-            and source.description
-        ):
-            target.description = source.description
+        return graph
