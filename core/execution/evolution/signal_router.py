@@ -47,11 +47,17 @@ class SignalRouter:
             SignalType.RUN_TESTS,
         ):
 
-            return ChangePlan(
+            plan = ChangePlan(
                 change=ChangeRequest(
                     target_node=signal.target_node,
                     change_type=ChangeType.MODIFY,
                 )
             )
+
+            plan.add_signal(
+                signal
+            )
+
+            return plan
 
         return None
