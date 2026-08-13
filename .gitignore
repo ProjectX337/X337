@@ -23,3 +23,5 @@ generated/frontend/package-lock.json
 
 # Python build metadata
 *.egg-info/
+__pycache__/
+*.pyc
