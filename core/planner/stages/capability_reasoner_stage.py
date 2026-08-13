@@ -7,7 +7,8 @@ from core.planner.stages.base_stage import PlanningStage
 
 class CapabilityReasonerStage(PlanningStage):
     """
-    Converts product intent into semantic capability candidates.
+    Generates semantic capability hypotheses
+    from product intelligence.
     """
 
     requires = {"product_intent"}
@@ -15,16 +16,15 @@ class CapabilityReasonerStage(PlanningStage):
     provides = {"capability_candidates"}
 
     def __init__(self):
-
         self.reasoner = CapabilityReasoner()
 
     def run(
         self,
-        context: CognitiveState,
+        state: CognitiveState,
     ) -> None:
 
-        context.capability_candidates = (
+        state.capability_candidates = (
             self.reasoner.reason(
-                context.product_intent
+                state.product_intent
             )
         )

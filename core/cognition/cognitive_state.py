@@ -62,6 +62,12 @@ class CognitiveState:
     # Replaces keyword-only intent reasoning over time.
     product_intent: ProductIntent | None = None
 
+    # Intelligence-derived capability hypotheses.
+    # Produced before concrete capability matching.
+    capability_candidates: list[str] = field(
+        default_factory=list
+    )
+
     # ---------------------------------------------------------
     # Architecture
     # ---------------------------------------------------------

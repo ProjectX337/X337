@@ -11,6 +11,7 @@ from core.planner.stages.product_intent_stage import ProductIntentStage
 from core.planner.stages.architecture_selection_stage import ArchitectureSelectionStage
 from core.planner.stages.stack_builder_stage import StackBuilderStage
 from core.planner.stages.capability_planner_stage import CapabilityPlannerStage
+from core.planner.stages.capability_reasoner_stage import CapabilityReasonerStage
 from core.planner.stages.architecture_requirements_stage import ArchitectureRequirementsStage
 from core.planner.stages.feature_stage import FeatureStage
 from core.planner.stages.product_profile_stage import ProductProfileStage
@@ -34,6 +35,7 @@ class ProjectPlanner:
             PromptParserStage(),
             IntentClassifierStage(),
             ProductIntentStage(),
+            CapabilityReasonerStage(),
             CapabilityPlannerStage(),
             ArchitectureRequirementsStage(),
             ArchitectureSelectionStage(),

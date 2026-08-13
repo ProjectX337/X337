@@ -28,4 +28,5 @@ class CapabilityPlannerStage(PlanningStage):
 
         context.capabilities = self.planner.plan(
             context.parsed,
+            context.capability_candidates,
         )

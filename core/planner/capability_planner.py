@@ -18,6 +18,7 @@ class CapabilityPlanner:
     def plan(
         self,
         parsed: ParsedPrompt,
+        candidates: list[str] | None = None,
     ) -> list[CapabilityMatch]:
 
         searchable = " ".join(
@@ -33,6 +34,12 @@ class CapabilityPlanner:
         ).lower()
 
         scores: dict[str, int] = {}
+
+        if candidates:
+            for candidate in candidates:
+                if self.registry.get(candidate):
+                    scores[candidate] = 5
+
 
         for capability in self.registry.all():
             score = sum(
