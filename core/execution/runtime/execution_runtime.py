@@ -72,6 +72,7 @@ class ExecutionRuntime:
         report_history_analyzer: ReportHistoryAnalyzer,
         report_feedback_processor,
         report_evolution_bridge,
+        execution_intelligence,
     ):
 
         self.coordinator = coordinator
@@ -84,6 +85,7 @@ class ExecutionRuntime:
         self.report_feedback_processor = report_feedback_processor
         self.report_evolution_bridge = report_evolution_bridge
         self.report_analyzer = report_analyzer
+        self.execution_intelligence = execution_intelligence
         self.report_history_analyzer = report_history_analyzer
 
 
@@ -119,25 +121,10 @@ class ExecutionRuntime:
             report,
         )
 
-        self.report_memory_sink.store(
+        report = self.execution_intelligence.process(
             report,
+            context=context,
         )
-
-        history = self.report_memory_sink.memory.history()
-
-        analysis = self.report_history_analyzer.analyze(
-            history,
-        )
-
-        evolution_results = (
-            self.report_evolution_bridge.process(
-                analysis,
-                context=context,
-            )
-        )
-
-        report.feedback = analysis
-        report.evolution_plan = evolution_results
 
         return report
 
