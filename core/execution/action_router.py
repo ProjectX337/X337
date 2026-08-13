@@ -7,8 +7,13 @@ class ActionRouter:
     """
     Routes execution tasks to implementation handlers.
 
-    This layer decides WHAT performs an action.
-    It does not perform generation itself.
+    Compatibility:
+        resolve()
+            -> returns capability
+
+    Execution:
+        execute()
+            -> runs capability
     """
 
     def __init__(self):
@@ -32,4 +37,23 @@ class ActionRouter:
 
         return self.handlers.get(
             task.action
+        )
+
+
+    def execute(
+        self,
+        task: ExecutionTask,
+    ):
+
+        handler = self.resolve(
+            task
+        )
+
+        if handler is None:
+            raise ValueError(
+                f"No execution handler registered for {task.action}"
+            )
+
+        return handler.execute(
+            task
         )
