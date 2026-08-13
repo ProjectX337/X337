@@ -28,6 +28,6 @@ def test_product_intelligence_stage():
     )
 
     assert (
-        len(state.application_graph.nodes)
-        > 0
+        state.capability_hypotheses
+        is not None
     )
