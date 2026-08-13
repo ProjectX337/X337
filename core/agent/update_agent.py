@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from core.agent.project_state import ProjectState
 from core.agent.change_engine import ChangeEngine
-from core.spec.models.feature_spec import FeatureSpec
 from core.planner.project_planner import ProjectPlanner
 
 from core.execution.coordinator import ExecutionCoordinator
@@ -10,6 +9,7 @@ from core.execution.bootstrap.default_capabilities import (
     create_default_router,
 )
 from core.execution.execution_state import ExecutionState
+from core.execution.context.execution_context import ExecutionContext
 
 
 class UpdateAgent:
@@ -76,52 +76,19 @@ class UpdateAgent:
                 plan
             )
 
+            execution_context = ExecutionContext(
+                project=self.state.project,
+                change_plan=plan,
+            )
+
             report = self.executor.execute(
-                plan
+                plan,
+                context=execution_context,
             )
 
             for result in report.results:
                 self.execution_state.record(
                     result
-                )
-
-
-            if not self.state.project:
-                continue
-
-
-            existing = None
-
-
-            for feature in self.state.project.feature_models:
-
-                if feature.name == plan.feature:
-                    existing = feature
-                    break
-
-
-            if existing:
-
-                existing.routes = plan.routes
-                existing.pages = plan.pages
-                existing.components = plan.components
-                existing.state = plan.state
-                existing.api_contracts = plan.api_contracts
-
-
-            else:
-
-                self.state.project.feature_models.append(
-                    FeatureSpec(
-                        name=plan.feature,
-                        slug=plan.feature,
-                        description=f"{plan.feature} feature",
-                        routes=plan.routes,
-                        pages=plan.pages,
-                        components=plan.components,
-                        state=plan.state,
-                        api_contracts=plan.api_contracts,
-                    )
                 )
 
 
