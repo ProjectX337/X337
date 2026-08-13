@@ -147,13 +147,9 @@ class ChatAgent:
             message
         )
 
-        plans = self.change_engine.detect(
-            spec.feature_models
-        )
-
         context = create_generator_context(
             spec,
-            changes=plans["plans"],
+            changes=[],
             project_state=self.updater.state,
         )
 
