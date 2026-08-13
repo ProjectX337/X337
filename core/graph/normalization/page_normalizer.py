@@ -2,69 +2,38 @@ from __future__ import annotations
 
 from core.graph.models import NodeKind
 
-from core.graph.normalization.feature_identity import (
-    normalize_feature_slug,
-)
-
-from core.graph.normalization.relationship_normalizer import (
-    RelationshipNormalizer,
-)
-
-from core.graph.normalization.page_normalizer import (
-    PageNormalizer,
+from core.graph.normalization.page_identity import (
+    normalize_page_slug,
 )
 
 
-class GraphNormalizer:
+class PageNormalizer:
 
     def normalize(
         self,
         graph,
     ):
 
-        self._normalize_features(
-            graph
-        )
-
-        PageNormalizer().normalize(
-            graph
-        )
-
-        RelationshipNormalizer().normalize(
-            graph
-        )
-
-        return graph
-
-
-    def _normalize_features(
-        self,
-        graph,
-    ):
-
         canonical = {}
-
         replacements = {}
 
         for node_id, node in list(
             graph.nodes.items()
         ):
 
-            if node.kind != NodeKind.FEATURE:
+            if node.kind != NodeKind.PAGE:
                 continue
 
-
-            slug = normalize_feature_slug(
+            slug = normalize_page_slug(
                 node_id.replace(
-                    "feature.",
+                    "page.",
                     "",
                 )
             )
 
             canonical_id = (
-                f"feature.{slug}"
+                f"page.{slug}"
             )
-
 
             if canonical_id not in canonical:
 
@@ -94,12 +63,8 @@ class GraphNormalizer:
                     [],
                 )
 
-                if node_id not in existing.metadata[
-                    "aliases"
-                ]:
-                    existing.metadata[
-                        "aliases"
-                    ].append(
+                if node_id not in existing.metadata["aliases"]:
+                    existing.metadata["aliases"].append(
                         node_id
                     )
 
@@ -110,8 +75,15 @@ class GraphNormalizer:
 
         for old_id, new_id in replacements.items():
 
-            if old_id != new_id:
-                del graph.nodes[old_id]
+            if old_id == new_id:
+                continue
+
+            node = graph.nodes.pop(
+                old_id
+            )
+
+            if new_id not in graph.nodes:
+                graph.nodes[new_id] = node
 
 
         for edge in graph.edges:
@@ -125,3 +97,6 @@ class GraphNormalizer:
                 edge.target = replacements[
                     edge.target
                 ]
+
+
+        return graph
