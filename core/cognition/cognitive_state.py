@@ -10,7 +10,6 @@ from core.planner.stack_builder import ArchitectureStack
 from core.planner.technology_plan import TechnologyPlan
 
 from core.graph.graph import Graph
-from core.graph.builder import GraphBuilder
 from core.graph.models import ApplicationGraph
 from core.graph.change_plan import ChangePlan
 
@@ -131,10 +130,6 @@ class CognitiveState:
     )
 
 
-    graph: GraphBuilder = field(
-        init=False
-    )
-
     execution_graph: Graph = field(
         default_factory=Graph
     )
@@ -160,9 +155,10 @@ class CognitiveState:
     # ---------------------------------------------------------
 
     def __post_init__(self) -> None:
-        self.graph = GraphBuilder(
-            self.task_graph
-        )
+        """
+        Initialize canonical runtime state.
+        """
+        pass
 
     # ---------------------------------------------------------
     # Compatibility aliases
