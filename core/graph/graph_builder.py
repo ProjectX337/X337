@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from core.graph.application_graph import ApplicationGraph
 from core.graph.nodes import (
+    FeatureNode,
     PageNode,
     ComponentNode,
 )
@@ -22,9 +23,29 @@ class GraphBuilder:
     def build(
         self,
         ui_spec,
+        features=None,
     ) -> ApplicationGraph:
 
         graph = ApplicationGraph()
+
+        if features:
+            for feature in features:
+                feature_id = (
+                    f"feature."
+                    f"{feature.slug}"
+                )
+
+                graph.add_node(
+                    FeatureNode(
+                        id=feature_id,
+                        name=feature.name,
+                        metadata={
+                            "description": (
+                                feature.description
+                            ),
+                        },
+                    )
+                )
 
         for page in ui_spec.pages:
 
@@ -43,6 +64,22 @@ class GraphBuilder:
             )
 
             graph.add_node(page_node)
+
+            if features:
+                for feature in features:
+                    if page.name in feature.pages:
+                        graph.add_edge(
+                            GraphEdge(
+                                source=(
+                                    f"feature."
+                                    f"{feature.slug}"
+                                ),
+                                target=page_id,
+                                edge_type=(
+                                    EdgeType.IMPLEMENTS
+                                ),
+                            )
+                        )
 
             for component in page.components:
 
