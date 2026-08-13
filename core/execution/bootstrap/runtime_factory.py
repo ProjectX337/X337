@@ -44,6 +44,10 @@ from core.execution.report.report_collector import (
     ExecutionReportCollector,
 )
 
+from core.execution.report.report_enricher import (
+    ExecutionReportEnricher,
+)
+
 
 def create_execution_runtime():
 
@@ -78,10 +82,13 @@ def create_execution_runtime():
 
     report_collector = ExecutionReportCollector()
 
+    report_enricher = ExecutionReportEnricher()
+
     return ExecutionRuntime(
         coordinator=coordinator,
         evolution_loop=evolution_loop,
         feedback_processor=feedback_processor,
         lifecycle=lifecycle,
         report_collector=report_collector,
+        report_enricher=report_enricher,
     )

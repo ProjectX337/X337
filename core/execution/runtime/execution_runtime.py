@@ -22,6 +22,10 @@ from core.execution.report.report_collector import (
     ExecutionReportCollector,
 )
 
+from core.execution.report.report_enricher import (
+    ExecutionReportEnricher,
+)
+
 
 class ExecutionRuntime:
     """
@@ -41,6 +45,7 @@ class ExecutionRuntime:
         feedback_processor: FeedbackProcessor,
         lifecycle: RuntimeLifecycle,
         report_collector: ExecutionReportCollector,
+        report_enricher: ExecutionReportEnricher,
     ):
 
         self.coordinator = coordinator
@@ -48,6 +53,7 @@ class ExecutionRuntime:
         self.feedback_processor = feedback_processor
         self.lifecycle = lifecycle
         self.report_collector = report_collector
+        self.report_enricher = report_enricher
 
 
     def execute(
@@ -72,10 +78,14 @@ class ExecutionRuntime:
             plan,
         )
 
-        return self.report_collector.collect(
+        report = self.report_collector.collect(
             execution_id=execution_id,
             plan=plan,
             result=result,
+        )
+
+        return self.report_enricher.enrich(
+            report,
         )
 
 
