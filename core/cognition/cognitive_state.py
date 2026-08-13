@@ -12,8 +12,10 @@ from core.planner.technology_plan import TechnologyPlan
 from core.graph.graph import Graph
 from core.graph.models import ApplicationGraph
 from core.graph.change_plan import ChangePlan
-from core.intelligence.models import ProductIntent
-from core.intelligence.models import ProductUnderstanding
+from core.intelligence.models import (
+    ProductIntent,
+    ProductUnderstanding,
+)
 
 
 @dataclass
