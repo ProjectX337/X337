@@ -1,30 +1,16 @@
-from __future__ import annotations
+"""
+Compatibility exports.
 
-from dataclasses import dataclass, field
-from enum import Enum
+Canonical graph storage lives in core.graph.models.
+This module preserves legacy node constructors.
+"""
 
-
-class NodeType(str, Enum):
-    FEATURE = "feature"
-    PAGE = "page"
-    COMPONENT = "component"
-    STATE = "state"
-    API_ENDPOINT = "api_endpoint"
-    DATABASE_MODEL = "database_model"
-    SOURCE_FILE = "source_file"
+from core.graph.models import (
+    GraphNode,
+    NodeKind as NodeType,
+)
 
 
-@dataclass
-class GraphNode:
-    id: str
-    name: str
-    node_type: NodeType
-    metadata: dict = field(
-        default_factory=dict
-    )
-
-
-@dataclass
 class FeatureNode(GraphNode):
     def __init__(
         self,
@@ -34,13 +20,12 @@ class FeatureNode(GraphNode):
     ):
         super().__init__(
             id=id,
+            kind=NodeType.FEATURE,
             name=name,
-            node_type=NodeType.FEATURE,
             metadata=metadata or {},
         )
 
 
-@dataclass
 class PageNode(GraphNode):
     def __init__(
         self,
@@ -50,13 +35,12 @@ class PageNode(GraphNode):
     ):
         super().__init__(
             id=id,
+            kind=NodeType.PAGE,
             name=name,
-            node_type=NodeType.PAGE,
             metadata=metadata or {},
         )
 
 
-@dataclass
 class ComponentNode(GraphNode):
     def __init__(
         self,
@@ -66,7 +50,16 @@ class ComponentNode(GraphNode):
     ):
         super().__init__(
             id=id,
+            kind=NodeType.COMPONENT,
             name=name,
-            node_type=NodeType.COMPONENT,
             metadata=metadata or {},
         )
+
+
+__all__ = [
+    "GraphNode",
+    "NodeType",
+    "FeatureNode",
+    "PageNode",
+    "ComponentNode",
+]

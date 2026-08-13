@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from core.spec.project_spec import ProjectSpec
 from core.graph.change_plan import ChangePlan
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.execution.events.event_bus import ExecutionEventBus
 
 

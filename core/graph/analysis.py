@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections import defaultdict
 
 from core.graph.application_graph import ApplicationGraph
-from core.graph.edges import EdgeType
-from core.graph.nodes import NodeType
+from core.graph.models import EdgeRelation
+from core.graph.models import NodeKind
 
 
 class GraphAnalyzer:
@@ -33,12 +33,12 @@ class GraphAnalyzer:
 
     def count_by_type(
         self,
-    ) -> dict[NodeType, int]:
+    ) -> dict[NodeKind, int]:
 
         counts = defaultdict(int)
 
         for node in self.graph.nodes.values():
-            counts[node.node_type] += 1
+            counts[node.kind] += 1
 
         return dict(counts)
 
@@ -69,7 +69,7 @@ class GraphAnalyzer:
 
             if (
                 edge.source == node_id
-                and edge.edge_type == EdgeType.REQUIRES
+                and edge.relation == EdgeRelation.REQUIRES
             ):
                 node = self.graph.get_node(
                     edge.target

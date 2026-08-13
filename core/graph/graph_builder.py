@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-from core.graph.application_graph import ApplicationGraph
-from core.graph.nodes import (
-    FeatureNode,
-    PageNode,
-    ComponentNode,
-)
-from core.graph.edges import (
+from core.graph.models import ApplicationGraph
+from core.graph.models import (
+    GraphNode,
     GraphEdge,
-    EdgeType,
+    NodeKind,
+    EdgeRelation,
 )
 
 
@@ -36,8 +33,9 @@ class GraphBuilder:
                 )
 
                 graph.add_node(
-                    FeatureNode(
+                    GraphNode(
                         id=feature_id,
+                        kind=NodeKind.FEATURE,
                         name=feature.name,
                         metadata={
                             "description": (
@@ -54,8 +52,9 @@ class GraphBuilder:
                 f"{page.name.lower().replace(' ', '_')}"
             )
 
-            page_node = PageNode(
+            page_node = GraphNode(
                 id=page_id,
+                kind=NodeKind.PAGE,
                 name=page.name,
                 metadata={
                     "route": page.route,
@@ -75,9 +74,7 @@ class GraphBuilder:
                                     f"{feature.slug}"
                                 ),
                                 target=page_id,
-                                edge_type=(
-                                    EdgeType.IMPLEMENTS
-                                ),
+                                relation=EdgeRelation.IMPLEMENTS,
                             )
                         )
 
@@ -88,8 +85,9 @@ class GraphBuilder:
                     f"{component.name.lower().replace(' ', '_')}"
                 )
 
-                component_node = ComponentNode(
+                component_node = GraphNode(
                     id=component_id,
+                    kind=NodeKind.COMPONENT,
                     name=component.name,
                     metadata={
                         "type": (
@@ -104,7 +102,7 @@ class GraphBuilder:
                     GraphEdge(
                         source=page_id,
                         target=component_id,
-                        edge_type=EdgeType.RENDERS,
+                        relation=EdgeRelation.RENDERS,
                     )
                 )
 

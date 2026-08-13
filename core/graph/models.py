@@ -70,6 +70,25 @@ class EdgeRelation(str, Enum):
 
 @dataclass(slots=True, init=False)
 class GraphNode:
+
+
+    # ---------------------------------------------------------
+    # Legacy compatibility API
+    # ---------------------------------------------------------
+
+    @property
+    def node_type(self):
+        """
+        Backwards-compatible alias.
+
+        Canonical field is `kind`.
+        """
+        return self.kind
+
+    @node_type.setter
+    def node_type(self, value):
+        self.kind = value
+
     """
     Canonical X337 graph node.
 
@@ -167,6 +186,20 @@ class GraphEdge:
         if weight != 1.0:
             self.metadata["weight"] = weight
 
+
+    @property
+    def edge_type(self):
+        """
+        Backwards-compatible alias for legacy graph consumers.
+
+        Canonical field is `relation`.
+        """
+        return self.relation
+
+    @edge_type.setter
+    def edge_type(self, value):
+        self.relation = value
+
     @property
     def weight(self) -> float:
         """
@@ -203,6 +236,32 @@ class GraphEdge:
 
 @dataclass
 class ApplicationGraph:
+
+
+    # ---------------------------------------------------------
+    # Legacy compatibility API
+    # ---------------------------------------------------------
+
+    def get_node(self, node_id):
+        """
+        Compatibility accessor.
+
+        Canonical storage remains self.nodes.
+        """
+        return self.nodes.get(node_id)
+
+
+    def has_node(self, node_id):
+        return node_id in self.nodes
+
+
+    def get_nodes(self):
+        return self.nodes
+
+
+    def get_edges(self):
+        return self.edges
+
     """
     Canonical application architecture graph.
 
