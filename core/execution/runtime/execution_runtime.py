@@ -66,6 +66,7 @@ class ExecutionRuntime:
         report_memory_sink: ReportMemorySink,
         report_analyzer: ExecutionReportAnalyzer,
         report_feedback_processor,
+        report_evolution_bridge,
     ):
 
         self.coordinator = coordinator
@@ -76,6 +77,7 @@ class ExecutionRuntime:
         self.report_enricher = report_enricher
         self.report_memory_sink = report_memory_sink
         self.report_feedback_processor = report_feedback_processor
+        self.report_evolution_bridge = report_evolution_bridge
         self.report_analyzer = report_analyzer
 
 
