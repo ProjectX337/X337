@@ -35,7 +35,7 @@ class ChangeRequestStage(PlanningStage):
 
             state.change_requests.append(
                 ChangeRequest(
-                    target_node=f"feature.{feature.name}",
+                    target_node=f"feature.{feature.name.lower()}",
                     change_type=ChangeType.ADD,
                     description=f"Implement feature {feature.name}",
                 )
