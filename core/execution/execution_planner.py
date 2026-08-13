@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from core.graph.change_plan import ChangePlan
 from core.execution.task import ExecutionTask
+from core.execution.context.execution_context import ExecutionContext
 from core.execution.mapping.signal_actions import resolve_action
 
 
@@ -16,6 +17,7 @@ class ExecutionPlanner:
     def create_tasks(
         self,
         plan: ChangePlan,
+        context: ExecutionContext | None = None,
     ) -> list[ExecutionTask]:
 
         tasks = []
@@ -31,6 +33,7 @@ class ExecutionPlanner:
                             plan.change.description
                         )
                     },
+                    context=context,
                 )
             )
 
