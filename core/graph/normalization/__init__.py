@@ -21,3 +21,7 @@ from .feature_normalizer import FeatureNormalizer
 __all__ = [
     "FeatureNormalizer",
 ]
+
+from .capability_dependency_normalizer import (
+    CapabilityDependencyNormalizer,
+)
