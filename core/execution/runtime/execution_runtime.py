@@ -26,6 +26,14 @@ from core.execution.report.report_enricher import (
     ExecutionReportEnricher,
 )
 
+from core.execution.report.report_memory_sink import (
+    ReportMemorySink,
+)
+
+from core.execution.report.report_enricher import (
+    ExecutionReportEnricher,
+)
+
 
 class ExecutionRuntime:
     """
@@ -46,6 +54,7 @@ class ExecutionRuntime:
         lifecycle: RuntimeLifecycle,
         report_collector: ExecutionReportCollector,
         report_enricher: ExecutionReportEnricher,
+        report_memory_sink: ReportMemorySink,
     ):
 
         self.coordinator = coordinator
@@ -53,6 +62,8 @@ class ExecutionRuntime:
         self.feedback_processor = feedback_processor
         self.lifecycle = lifecycle
         self.report_collector = report_collector
+        self.report_enricher = report_enricher
+        self.report_memory_sink = report_memory_sink
         self.report_enricher = report_enricher
 
 
