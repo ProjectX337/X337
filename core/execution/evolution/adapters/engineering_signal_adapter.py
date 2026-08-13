@@ -4,28 +4,50 @@ from core.execution.signals.execution_signal import (
     ExecutionSignal,
 )
 
+from core.graph.signals import (
+    EngineeringSignal,
+    SignalType,
+)
+
 
 class EngineeringSignalAdapter:
     """
-    Converts canonical graph EngineeringSignals
-    into legacy execution signals consumed by
-    the evolution runtime.
+    Converts legacy execution signals
+    into canonical engineering signals.
     """
 
     def convert(
         self,
         signal,
-    ) -> ExecutionSignal:
+    ) -> EngineeringSignal:
 
-        return ExecutionSignal(
-            signal_type=signal.signal_type.value,
-            action=signal.target_node,
-            target=signal.target_node,
-            severity=1.0,
-            message=(
-                signal.metadata.get(
-                    "reason",
-                    "",
-                )
+        if isinstance(
+            signal,
+            EngineeringSignal,
+        ):
+            return signal
+
+        return EngineeringSignal(
+            signal_type=self._map_type(
+                signal.signal_type
             ),
+            target_node=signal.action,
+            metadata={
+                "reason": signal.message,
+                "severity": signal.severity,
+            },
         )
+
+
+    def _map_type(
+        self,
+        signal_type: str,
+    ) -> SignalType:
+
+        if signal_type == "unstable_capability":
+            return SignalType.MODIFY_COMPONENT
+
+        if signal_type == "run_tests":
+            return SignalType.RUN_TESTS
+
+        return SignalType.MODIFY_COMPONENT
