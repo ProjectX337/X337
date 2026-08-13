@@ -15,9 +15,7 @@ class CapabilityResolutionStage(PlanningStage):
     resolved implementation capabilities.
     """
 
-    requires = {
-        "capability_hypotheses",
-    }
+    requires = set()
 
     provides = {
         "resolved_capabilities",
@@ -31,17 +29,17 @@ class CapabilityResolutionStage(PlanningStage):
         context: CognitiveState,
     ) -> None:
 
-        hypotheses = context.capability_hypotheses
+        hypotheses = [
+            CapabilityHypothesis(
+                name=name,
+                confidence=0.5,
+                source="capability_reasoner",
+            )
+            for name in context.capability_candidates
+        ]
 
         if not hypotheses:
-            hypotheses = [
-                CapabilityHypothesis(
-                    name=name,
-                    confidence=0.5,
-                    source="compatibility",
-                )
-                for name in context.capability_candidates
-            ]
+            hypotheses = context.capability_hypotheses
 
         context.resolved_capabilities = (
             self.resolver.resolve(

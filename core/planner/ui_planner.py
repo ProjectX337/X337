@@ -67,13 +67,16 @@ class UIPlanner:
 
         return result
 
+
     def _dedupe_components(
         self,
         components: list[UIComponent],
     ) -> list[UIComponent]:
+
         by_name: dict[str, UIComponent] = {}
 
         for component in components:
+
             key = component.name.lower().strip()
 
             existing = by_name.get(key)
@@ -82,36 +85,58 @@ class UIPlanner:
                 by_name[key] = component
                 continue
 
-            # Merge canonical component intelligence instead of
-            # discarding later declarations.
+
+            #
+            # Prefer feature ownership over generic product ownership
+            #
             if (
                 existing.component_type != "feature"
                 and component.component_type == "feature"
             ):
                 existing.component_type = "feature"
 
-            existing.metadata.update(
-                {
-                    key: value
-                    for key, value in component.metadata.items()
-                    if key not in {"features"}
-                }
-            )
 
-            feature_names = set(
-                existing.metadata.get("features", [])
-            )
-
-            feature_names.update(
-                component.metadata.get("features", [])
-            )
-
-            if feature_names:
-                existing.metadata["features"] = sorted(
-                    feature_names
+            #
+            # Merge feature ownership
+            #
+            existing_features = set(
+                existing.metadata.get(
+                    "features",
+                    [],
                 )
+            )
+
+            incoming_features = set(
+                component.metadata.get(
+                    "features",
+                    [],
+                )
+            )
+
+            merged_features = (
+                existing_features
+                | incoming_features
+            )
+
+            existing.metadata["features"] = sorted(
+                merged_features
+            )
+
+
+            #
+            # Preserve all metadata
+            #
+            for k, v in component.metadata.items():
+
+                if k == "features":
+                    continue
+
+                if k not in existing.metadata:
+                    existing.metadata[k] = v
+
 
         return list(by_name.values())
+
 
     # ---------------------------------------------------------
     # Product profile defaults

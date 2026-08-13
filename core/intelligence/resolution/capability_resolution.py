@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+from core.capabilities.capability import Capability
+from core.capabilities.capability_registry import CapabilityRegistry
 from core.intelligence.artifacts.capability_hypothesis import (
     CapabilityHypothesis,
 )
@@ -8,6 +10,8 @@ from core.intelligence.artifacts.capability_hypothesis import (
 @dataclass
 class ResolvedCapability:
     name: str
+
+    capability: Capability | None = None
 
     features: list[str] = field(
         default_factory=list
@@ -32,6 +36,9 @@ class CapabilityResolution:
         ],
     }
 
+    def __init__(self):
+        self.registry = CapabilityRegistry()
+
     def resolve(
         self,
         hypotheses: list[CapabilityHypothesis],
@@ -46,9 +53,14 @@ class CapabilityResolution:
                 [],
             )
 
+            capability = self.registry.get(
+                hypothesis.name
+            )
+
             resolved.append(
                 ResolvedCapability(
                     name=hypothesis.name,
+                    capability=capability,
                     features=features,
                     confidence=hypothesis.confidence,
                 )
