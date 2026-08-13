@@ -744,9 +744,7 @@ class GeneratorHandler(BaseHTTPRequestHandler):
             # 2. Canonical change planning
             # -------------------------------------------------
 
-            changes = change_engine.detect(
-                spec.feature_models
-            )
+            changes = []
 
             # -------------------------------------------------
             # 3. Canonical generation context
@@ -754,7 +752,7 @@ class GeneratorHandler(BaseHTTPRequestHandler):
 
             context = create_generator_context(
                 spec,
-                changes=changes["plans"],
+                changes=changes,
             )
 
             # -------------------------------------------------
