@@ -53,6 +53,14 @@ class ExecutionIntelligenceEngine:
             history,
         )
 
+        signals = (
+            self.report_evolution_bridge
+            .feedback_processor
+            .process(
+                analysis
+            )
+        )
+
         evolution_results = (
             self.report_evolution_bridge.process(
                 analysis,
@@ -63,7 +71,7 @@ class ExecutionIntelligenceEngine:
         intelligence_result = ExecutionIntelligenceResult(
             analysis=analysis,
             evolution_plan=evolution_results,
-            signals=[],
+            signals=signals,
             confidence=1.0,
         )
 
