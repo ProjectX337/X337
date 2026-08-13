@@ -70,6 +70,10 @@ class CognitiveState:
     # Derived from product intent reasoning.
     product_understanding: ProductUnderstanding | None = None
 
+    # Generated product specification.
+    product_spec = None
+
+
     # Intelligence-derived capability hypotheses.
     # Produced before concrete capability matching.
     capability_candidates: list[str] = field(
