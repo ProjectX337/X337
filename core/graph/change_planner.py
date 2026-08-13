@@ -39,11 +39,40 @@ class ChangePlanner:
             signals=signals.signals,
         )
 
+        execution_phases = []
+
+        signal_types = {
+            signal.signal_type.value
+            for signal in signals.signals
+        }
+
+        if "modify_component" in signal_types:
+            execution_phases.append(
+                "modify_components"
+            )
+
+        if "update_route" in signal_types:
+            execution_phases.append(
+                "update_routes"
+            )
+
+        if "update_api_contract" in signal_types:
+            execution_phases.append(
+                "update_api_contracts"
+            )
+
+        if "update_database" in signal_types:
+            execution_phases.append(
+                "update_database"
+            )
+
+        if "run_tests" in signal_types:
+            execution_phases.append(
+                "run_tests"
+            )
+
         plan.execution_order.extend(
-            [
-                signal.target_node
-                for signal in signals.signals
-            ]
+            execution_phases
         )
 
         plan.add_validation(
