@@ -36,7 +36,6 @@ class KnowledgeGraphStage(PlanningStage):
 
     provides = {
         "task_graph",
-        "application_graph",
     }
 
     def run(

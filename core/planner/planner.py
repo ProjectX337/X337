@@ -23,6 +23,20 @@ class Planner:
             parsed_prompt=spec.parsed,
             intent=spec.intent,
             technology_plan=spec.technologies,
-            product_spec=None,
+            product_spec=getattr(
+                spec,
+                "product_spec",
+                None,
+            ),
+            product_understanding=getattr(
+                spec,
+                "product_understanding",
+                None,
+            ),
+            application_graph=getattr(
+                spec,
+                "application_graph",
+                None,
+            ),
             features=spec.feature_models,
         )

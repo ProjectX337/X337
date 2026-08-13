@@ -68,11 +68,11 @@ class Intent:
 
 @dataclass
 class PlanningResult:
+
     """
-    Complete output from the legacy planner API.
+    Complete output from the planner API.
 
     FeatureSpec is the canonical feature domain model.
-    imported from their owning packages.
     """
 
     parsed_prompt: ParsedPrompt
@@ -83,7 +83,13 @@ class PlanningResult:
         default_factory=TechnologyPlan
     )
 
-
     features: List[FeatureSpec] = field(
         default_factory=list
     )
+
+    # Intelligence artifacts
+    product_spec: object | None = None
+
+    product_understanding: object | None = None
+
+    application_graph: object | None = None
