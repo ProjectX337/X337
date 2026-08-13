@@ -29,3 +29,15 @@ class CapabilityHypothesis:
     metadata: dict = field(
         default_factory=dict
     )
+
+    def __eq__(self, other):
+        if isinstance(other, str):
+            return self.name == other
+
+        if isinstance(other, CapabilityHypothesis):
+            return self.name == other.name
+
+        return NotImplemented
+
+    def __hash__(self):
+        return hash(self.name)
