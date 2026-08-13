@@ -30,6 +30,10 @@ from core.execution.report.report_memory_sink import (
     ReportMemorySink,
 )
 
+from core.execution.report.report_analyzer import (
+    ExecutionReportAnalyzer,
+)
+
 from core.execution.report.report_enricher import (
     ExecutionReportEnricher,
 )
@@ -41,6 +45,7 @@ class ExecutionRuntime:
 
     Owns:
         execution
+        reporting
         feedback
         learning
         evolution
@@ -55,6 +60,7 @@ class ExecutionRuntime:
         report_collector: ExecutionReportCollector,
         report_enricher: ExecutionReportEnricher,
         report_memory_sink: ReportMemorySink,
+        report_analyzer: ExecutionReportAnalyzer,
     ):
 
         self.coordinator = coordinator
@@ -64,7 +70,7 @@ class ExecutionRuntime:
         self.report_collector = report_collector
         self.report_enricher = report_enricher
         self.report_memory_sink = report_memory_sink
-        self.report_enricher = report_enricher
+        self.report_analyzer = report_analyzer
 
 
     def execute(
