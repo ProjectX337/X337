@@ -15,6 +15,10 @@ from core.intelligence.reasoning.capability_rules import (
     infer_capabilities,
 )
 
+from core.intelligence.reasoning.quality_rules import (
+    infer_quality_attributes,
+)
+
 
 class ProductIntentAnalyzer:
     """
@@ -40,8 +44,10 @@ class ProductIntentAnalyzer:
             )
         )
 
+        domain = infer_domain(text)
+
         return ProductIntent(
-            domain=infer_domain(text),
+            domain=domain,
 
             goals=[
                 parsed.description
@@ -54,6 +60,11 @@ class ProductIntentAnalyzer:
             ),
 
             capabilities=capabilities,
+
+            quality_attributes=infer_quality_attributes(
+                text,
+                domain,
+            ),
 
             metadata={
                 "source": (
