@@ -6,6 +6,10 @@ from core.graph.normalization.component_identity import (
     normalize_component_slug,
 )
 
+from core.graph.normalization.identity_migration import (
+    migrate_identity_keys,
+)
+
 
 class ComponentNormalizer:
     """
@@ -70,23 +74,10 @@ class ComponentNormalizer:
                 replacements[node_id] = canonical_id
 
 
-        for old_id, new_id in replacements.items():
-
-            if old_id != new_id:
-                del graph.nodes[old_id]
-
-
-        for edge in graph.edges:
-
-            if edge.source in replacements:
-                edge.source = replacements[
-                    edge.source
-                ]
-
-            if edge.target in replacements:
-                edge.target = replacements[
-                    edge.target
-                ]
+        migrate_identity_keys(
+            graph,
+            replacements,
+        )
 
 
         return graph
