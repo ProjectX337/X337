@@ -28,6 +28,18 @@ from core.execution.memory.execution_memory import (
     ExecutionMemory,
 )
 
+from core.execution.events.event_bus import (
+    ExecutionEventBus,
+)
+
+from core.execution.observability.execution_metrics import (
+    ExecutionMetrics,
+)
+
+from core.execution.lifecycle.runtime_lifecycle import (
+    RuntimeLifecycle,
+)
+
 
 def create_execution_runtime():
 
@@ -50,8 +62,19 @@ def create_execution_runtime():
         memory=memory,
     )
 
+    event_bus = ExecutionEventBus()
+
+    metrics = ExecutionMetrics()
+
+    lifecycle = RuntimeLifecycle(
+        event_bus=event_bus,
+        metrics=metrics,
+        feedback_processor=feedback_processor,
+    )
+
     return ExecutionRuntime(
         coordinator=coordinator,
         evolution_loop=evolution_loop,
         feedback_processor=feedback_processor,
+        lifecycle=lifecycle,
     )
