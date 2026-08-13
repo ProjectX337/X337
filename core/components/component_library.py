@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 
-from core.components.component_schema import (
+from core.knowledge.component_definition import (
     ComponentDefinition
 )
 
