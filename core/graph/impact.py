@@ -49,18 +49,34 @@ class ImpactAnalyzer:
                 affected_nodes=[],
             )
 
-        for edge in self.graph.edges:
+        visited = set()
 
-            if edge.source == node.id:
+        def walk(node_id: str):
 
-                target = self.graph.get_node(
-                    edge.target
-                )
+            if node_id in visited:
+                return
 
-                if target:
-                    affected.append(
-                        target.id
+            visited.add(node_id)
+
+            for edge in self.graph.edges:
+
+                if edge.source == node_id:
+
+                    target = self.graph.get_node(
+                        edge.target
                     )
+
+                    if target:
+
+                        affected.append(
+                            target.id
+                        )
+
+                        walk(
+                            target.id
+                        )
+
+        walk(node.id)
 
         return ImpactReport(
             changed_node=node.id,

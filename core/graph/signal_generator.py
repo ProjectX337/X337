@@ -26,12 +26,16 @@ class SignalGenerator:
 
         signals = EngineeringSignalSet()
 
-        signals.add(
-            EngineeringSignal(
-                signal_type=SignalType.MODIFY_COMPONENT,
-                target_node=change.target_node,
-            )
-        )
+        for node_id in impact.affected_nodes:
+
+            if node_id.startswith("component."):
+
+                signals.add(
+                    EngineeringSignal(
+                        signal_type=SignalType.MODIFY_COMPONENT,
+                        target_node=node_id,
+                    )
+                )
 
         for node_id in impact.affected_nodes:
 
