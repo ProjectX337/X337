@@ -49,15 +49,33 @@ class ProjectPlanner:
         ]
         )
 
-    def plan(
+    def plan_with_state(
         self,
         message: str,
-    ):
+    ) -> CognitiveState:
+        """
+        Execute planning and return the full cognitive state.
+
+        Used for introspection, evolution planning,
+        debugging, and agent coordination.
+        """
 
         state = CognitiveState(
             prompt=message
         )
 
         self.pipeline.run(state)
+
+        return state
+
+
+    def plan(
+        self,
+        message: str,
+    ):
+
+        state = self.plan_with_state(
+            message
+        )
 
         return state.project_spec
