@@ -15,6 +15,9 @@ class ProjectSpecStage(PlanningStage):
         "capabilities",
         "feature_models",
         "technologies",
+        "product_spec",
+        "product_understanding",
+        "application_graph",
     }
 
     provides = {
@@ -48,6 +51,18 @@ class ProjectSpecStage(PlanningStage):
         application_graph=context.application_graph,
 
             feature_models=context.feature_models,
+
+            product_spec=getattr(
+                context,
+                "product_spec",
+                None,
+            ),
+
+            product_understanding=getattr(
+                context,
+                "product_understanding",
+                None,
+            ),
 
             ui_spec=context.ui_spec,
 
