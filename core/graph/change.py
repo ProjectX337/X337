@@ -29,23 +29,3 @@ class ChangeRequest:
         default_factory=dict
     )
 
-
-@dataclass
-class ChangePlan:
-    """
-    Collection of coordinated application changes.
-    """
-
-    changes: list[ChangeRequest] = field(
-        default_factory=list
-    )
-
-    def add(
-        self,
-        change: ChangeRequest,
-    ) -> None:
-        self.changes.append(change)
-
-    @property
-    def count(self) -> int:
-        return len(self.changes)

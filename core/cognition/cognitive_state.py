@@ -12,6 +12,7 @@ from core.planner.technology_plan import TechnologyPlan
 from core.graph.graph import Graph
 from core.graph.builder import GraphBuilder
 from core.graph.models import ApplicationGraph
+from core.graph.change_plan import ChangePlan
 
 
 @dataclass
@@ -118,6 +119,17 @@ class CognitiveState:
     application_graph: ApplicationGraph = field(
         default_factory=ApplicationGraph
     )
+
+    # Application evolution requests
+    change_requests: list = field(
+        default_factory=list
+    )
+
+    # Generated evolution plans
+    change_plans: list[ChangePlan] = field(
+        default_factory=list
+    )
+
 
     graph: GraphBuilder = field(
         init=False

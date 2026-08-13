@@ -17,6 +17,18 @@ class PlanStatus(str, Enum):
 
 @dataclass
 class ChangePlan:
+    """
+    Canonical application evolution plan.
+
+    Converts:
+        ChangeRequest
+            ↓
+        Impact
+            ↓
+        EngineeringSignals
+            ↓
+        Execution
+    """
 
     change: ChangeRequest
 
