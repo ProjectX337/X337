@@ -13,6 +13,7 @@ from core.graph.graph import Graph
 from core.graph.models import ApplicationGraph
 from core.graph.change_plan import ChangePlan
 from core.intelligence.models import ProductIntent
+from core.intelligence.models import ProductUnderstanding
 
 
 @dataclass
@@ -61,6 +62,10 @@ class CognitiveState:
     # Canonical product understanding.
     # Replaces keyword-only intent reasoning over time.
     product_intent: ProductIntent | None = None
+
+    # Synthesized product understanding.
+    # Derived from product intent reasoning.
+    product_understanding: ProductUnderstanding | None = None
 
     # Intelligence-derived capability hypotheses.
     # Produced before concrete capability matching.
