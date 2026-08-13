@@ -15,3 +15,9 @@ __all__ = [
     "normalize_capability_slug",
     "normalize_feature_slug",
 ]
+
+from .feature_normalizer import FeatureNormalizer
+
+__all__ = [
+    "FeatureNormalizer",
+]
