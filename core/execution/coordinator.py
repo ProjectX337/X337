@@ -22,6 +22,9 @@ class ExecutionReport:
 
     @property
     def success(self) -> bool:
+        if not self.results:
+            return False
+
         return all(
             result.success
             for result in self.results
