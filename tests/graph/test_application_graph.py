@@ -1,39 +1,47 @@
-from core.graph.application_graph import ApplicationGraph
-from core.graph.nodes import (
-    PageNode,
-    ComponentNode,
-)
-from core.graph.edges import (
+from core.graph.application_graph import (
+    ApplicationGraph,
+    GraphNode,
+    GraphNodeType,
     GraphEdge,
-    EdgeType,
+    GraphEdgeType,
 )
 
 
-def test_application_graph_nodes_and_edges():
+def test_application_graph_contract():
 
     graph = ApplicationGraph()
 
-    page = PageNode(
-        id="page.dashboard",
-        name="Dashboard",
-    )
-
-    component = ComponentNode(
-        id="component.chart",
-        name="Chart",
-    )
-
-    graph.add_node(page)
-    graph.add_node(component)
-
-    graph.add_edge(
-        GraphEdge(
-            source=page.id,
-            target=component.id,
-            edge_type=EdgeType.RENDERS,
+    graph.add_node(
+        GraphNode(
+            id="dashboard",
+            type=GraphNodeType.PAGE,
+            name="Dashboard",
         )
     )
 
-    assert len(graph.nodes) == 2
-    assert len(graph.edges) == 1
-    assert graph.edges[0].edge_type == EdgeType.RENDERS
+    graph.add_node(
+        GraphNode(
+            id="lesson_card",
+            type=GraphNodeType.COMPONENT,
+            name="LessonCard",
+        )
+    )
+
+    graph.add_edge(
+        GraphEdge(
+            source="dashboard",
+            target="lesson_card",
+            type=GraphEdgeType.RENDERS,
+        )
+    )
+
+    result = graph.as_dict()
+
+    assert len(result["nodes"]) == 2
+    assert len(result["edges"]) == 1
+
+    pages = graph.find_nodes(
+        GraphNodeType.PAGE
+    )
+
+    assert pages[0].name == "Dashboard"
