@@ -6,10 +6,6 @@ from core.intelligence.models import (
     ProductIntent,
 )
 
-from core.graph.application_graph import (
-    GraphNodeType,
-)
-
 
 def test_product_intelligence_pipeline():
 
@@ -28,10 +24,3 @@ def test_product_intelligence_pipeline():
         "AI Tutor"
     )
 
-    entities = result["graph"].find_nodes(
-        GraphNodeType.ENTITY
-    )
-
-    assert entities[0].name == (
-        "student"
-    )

@@ -11,11 +11,6 @@ from core.intelligence.product_spec import (
     ProductSpec,
 )
 
-from core.graph.builders.product_spec_builder import (
-    ProductSpecGraphBuilder,
-)
-
-
 class ProductIntelligencePipeline:
     """
     Converts product reasoning into
@@ -35,10 +30,6 @@ class ProductIntelligencePipeline:
     def __init__(self):
         self.synthesizer = (
             ProductUnderstandingSynthesizer()
-        )
-
-        self.graph_builder = (
-            ProductSpecGraphBuilder()
         )
 
     def run(
@@ -62,14 +53,7 @@ class ProductIntelligencePipeline:
             ),
         )
 
-        graph = (
-            self.graph_builder.build(
-                spec
-            )
-        )
-
         return {
             "understanding": understanding,
             "spec": spec,
-            "graph": graph,
         }
