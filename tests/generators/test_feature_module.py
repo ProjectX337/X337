@@ -2,6 +2,7 @@ from core.build.build_plan import BuildStep
 from core.generators.file_builder import FileBuilder
 from core.generators.generator_context import GeneratorContext
 from core.generators.react.feature_module import FeatureModule
+from core.spec.models.feature_spec import FeatureSpec
 from core.planner.project_planner import ProjectPlanner
 
 
@@ -13,8 +14,11 @@ def test_feature_module():
         "Build an AI SaaS"
     )
 
-    spec.features = [
-        "authentication"
+    spec.feature_models = [
+        FeatureSpec(
+            name="Authentication",
+            slug="authentication",
+        )
     ]
 
     context = GeneratorContext(

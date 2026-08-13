@@ -1,5 +1,7 @@
-{% if feature.pages %}
-export * from "./pages/{{ feature.pages[0]|lower }}";
-{% else %}
+{% for filename in feature.page_filenames %}
+export * from "./pages/{{ filename }}";
+{% endfor %}
+
+{% if not feature.page_filenames %}
 export {};
 {% endif %}

@@ -1,9 +1,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional
+from typing import List
 
 from core.planner.technology_plan import TechnologyPlan
+from core.product.models import (
+    ProductRequirement,
+    UserGoal,
+    UserFlow,
+    ProductFeature,
+    ProductSpec,
+)
+from core.spec.models.feature_spec import FeatureSpec
+from core.spec.models.design_system import DesignSystem
 
 
 # ============================================================
@@ -33,7 +42,6 @@ class ParsedPrompt:
     domain: str = ""
 
 
-
 # ============================================================
 # User Intent
 # ============================================================
@@ -45,164 +53,40 @@ class Intent:
     """
 
     frontend: bool = False
-
     backend: bool = False
-
     database: bool = False
-
     authentication: bool = False
-
     deployment: bool = False
-
     testing: bool = False
-
     documentation: bool = False
-
     api: bool = False
-
     website: bool = False
-
     dashboard: bool = False
-
     ai: bool = False
 
-
-
-# ============================================================
-# Technology Plan
-# ============================================================
-
-@dataclass
-# ============================================================
-# Product Architecture Models
-# ============================================================
-
-
-@dataclass
-class ProductWorkflow:
-    """
-    Represents a user journey.
-    """
-
-    name: str
-
-    description: str
-
-
-
-@dataclass
-class DesignSystem:
-    """
-    AI-generated visual identity.
-    """
-
-    name: str = "Neural Glass"
-
-
-    typography: Dict[str, str] = field(
-        default_factory=lambda:
-        {
-            "heading": "Inter Bold",
-            "body": "Inter Regular"
-        }
-    )
-
-
-    colors: Dict[str, str] = field(
-        default_factory=lambda:
-        {
-            "primary": "cyan",
-            "background": "dark"
-        }
-    )
-
-
-    component_style: str = (
-        "modern glassmorphism"
-    )
-
-
-    animation_style: str = (
-        "smooth AI motion"
-    )
-
-
-
-@dataclass
-class ProductSpec:
-    """
-    Complete product definition.
-
-    This replaces simple page generation
-    with application intelligence.
-    """
-
-    name: str
-
-    description: str
-
-
-    category: str = ""
-
-
-    user_goals: List[str] = field(
-        default_factory=list
-    )
-
-
-    workflows: List[ProductWorkflow] = field(
-        default_factory=list
-    )
-
-
-    features: List[str] = field(
-        default_factory=list
-    )
-
-
-    design_system: DesignSystem = field(
-        default_factory=DesignSystem
-    )
-
-
-
-# ============================================================
-# Feature Specification
-# ============================================================
-#
-# FeatureSpec is defined canonically in:
-# core.spec.models.feature_spec
-#
-# Keep this import here temporarily for backwards compatibility
-# with existing planner imports.
-#
-from core.spec.models.feature_spec import FeatureSpec
 
 # ============================================================
 # Final Planning Result
 # ============================================================
 
-
-
 @dataclass
 class PlanningResult:
     """
-    Complete output from planner pipeline.
+    Complete output from the legacy planner API.
+
+    ProductSpec and FeatureSpec are canonical domain models
+    imported from their owning packages.
     """
 
     parsed_prompt: ParsedPrompt
 
-
     intent: Intent
-
 
     technology_plan: TechnologyPlan = field(
         default_factory=TechnologyPlan
     )
 
-
-    product_spec: Optional[ProductSpec] = None
-
+    product_spec: ProductSpec | None = None
 
     features: List[FeatureSpec] = field(
         default_factory=list

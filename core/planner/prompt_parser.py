@@ -108,18 +108,17 @@ class PromptParser:
         self,
         prompt,
     ):
+        """
+        Extract an explicit product name or infer a meaningful
+        product identity from the opening product description.
+        """
 
-        patterns = [
-
+        explicit_patterns = [
             r"called\s+([A-Za-z0-9_-]+)",
-
             r"named\s+([A-Za-z0-9_-]+)",
-
-            r"for\s+([A-Za-z0-9_-]+)",
         ]
 
-        for pattern in patterns:
-
+        for pattern in explicit_patterns:
             match = re.search(
                 pattern,
                 prompt,
@@ -129,7 +128,79 @@ class PromptParser:
             if match:
                 return match.group(1)
 
-        return ""
+        match = re.search(
+            r"^(?:build|create|make|develop|design)\s+(.+)$",
+            prompt.strip(),
+            re.IGNORECASE,
+        )
+
+        if not match:
+            return ""
+
+        description = match.group(1).strip()
+
+        # Remove leading article only.
+        description = re.sub(
+            r"^(?:a|an|the)\s+",
+            "",
+            description,
+            flags=re.IGNORECASE,
+        )
+
+        # Keep the complete product phrase when it ends in a
+        # generic product-type noun.
+        generic_suffixes = (
+            "application",
+            "app",
+            "platform",
+            "system",
+            "tool",
+            "software",
+            "website",
+            "dashboard",
+            "portal",
+        )
+
+        words = description.split()
+
+        # Find the first generic product noun and retain the
+        # meaningful phrase immediately before it.
+        for index, word in enumerate(words):
+            normalized = re.sub(
+                r"[^A-Za-z0-9_-]",
+                "",
+                word,
+            ).lower()
+
+            if normalized in generic_suffixes:
+                meaningful = words[:index]
+
+                if meaningful:
+                    return "-".join(
+                        re.sub(
+                            r"[^A-Za-z0-9_-]",
+                            "",
+                            value,
+                        )
+                        for value in meaningful
+                    )
+
+                return normalized
+
+        # No generic suffix: stop before common requirement clauses.
+        words = re.split(
+            r"\s+(?:with|using|for|that|which|including)\s+",
+            description,
+            maxsplit=1,
+            flags=re.IGNORECASE,
+        )[0].strip()
+
+        tokens = re.findall(
+            r"[A-Za-z0-9_-]+",
+            words,
+        )
+
+        return "-".join(tokens[:8])
 
     def _keywords(
         self,

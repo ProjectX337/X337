@@ -1,75 +1,28 @@
 from __future__ import annotations
 
-from core.planner.architecture_selector import ArchitectureSelector
-from core.planner.intent_classifier import IntentClassifier
 from core.planner.models import PlanningResult
-from core.planner.prompt_parser import PromptParser
-from core.planner.stack_builder import StackBuilder
-from core.planner.technology_resolver import TechnologyResolver
+from core.planner.project_planner import ProjectPlanner
 
 
 class Planner:
     """
-    High-level planning pipeline.
+    Legacy compatibility adapter.
 
-    This is the single public entry point for all
-    planning operations inside X337.
+    The canonical planning engine is ProjectPlanner, which returns
+    ProjectSpec. This class preserves the historical PlanningResult
+    API without owning a second planning pipeline.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
+        self.project_planner = ProjectPlanner()
 
-        self.parser = PromptParser()
-
-        self.intent_classifier = IntentClassifier()
-
-        self.architecture_selector = ArchitectureSelector()
-
-        self.stack_builder = StackBuilder()
-
-        self.technology_resolver = TechnologyResolver()
-
-    # ---------------------------------------------------------
-
-    def plan(
-        self,
-        prompt: str,
-    ) -> PlanningResult:
-
-        parsed = self.parser.parse(prompt)
-
-        intent = self.intent_classifier.classify(parsed)
-
-        candidates = self.architecture_selector.select(intent)
-
-        stack = self.stack_builder.build(
-            candidates,
-            intent,
-        )
-
-        technologies = self.technology_resolver.resolve(
-            stack,
-        )
-
-        architecture = " + ".join(
-            filter(
-                None,
-                [
-                    stack.frontend,
-                    stack.backend,
-                    stack.ai,
-                    stack.static_site,
-                    stack.mobile,
-                    stack.desktop,
-                ],
-            )
-        )
-
-        framework = stack.backend or stack.frontend or ""
+    def plan(self, prompt: str) -> PlanningResult:
+        spec = self.project_planner.plan(prompt)
 
         return PlanningResult(
-            parsed=parsed,
-            intent=intent,
-            architecture=architecture,
-            framework=framework,
-            technologies=technologies,
+            parsed_prompt=spec.parsed,
+            intent=spec.intent,
+            technology_plan=spec.technologies,
+            product_spec=None,
+            features=spec.feature_models,
         )

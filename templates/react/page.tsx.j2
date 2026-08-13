@@ -1,21 +1,13 @@
 import AppShell from "../AppShell";
 
-{% for component in components %}
-import {{ component.name }} from "../components/{{ component.name }}";
+{% for component in component_imports %}
+import {{ component.name }} from "{{ component.import_path }}";
 {% endfor %}
 
 export default function {{ page_name }}() {
   return (
     <AppShell>
-      <main className="min-h-screen">
-        <section className="space-y-4">
-          <h1>{{ page_name }}</h1>
-
-{% for component in components %}
-          <{{ component.name }} />
-{% endfor %}
-        </section>
-      </main>
+{{ composition | indent(6, true) }}
     </AppShell>
   );
 }

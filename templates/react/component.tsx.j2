@@ -17,19 +17,10 @@ export default function {{ component.name }}({
   children,
 }: {{ component.name }}Props) {
   return (
-    <section
-      className="{{ component.name | lower }}"
-{% if "hover" in states %}
-      data-state="hover-enabled"
-{% endif %}
-{% if "disabled" in states %}
-      data-state-disabled="true"
-{% endif %}
-    >
-      <div>
-        {{ component.name }}
-      </div>
-
+    <section className="x337-card">
+      <span className="x337-eyebrow">COMPONENT</span>
+      <h3>{{ component.name }}</h3>
+      <p>Generated reusable interface component.</p>
       {children}
     </section>
   );

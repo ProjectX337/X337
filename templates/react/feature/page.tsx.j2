@@ -1,8 +1,9 @@
-export default function {{ page }}() {
+{% for component in component_imports %}
+import {{ component.name }} from "{{ component.import_path }}";
+{% endfor %}
 
-    return (
-        <div>
-            <h1>{{ page }}</h1>
-        </div>
-    )
+export default function {{ page_name }}() {
+  return (
+{{ composition | indent(4, true) }}
+  );
 }

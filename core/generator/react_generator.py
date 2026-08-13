@@ -9,7 +9,7 @@ from core.generator.component_generator import ComponentGenerator
 class ReactGenerator:
     """
     Generates React + TypeScript applications
-    from ApplicationBlueprint.
+    from the canonical generation context.
     """
 
 

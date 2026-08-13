@@ -20,7 +20,12 @@ class UIBlueprintBuilder:
     def _build_composition(
         self,
         composition,
+        *,
+        page_name: str,
+        page_components: list[UIComponent],
     ) -> UILayoutNode:
+        """Build a page-specific canonical composition tree."""
+
         root = UILayoutNode(
             name="ApplicationShell",
             node_type="container",
@@ -32,38 +37,80 @@ class UIBlueprintBuilder:
             },
         )
 
+        components_by_name = {
+            component.name.lower().strip(): component
+            for component in page_components
+        }
+
         for section_name in composition.layout.structure:
             section = UILayoutNode(
                 name=section_name,
                 node_type="section",
             )
 
+            section_key = section_name.lower().strip()
+
             matching_component = next(
                 (
-                    component_name
-                    for component_name
-                    in composition.components.components
-                    if component_name.lower()
-                    in section_name.lower()
-                    or section_name.lower()
-                    in component_name.lower()
+                    component
+                    for name, component
+                    in components_by_name.items()
+                    if (
+                        name in section_key
+                        or section_key in name
+                    )
                 ),
                 None,
             )
 
-            if matching_component:
-                section.component = UIComponent(
-                    name=matching_component,
-                    component_type="generated",
-                    metadata={
-                        "source": "design_intelligence",
-                        "section": section_name,
-                    },
-                )
+            if matching_component is not None:
+                section.component = matching_component
 
             root.children.append(section)
 
+        # If no semantic section matched a page component, retain
+        # the component in a content section rather than dropping it.
+        matched = {
+            node.component.name.lower().strip()
+            for node in root.children
+            if node.component is not None
+        }
+
+        unmatched = [
+            component
+            for component in page_components
+            if component.name.lower().strip()
+            not in matched
+        ]
+
+        if unmatched:
+            content = next(
+                (
+                    node
+                    for node in root.children
+                    if node.name.lower() == "content"
+                ),
+                None,
+            )
+
+            if content is None:
+                content = UILayoutNode(
+                    name="Content",
+                    node_type="section",
+                )
+                root.children.append(content)
+
+            for component in unmatched:
+                content.children.append(
+                    UILayoutNode(
+                        name=component.name,
+                        node_type="container",
+                        component=component,
+                    )
+                )
+
         return root
+
 
     def build(
         self,
@@ -78,7 +125,11 @@ class UIBlueprintBuilder:
         attached by the UI planner when canonical pages are created.
         """
 
-        composition_tree = self._build_composition(composition)
+        composition_tree = self._build_composition(
+            composition,
+            page_name=application_name,
+            page_components=[],
+        )
 
         pages = []
 
@@ -111,11 +162,18 @@ class UIBlueprintBuilder:
     def build_composition(
         self,
         composition,
+        *,
+        page_name: str,
+        page_components: list[UIComponent],
     ) -> UILayoutNode:
         """
-        Build the canonical layout/composition tree.
+        Build a page-specific canonical layout tree.
 
-        This is intentionally separate from UIBlueprint because
-        composition belongs to UIPage, not UIBlueprint.
+        UIPage owns the page components; this builder only arranges
+        those canonical components into the design system's structure.
         """
-        return self._build_composition(composition)
+        return self._build_composition(
+            composition,
+            page_name=page_name,
+            page_components=page_components,
+        )

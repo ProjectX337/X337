@@ -11,8 +11,6 @@ from core.generators.react.app_module import AppModule
 from core.generators.react.app_shell_module import AppShellModule
 from core.generators.react.component_module import ComponentModule
 from core.generators.react.feature_module import FeatureModule
-from core.generators.react.feature_component_module import FeatureComponentModule
-from core.generators.react.feature_page_module import FeaturePageModule
 from core.generators.react.page_module import PageModule
 from core.generators.react.route_module import RouteModule
 from core.generators.react.router_module import RouterModule
@@ -51,8 +49,6 @@ class ReactGenerator(BaseGenerator):
             ComponentModule(),
 
             FeatureModule(),
-            FeatureComponentModule(),
-            FeaturePageModule(),
 
             PageModule(),
 

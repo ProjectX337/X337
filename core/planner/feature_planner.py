@@ -24,8 +24,6 @@ class FeaturePlanner:
 
     A single capability may produce multiple FeatureSpec objects.
     """
-
-    # ---------------------------------------------------------
     # Helpers
     # ---------------------------------------------------------
 
@@ -242,65 +240,3 @@ class FeaturePlanner:
             )
 
         return features
-
-    # ---------------------------------------------------------
-    # Compatibility adapter
-    # ---------------------------------------------------------
-
-    def plan_application(
-        self,
-        parsed: ParsedPrompt | None = None,
-        capabilities: list[CapabilityMatch] | None = None,
-        prompt: str | None = None,
-    ) -> dict:
-
-        features = self.plan(
-            parsed=parsed,
-            capabilities=capabilities,
-            prompt=prompt,
-        )
-
-        pages = []
-        components = []
-        services = []
-
-        for feature in features:
-
-            for index, page_name in enumerate(
-                feature.pages
-            ):
-
-                route = (
-                    feature.routes[index]
-                    if index < len(feature.routes)
-                    else self._route(page_name)
-                )
-
-                pages.append(
-                    {
-                        "name": page_name,
-                        "route": route,
-                        "components": list(
-                            feature.components
-                        ),
-                    }
-                )
-
-            components.extend(
-                feature.components
-            )
-
-            services.extend(
-                feature.api_contracts
-            )
-
-        return {
-            "features": features,
-            "pages": pages,
-            "components": sorted(
-                set(components)
-            ),
-            "services": sorted(
-                set(services)
-            ),
-        }

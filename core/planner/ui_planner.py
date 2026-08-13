@@ -73,17 +73,47 @@ class UIPlanner:
         self,
         components: list[UIComponent],
     ) -> list[UIComponent]:
-        seen: set[str] = set()
-        result: list[UIComponent] = []
+        by_name: dict[str, UIComponent] = {}
 
         for component in components:
             key = component.name.lower().strip()
 
-            if key not in seen:
-                seen.add(key)
-                result.append(component)
+            existing = by_name.get(key)
 
-        return result
+            if existing is None:
+                by_name[key] = component
+                continue
+
+            # Merge canonical component intelligence instead of
+            # discarding later declarations.
+            if (
+                existing.component_type != "feature"
+                and component.component_type == "feature"
+            ):
+                existing.component_type = "feature"
+
+            existing.metadata.update(
+                {
+                    key: value
+                    for key, value in component.metadata.items()
+                    if key not in {"features"}
+                }
+            )
+
+            feature_names = set(
+                existing.metadata.get("features", [])
+            )
+
+            feature_names.update(
+                component.metadata.get("features", [])
+            )
+
+            if feature_names:
+                existing.metadata["features"] = sorted(
+                    feature_names
+                )
+
+        return list(by_name.values())
 
     # ---------------------------------------------------------
     # Product profile defaults
@@ -113,6 +143,33 @@ class UIPlanner:
             "Navbar",
             "Hero",
         ]
+
+    def _page_components(
+        self,
+        *,
+        page_name: str,
+        product_profile: ProductProfile | None,
+    ) -> list[str]:
+        if product_profile is not None:
+            page_components = getattr(
+                product_profile,
+                "page_components",
+                {},
+            )
+
+            if page_name in page_components:
+                return list(
+                    page_components[page_name]
+                )
+
+            if product_profile.default_components:
+                return list(
+                    product_profile.default_components
+                )
+
+        return self._profile_components(
+            product_profile
+        )
 
     # ---------------------------------------------------------
     # Main planner
@@ -220,7 +277,6 @@ class UIPlanner:
         # -----------------------------------------------------
 
         profile_pages = self._profile_pages(product_profile)
-        profile_components = self._profile_components(product_profile)
 
         page_layout = (
             product_profile.layout
@@ -250,6 +306,11 @@ class UIPlanner:
 
             page_components: list[UIComponent] = []
 
+            profile_components = self._page_components(
+                page_name=page_name,
+                product_profile=product_profile,
+            )
+
             for component_name in profile_components:
                 component = UIComponent(
                     name=component_name,
@@ -262,6 +323,7 @@ class UIPlanner:
                         ),
                         "product": product_name,
                         "page": page_name,
+                        "features": [],
                     },
                 )
 
@@ -270,7 +332,9 @@ class UIPlanner:
 
             composition_tree = (
                 self.blueprint_builder.build_composition(
-                    composition
+                    composition,
+                    page_name=page_name,
+                    page_components=page_components,
                 )
             )
 
@@ -364,7 +428,7 @@ class UIPlanner:
                         name=component_name,
                         component_type="feature",
                         metadata={
-                            "feature": feature.slug,
+                            "features": [feature.slug],
                         },
                     )
 
@@ -418,7 +482,9 @@ class UIPlanner:
                     # canonical composition before generation.
                     feature_composition = (
                         self.blueprint_builder.build_composition(
-                            composition
+                            composition,
+                            page_name=page_name,
+                            page_components=feature_components,
                         )
                     )
 
@@ -440,14 +506,95 @@ class UIPlanner:
                     ] = pages[-1]
 
         # -----------------------------------------------------
-        # 6. Deduplicate
+        # 6. Materialize feature components independently
+        # -----------------------------------------------------
+        #
+        # A feature can contain reusable components without owning
+        # a page. Those components must still exist in the canonical
+        # UISpec.
+        #
+
+        component_names = {
+            component.name.lower().strip()
+            for component in components
+        }
+
+        for feature in features:
+            for component_name in feature.components:
+                if component_name is None:
+                    continue
+
+                key = str(component_name).lower().strip()
+
+                if key in component_names:
+                    continue
+
+                components.append(
+                    UIComponent(
+                        name=str(component_name),
+                        component_type="feature",
+                        metadata={
+                            "features": [feature.slug],
+                        },
+                    )
+                )
+
+                component_names.add(key)
+
+        # -----------------------------------------------------
+        # 7. Deduplicate
         # -----------------------------------------------------
 
         pages = self._dedupe_pages(pages)
         components = self._dedupe_components(components)
 
         # -----------------------------------------------------
-        # 7. Canonical design system
+        # 8. Rebind page/layout components to canonical models
+        # -----------------------------------------------------
+        #
+        # UIPage.components and UILayoutNode.component must reference
+        # the same canonical UIComponent objects as UISpec.component_models.
+        # This prevents ownership/import metadata from diverging between
+        # page-level declarations and structural composition.
+        #
+
+        components_by_name = {
+            component.name.lower().strip(): component
+            for component in components
+        }
+
+        def rebind_layout(node):
+            if node is None:
+                return
+
+            if node.component is not None:
+                canonical = components_by_name.get(
+                    node.component.name.lower().strip()
+                )
+
+                if canonical is not None:
+                    node.component = canonical
+
+            for child in node.children:
+                rebind_layout(child)
+
+        for page in pages:
+            rebound_components = []
+
+            for component in page.components:
+                canonical = components_by_name.get(
+                    component.name.lower().strip()
+                )
+
+                if canonical is not None:
+                    rebound_components.append(canonical)
+
+            page.components = rebound_components
+
+            rebind_layout(page.composition)
+
+        # -----------------------------------------------------
+        # 9. Canonical design system
         # -----------------------------------------------------
 
         design_system = composition.design_system
@@ -459,7 +606,7 @@ class UIPlanner:
             design_system.navigation_pattern = product_profile.navigation
 
         # -----------------------------------------------------
-        # 8. Canonical UISpec
+        # 10. Canonical UISpec
         # -----------------------------------------------------
 
         return UISpec(

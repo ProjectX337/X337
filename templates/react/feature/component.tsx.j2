@@ -1,8 +1,242 @@
-export default function {{ component }}() {
+{% if component == "Navbar" %}
+export default function Navbar() {
+  return (
+    <nav className="x337-navbar">
+      <div className="x337-brand">
+        <div className="x337-brand-mark">X</div>
+        <span>X337</span>
+      </div>
 
-    return (
-        <div>
-            {{ component }}
-        </div>
-    )
+      <div className="x337-nav">
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/ai">AI</a>
+        <a href="/analytics">Analytics</a>
+      </div>
+
+      <button className="x337-button x337-button-ghost">
+        Get Started
+      </button>
+    </nav>
+  );
 }
+{% elif component == "Sidebar" %}
+export default function Sidebar() {
+  return (
+    <aside className="x337-sidebar">
+      <div className="x337-sidebar-brand">
+        <span className="x337-brand-mark">X</span>
+        <span>Workspace</span>
+      </div>
+
+      <nav className="x337-sidebar-nav">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/ai">AI Assistant</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/users">Users</a>
+        <a href="/settings">Settings</a>
+        <a href="/billing">Billing</a>
+      </nav>
+
+      <div className="x337-sidebar-footer">
+        <span className="x337-status-dot"></span>
+        All systems operational
+      </div>
+    </aside>
+  );
+}
+{% elif component == "ChatPanel" %}
+export default function ChatPanel() {
+  return (
+    <section className="x337-chat-card">
+      <div className="x337-card-header">
+        <div>
+          <span className="x337-eyebrow">AI ASSISTANT</span>
+          <h2>How can I help?</h2>
+        </div>
+        <span className="x337-status-pill">ONLINE</span>
+      </div>
+
+      <div className="x337-chat-messages">
+        <div className="x337-message x337-message-ai">
+          I’m ready to help you learn, analyze data, and build faster.
+        </div>
+        <div className="x337-message x337-message-user">
+          Show me what I can do.
+        </div>
+      </div>
+
+      <div className="x337-chat-input">
+        <input placeholder="Ask anything..." />
+        <button className="x337-button">Send</button>
+      </div>
+    </section>
+  );
+}
+{% elif component == "PromptBox" %}
+export default function PromptBox() {
+  return (
+    <section className="x337-prompt-card">
+      <span className="x337-eyebrow">QUICK ACTION</span>
+      <h3>Start something new</h3>
+      <div className="x337-prompt-row">
+        <input placeholder="Describe what you want to build..." />
+        <button className="x337-button">Generate</button>
+      </div>
+    </section>
+  );
+}
+{% elif component == "MetricCard" %}
+export default function MetricCard() {
+  return (
+    <section className="x337-metric-card">
+      <span className="x337-eyebrow">PERFORMANCE</span>
+      <div className="x337-metric-value">84%</div>
+      <p>Weekly progress</p>
+      <div className="x337-progress">
+        <div className="x337-progress-value"></div>
+      </div>
+    </section>
+  );
+}
+{% elif component == "DashboardCard" %}
+export default function DashboardCard() {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">OVERVIEW</span>
+      <h3>Your workspace</h3>
+      <p>Everything important at a glance.</p>
+      <button className="x337-button">Open workspace</button>
+    </section>
+  );
+}
+{% elif component == "Chart" %}
+export default function Chart() {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">ANALYTICS</span>
+      <h3>Activity</h3>
+
+      <div className="x337-chart">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
+  );
+}
+{% elif component == "ReportTable" %}
+export default function ReportTable() {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">REPORTS</span>
+      <h3>Recent activity</h3>
+
+      <div className="x337-table">
+        <div className="x337-table-row x337-table-head">
+          <span>Project</span>
+          <span>Status</span>
+          <span>Updated</span>
+        </div>
+
+        <div className="x337-table-row">
+          <span>AI Assistant</span>
+          <span>Active</span>
+          <span>2m ago</span>
+        </div>
+
+        <div className="x337-table-row">
+          <span>Analytics</span>
+          <span>Ready</span>
+          <span>8m ago</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+{% elif component == "AuthForm" %}
+export default function AuthForm() {
+  return (
+    <section className="x337-auth-card">
+      <span className="x337-eyebrow">ACCOUNT</span>
+      <h1>Welcome back</h1>
+      <p>Sign in to continue to your workspace.</p>
+
+      <input placeholder="Email address" />
+      <input placeholder="Password" type="password" />
+
+      <button className="x337-button x337-button-wide">
+        Continue
+      </button>
+    </section>
+  );
+}
+{% elif component == "UserMenu" %}
+export default function UserMenu() {
+  return (
+    <section className="x337-user-menu">
+      <div className="x337-avatar">JD</div>
+      <div>
+        <strong>Jordan Davis</strong>
+        <span>Administrator</span>
+      </div>
+    </section>
+  );
+}
+{% elif component == "UserTable" %}
+export default function UserTable() {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">USERS</span>
+      <h3>Team members</h3>
+
+      <div className="x337-table">
+        <div className="x337-table-row x337-table-head">
+          <span>Name</span>
+          <span>Role</span>
+          <span>Status</span>
+        </div>
+
+        <div className="x337-table-row">
+          <span>Jordan Davis</span>
+          <span>Admin</span>
+          <span>Active</span>
+        </div>
+
+        <div className="x337-table-row">
+          <span>Alex Morgan</span>
+          <span>Member</span>
+          <span>Active</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+{% elif component == "SearchBar" %}
+export default function SearchBar() {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">SEARCH</span>
+      <h3>Find anything</h3>
+
+      <div className="x337-prompt-row">
+        <input placeholder="Search your workspace..." />
+        <button className="x337-button">Search</button>
+      </div>
+    </section>
+  );
+}
+{% else %}
+export default function {{ component }}() {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">COMPONENT</span>
+      <h3>{{ component }}</h3>
+      <p>Generated by X337.</p>
+    </section>
+  );
+}
+{% endif %}

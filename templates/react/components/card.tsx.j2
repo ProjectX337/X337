@@ -1,0 +1,33 @@
+import type { ReactNode } from "react";
+
+interface {{ component.name }}Props {
+{% for prop_name, prop_type in component.props.items() %}
+  {{ prop_name }}?: {{ prop_type }};
+{% endfor %}
+  children?: ReactNode;
+}
+
+export default function {{ component.name }}(
+{
+{% for prop_name in component.props.keys() %}
+  {{ prop_name }},
+{% endfor %}
+  children,
+}: {{ component.name }}Props
+) {
+  return (
+    <section className="x337-card">
+      <span className="x337-eyebrow">
+        CARD
+      </span>
+
+      <h3>{{ component.name }}</h3>
+
+      <p>
+        Generated semantic card component.
+      </p>
+
+      {children}
+    </section>
+  );
+}

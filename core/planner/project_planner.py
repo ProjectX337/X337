@@ -10,6 +10,7 @@ from core.planner.stages.intent_classifier_stage import IntentClassifierStage
 from core.planner.stages.architecture_selection_stage import ArchitectureSelectionStage
 from core.planner.stages.stack_builder_stage import StackBuilderStage
 from core.planner.stages.capability_planner_stage import CapabilityPlannerStage
+from core.planner.stages.architecture_requirements_stage import ArchitectureRequirementsStage
 from core.planner.stages.feature_stage import FeatureStage
 from core.planner.stages.product_profile_stage import ProductProfileStage
 from core.planner.stages.design_inference_stage import DesignInferenceStage
@@ -26,19 +27,20 @@ class ProjectPlanner:
 
         self.pipeline = PlanningPipeline(
             [
-                PromptParserStage(),
-                IntentClassifierStage(),
-                ArchitectureSelectionStage(),
-                StackBuilderStage(),
-                CapabilityPlannerStage(),
-                FeatureStage(),
+            PromptParserStage(),
+            IntentClassifierStage(),
+            CapabilityPlannerStage(),
+            ArchitectureRequirementsStage(),
+            ArchitectureSelectionStage(),
+            StackBuilderStage(),
+            FeatureStage(),
             KnowledgeGraphStage(),
-                TechnologyResolverStage(),
-                ProductProfileStage(),
-                DesignInferenceStage(),
-                UISpecStage(),
-                ProjectSpecStage(),
-            ]
+            TechnologyResolverStage(),
+            ProductProfileStage(),
+            DesignInferenceStage(),
+            UISpecStage(),
+            ProjectSpecStage(),
+        ]
         )
 
     def plan(

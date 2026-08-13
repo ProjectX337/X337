@@ -75,10 +75,6 @@ class ProjectSpec:
     # Product
     # ---------------------------------------------------------
 
-    features: list[str] = field(
-        default_factory=list
-    )
-
     feature_models: list[FeatureSpec] = field(
         default_factory=list
     )
@@ -203,12 +199,18 @@ class ProjectSpec:
 
     def add_feature(
         self,
-        feature: str,
+        feature: FeatureSpec,
     ) -> None:
-        if feature not in self.features:
-            self.features.append(
-                feature
+        if not isinstance(feature, FeatureSpec):
+            raise TypeError(
+                "ProjectSpec.add_feature() requires FeatureSpec"
             )
+
+        if not any(
+            existing.slug == feature.slug
+            for existing in self.feature_models
+        ):
+            self.feature_models.append(feature)
 
     # ---------------------------------------------------------
     # Serialization
@@ -289,10 +291,6 @@ class ProjectSpec:
 
             "application_graph": self._serialize_value(
                 self.application_graph
-            ),
-
-            "features": self._serialize_value(
-                self.features
             ),
 
             "feature_models": self._serialize_value(

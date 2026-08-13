@@ -2,15 +2,14 @@ from __future__ import annotations
 
 from core.generators.generator_context import GeneratorContext
 from core.generators.modules.base_module import BaseModule
+from core.generators.react.page_naming import page_filename
 
 
 class FeatureModule(BaseModule):
     """
     Generates feature-level entry points.
 
-    The module supports both:
-      - legacy ProjectSpec.features values
-      - structured ProjectSpec.feature_models values
+    FeatureSpec is the canonical feature representation.
 
     FeatureModule owns:
         frontend/src/features/<slug>/index.ts
@@ -23,53 +22,35 @@ class FeatureModule(BaseModule):
     def name(self) -> str:
         return "features"
 
-    def generate(self, context: GeneratorContext) -> None:
-        spec = context.spec
-
-        # The legacy `features` list is intentionally authoritative
-        # when present because callers/tests may modify it after
-        # planning. Structured feature_models are used as fallback.
-        raw_features = getattr(spec, "features", None)
-
-        if raw_features:
-            features = raw_features
-        else:
-            features = getattr(spec, "feature_models", None) or []
-
-        for feature in features:
-            if isinstance(feature, str):
-                slug = feature.strip().lower().replace(" ", "-")
-                name = feature
-                pages = []
-            else:
-                slug = getattr(feature, "slug", None)
-                name = getattr(feature, "name", None)
-                pages = getattr(feature, "pages", []) or []
-
-                if not slug and name:
-                    slug = (
-                        str(name)
-                        .strip()
-                        .lower()
-                        .replace(" ", "-")
-                    )
-
-                if not name:
-                    name = slug
-
-            if not slug:
+    def generate(
+        self,
+        context: GeneratorContext,
+    ) -> None:
+        for feature in context.spec.feature_models:
+            if not feature.slug:
                 continue
+
+            page_filenames = []
+
+            if context.spec.ui_spec:
+                page_filenames = [
+                    page_filename(page.name)
+                    for page in context.spec.ui_spec.page_models
+                    if page.metadata.get("feature")
+                    == feature.slug
+                ]
 
             context.builder.template(
                 template="react/feature/index.ts.j2",
                 output=(
                     f"frontend/src/features/"
-                    f"{slug}/index.ts"
+                    f"{feature.slug}/index.ts"
                 ),
                 language="typescript",
                 feature={
-                    "slug": slug,
-                    "name": name,
-                    "pages": pages,
+                    "slug": feature.slug,
+                    "name": feature.name,
+                    "pages": feature.pages,
+                    "page_filenames": page_filenames,
                 },
             )
