@@ -37,8 +37,6 @@ class UIPlanner:
           ↓
         DesignComposition
           ↓
-        UIBlueprint
-          ↓
         UIPage / UIComponent
           ↓
         UISpec
