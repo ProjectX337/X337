@@ -26,6 +26,10 @@ class ProductIntent:
         default_factory=list
     )
 
+    journeys: list[dict] = field(
+        default_factory=list
+    )
+
     capabilities: list[str] = field(
         default_factory=list
     )
@@ -52,6 +56,7 @@ class ProductIntent:
             "users": self.users,
             "goals": self.goals,
             "workflows": self.workflows,
+            "journeys": self.journeys,
             "capabilities": self.capabilities,
             "constraints": self.constraints,
             "quality_attributes": self.quality_attributes,

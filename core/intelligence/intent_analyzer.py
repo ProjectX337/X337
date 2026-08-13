@@ -3,6 +3,7 @@ from __future__ import annotations
 from core.intelligence.models import ProductIntent
 from core.planner.models import ParsedPrompt
 from core.intelligence.reasoning.entity_reasoner import infer_entities
+from core.intelligence.reasoning.journey_reasoner import infer_journeys
 
 from core.intelligence.reasoning.domain_rules import (
     infer_domain,
@@ -68,6 +69,10 @@ class ProductIntentAnalyzer:
             ),
 
             entities=infer_entities(
+                domain,
+            ),
+
+            journeys=infer_journeys(
                 domain,
             ),
 
