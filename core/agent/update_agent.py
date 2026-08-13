@@ -79,6 +79,11 @@ class UpdateAgent:
             execution_context = ExecutionContext(
                 project=self.state.project,
                 change_plan=plan,
+                application_graph=(
+                    self.state.project.application_graph
+                    if self.state.project
+                    else None
+                ),
             )
 
             report = self.executor.execute(
