@@ -26,20 +26,8 @@ from core.execution.report.report_enricher import (
     ExecutionReportEnricher,
 )
 
-from core.execution.report.report_memory_sink import (
-    ReportMemorySink,
-)
-
 from core.execution.report.report_feedback import (
     ReportFeedbackProcessor,
-)
-
-from core.execution.report.report_analyzer import (
-    ExecutionReportAnalyzer,
-)
-
-from core.execution.report.report_history_analyzer import (
-    ReportHistoryAnalyzer,
 )
 
 from core.execution.report.report_enricher import (
@@ -67,9 +55,9 @@ class ExecutionRuntime:
         lifecycle: RuntimeLifecycle,
         report_collector: ExecutionReportCollector,
         report_enricher: ExecutionReportEnricher,
-        report_memory_sink: ReportMemorySink,
-        report_analyzer: ExecutionReportAnalyzer,
-        report_history_analyzer: ReportHistoryAnalyzer,
+        report_memory_sink,
+        report_analyzer,
+        report_history_analyzer,
         report_feedback_processor,
         report_evolution_bridge,
         execution_intelligence,
@@ -81,12 +69,14 @@ class ExecutionRuntime:
         self.lifecycle = lifecycle
         self.report_collector = report_collector
         self.report_enricher = report_enricher
+
         self.report_memory_sink = report_memory_sink
+        self.report_analyzer = report_analyzer
+        self.report_history_analyzer = report_history_analyzer
         self.report_feedback_processor = report_feedback_processor
         self.report_evolution_bridge = report_evolution_bridge
-        self.report_analyzer = report_analyzer
+
         self.execution_intelligence = execution_intelligence
-        self.report_history_analyzer = report_history_analyzer
 
 
     def execute(
