@@ -6,6 +6,10 @@ from core.intelligence.pipeline.product_intelligence_pipeline import (
 
 from core.intelligence.models import ProductIntent
 
+from core.intelligence.reasoning.capability_reasoner import (
+    CapabilityReasoner,
+)
+
 
 class ProductIntelligenceStage(PlanningStage):
     """
@@ -21,6 +25,7 @@ class ProductIntelligenceStage(PlanningStage):
         "product_understanding",
         "product_spec",
         "application_graph",
+        "capability_hypotheses",
     }
 
     def __init__(self):
@@ -43,6 +48,13 @@ class ProductIntelligenceStage(PlanningStage):
 
         state.product_understanding = (
             result["understanding"]
+        )
+
+        state.capability_hypotheses = (
+            CapabilityReasoner()
+            .reason(
+                state.product_understanding
+            )
         )
 
         state.product_spec = (
