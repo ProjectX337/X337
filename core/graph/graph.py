@@ -26,6 +26,32 @@ class Graph(ApplicationGraph):
     ) -> bool:
         return bool(self.find_by_kind(kind))
 
+
+
+    def neighbors(
+        self,
+        node_id: str,
+    ) -> list[GraphNode]:
+        """
+        Backwards-compatible neighbor lookup.
+
+        Returns nodes connected by incoming or outgoing edges.
+        """
+        result = []
+
+        for edge in self.edges:
+            if edge.source == node_id:
+                node = self.get_node(edge.target)
+                if node:
+                    result.append(node)
+
+            elif edge.target == node_id:
+                node = self.get_node(edge.source)
+                if node:
+                    result.append(node)
+
+        return result
+
     def connected(
         self,
         node_id: str,

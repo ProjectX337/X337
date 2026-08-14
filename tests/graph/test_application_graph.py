@@ -1,9 +1,9 @@
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
     GraphNode,
-    GraphNodeType,
+    NodeKind,
     GraphEdge,
-    GraphEdgeType,
+    EdgeRelation,
 )
 
 
@@ -14,7 +14,7 @@ def test_application_graph_contract():
     graph.add_node(
         GraphNode(
             id="dashboard",
-            type=GraphNodeType.PAGE,
+            type=NodeKind.PAGE,
             name="Dashboard",
         )
     )
@@ -22,7 +22,7 @@ def test_application_graph_contract():
     graph.add_node(
         GraphNode(
             id="lesson_card",
-            type=GraphNodeType.COMPONENT,
+            type=NodeKind.COMPONENT,
             name="LessonCard",
         )
     )
@@ -31,7 +31,7 @@ def test_application_graph_contract():
         GraphEdge(
             source="dashboard",
             target="lesson_card",
-            type=GraphEdgeType.RENDERS,
+            type=EdgeRelation.RENDERS,
         )
     )
 
@@ -41,7 +41,7 @@ def test_application_graph_contract():
     assert len(result["edges"]) == 1
 
     pages = graph.find_nodes(
-        GraphNodeType.PAGE
+        NodeKind.PAGE
     )
 
     assert pages[0].name == "Dashboard"

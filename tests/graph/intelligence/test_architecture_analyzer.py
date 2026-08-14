@@ -1,7 +1,7 @@
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
     GraphNode,
-    GraphNodeType,
+    NodeKind,
 )
 
 from core.graph.intelligence.architecture_analyzer import (
@@ -16,7 +16,7 @@ def test_architecture_analyzer_detects_incomplete_feature():
     graph.add_node(
         GraphNode(
             id="feature.auth",
-            type=GraphNodeType.FEATURE,
+            type=NodeKind.FEATURE,
             name="authentication",
         )
     )

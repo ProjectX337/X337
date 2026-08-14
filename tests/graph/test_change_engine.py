@@ -1,5 +1,5 @@
 from core.agent.change_engine import ChangeEngine
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 
 
 def test_change_engine_creates_plan():

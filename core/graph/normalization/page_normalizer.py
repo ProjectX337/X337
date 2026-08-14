@@ -25,7 +25,7 @@ class PageNormalizer:
             graph.nodes.items()
         ):
 
-            if node.kind != NodeKind.PAGE:
+            if node.type != NodeKind.PAGE:
                 continue
 
             slug = normalize_page_slug(

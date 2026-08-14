@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.graph.evolution.models import (
     GraphChangeSet,
     ImpactReport,

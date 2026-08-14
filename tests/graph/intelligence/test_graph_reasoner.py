@@ -1,7 +1,7 @@
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
     GraphNode,
-    GraphNodeType,
+    NodeKind,
 )
 
 from core.graph.intelligence.graph_reasoner import (
@@ -16,7 +16,7 @@ def test_graph_reasoner_extracts_product_insights():
     graph.add_node(
         GraphNode(
             id="feature.learning",
-            type=GraphNodeType.FEATURE,
+            type=NodeKind.FEATURE,
             name="adaptive learning",
         )
     )
@@ -24,7 +24,7 @@ def test_graph_reasoner_extracts_product_insights():
     graph.add_node(
         GraphNode(
             id="page.dashboard",
-            type=GraphNodeType.PAGE,
+            type=NodeKind.PAGE,
             name="Dashboard",
         )
     )

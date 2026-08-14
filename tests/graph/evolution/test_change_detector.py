@@ -1,7 +1,7 @@
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
     GraphNode,
-    GraphNodeType,
+    NodeKind,
 )
 
 from core.graph.evolution.change_detector import (
@@ -18,7 +18,7 @@ def test_detect_added_node():
     after.add_node(
         GraphNode(
             id="component.mfa",
-            type=GraphNodeType.COMPONENT,
+            type=NodeKind.COMPONENT,
             name="MFA",
         )
     )

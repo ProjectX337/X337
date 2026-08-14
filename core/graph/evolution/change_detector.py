@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.graph.evolution.models import GraphChangeSet
 
 
@@ -18,12 +18,12 @@ class ChangeDetector:
 
         before_nodes = {
             node.id
-            for node in before.nodes
+            for node in before.nodes.values()
         }
 
         after_nodes = {
             node.id
-            for node in after.nodes
+            for node in after.nodes.values()
         }
 
         before_edges = {

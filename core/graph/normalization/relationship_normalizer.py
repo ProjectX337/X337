@@ -28,7 +28,7 @@ class RelationshipNormalizer:
             # normalize relation
             # -------------------------------
 
-            relation = edge.relation
+            relation = edge.type
 
             if isinstance(
                 relation,
@@ -41,7 +41,7 @@ class RelationshipNormalizer:
                 except ValueError:
                     continue
 
-                edge.relation = relation
+                edge.type = relation
 
 
             # -------------------------------
@@ -65,7 +65,7 @@ class RelationshipNormalizer:
             identity = (
                 edge.source,
                 edge.target,
-                edge.relation,
+                edge.type,
             )
 
             if identity in seen:

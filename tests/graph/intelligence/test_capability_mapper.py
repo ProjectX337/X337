@@ -1,7 +1,7 @@
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
     GraphNode,
-    GraphNodeType,
+    NodeKind,
 )
 
 from core.graph.intelligence.capability_mapper import (
@@ -16,7 +16,7 @@ def test_capability_mapper_finds_feature():
     graph.add_node(
         GraphNode(
             id="feature.learning",
-            type=GraphNodeType.FEATURE,
+            type=NodeKind.FEATURE,
             name="adaptive learning",
         )
     )

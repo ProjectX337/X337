@@ -99,31 +99,51 @@ class GraphNode:
     """
 
     id: str
+    type: NodeKind | str
     kind: NodeKind | str
     name: str
     data: dict[str, Any] = field(default_factory=dict)
     metadata: dict[str, Any] = field(default_factory=dict)
 
+    @property
+    def relation(self):
+        return self.type
+
+    @relation.setter
+    def relation(self, value):
+        self.type = value
+
     def __init__(
         self,
         id: str,
-        kind: NodeKind | str,
+        type: NodeKind | str = None,
         name: str | None = None,
         data: dict[str, Any] | None = None,
         metadata: dict[str, Any] | None = None,
         *,
+        kind: NodeKind | str = None,
         label: str | None = None,
     ) -> None:
+
+        if type is None:
+            type = kind
+
         if name is None:
             name = label
 
+        if type is None:
+            raise TypeError(
+                "GraphNode requires 'type' or 'kind'."
+            )
+
         if name is None:
             raise TypeError(
-                "GraphNode requires either 'name' or legacy 'label'."
+                "GraphNode requires 'name' or 'label'."
             )
 
         self.id = id
-        self.kind = kind
+        self.kind = type
+        self.type = type
         self.name = name
         self.data = {} if data is None else data
         self.metadata = {} if metadata is None else metadata
@@ -157,7 +177,6 @@ class GraphNode:
     def to_dict(self) -> dict[str, Any]:
         return self.as_dict()
 
-
 @dataclass(slots=True, init=False)
 class GraphEdge:
     """
@@ -166,21 +185,41 @@ class GraphEdge:
 
     source: str
     target: str
+    type: EdgeRelation | str
     relation: EdgeRelation | str
     metadata: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def relation(self):
+        return self.type
+
+    @relation.setter
+    def relation(self, value):
+        self.type = value
 
     def __init__(
         self,
         source: str,
         target: str,
-        relation: EdgeRelation | str,
+        type: EdgeRelation | str | None = None,
         metadata: dict[str, Any] | None = None,
         *,
+        relation: EdgeRelation | str | None = None,
         weight: float = 1.0,
     ) -> None:
+
+        if type is None:
+            type = relation
+
+        if type is None:
+            raise TypeError(
+                "GraphEdge requires 'type' or 'relation'."
+            )
+
         self.source = source
         self.target = target
-        self.relation = relation
+        self.type = type
+        self.relation = type
         self.metadata = {} if metadata is None else metadata
 
         if weight != 1.0:
@@ -234,24 +273,60 @@ class GraphEdge:
         return self.as_dict()
 
 
+
+
+
 @dataclass
 class ApplicationGraph:
+    """
+    Canonical X337 application architecture graph.
+
+    Represents product structure:
+    Product -> Features -> Pages -> Components
+    plus backend/runtime architecture nodes.
+    """
+
+    nodes: dict[str, GraphNode] = field(
+        default_factory=dict
+    )
+
+    edges: list[GraphEdge] = field(
+        default_factory=list
+    )
 
 
-    # ---------------------------------------------------------
-    # Legacy compatibility API
-    # ---------------------------------------------------------
+    def add_node(
+        self,
+        node: GraphNode,
+    ) -> None:
+        self.nodes[node.id] = node
 
-    def get_node(self, node_id):
-        """
-        Compatibility accessor.
 
-        Canonical storage remains self.nodes.
-        """
+    def add_edge(
+        self,
+        edge: GraphEdge,
+    ) -> None:
+        self.edges.append(edge)
+
+
+    def get_node(
+        self,
+        node_id: str,
+    ):
         return self.nodes.get(node_id)
 
 
-    def has_node(self, node_id):
+    def get(
+        self,
+        node_id: str,
+    ):
+        return self.nodes.get(node_id)
+
+
+    def has_node(
+        self,
+        node_id: str,
+    ) -> bool:
         return node_id in self.nodes
 
 
@@ -262,132 +337,85 @@ class ApplicationGraph:
     def get_edges(self):
         return self.edges
 
-    """
-    Canonical application architecture graph.
 
-    This graph describes the structure and behavior of the
-    generated application.
+    def find_nodes(
+        self,
+        node_type: NodeKind,
+    ) -> list[GraphNode]:
 
-    It is intentionally separate from execution/decision state.
-    """
-
-    nodes: dict[str, GraphNode] = field(default_factory=dict)
-    edges: list[GraphEdge] = field(default_factory=list)
-
-    def add_node(self, node: GraphNode) -> None:
-        self.nodes[node.id] = node
-
-    def add_edge(self, edge: GraphEdge) -> None:
-        self.edges.append(edge)
-
-    def has_node(self, node_id: str) -> bool:
-        return node_id in self.nodes
-
-    def get(self, node_id: str) -> GraphNode:
-        return self.nodes[node_id]
-
-    def remove_node(self, node_id: str) -> None:
-        if node_id not in self.nodes:
-            return
-
-        del self.nodes[node_id]
-
-        self.edges = [
-            edge
-            for edge in self.edges
-            if edge.source != node_id
-            and edge.target != node_id
+        return [
+            node
+            for node in self.nodes.values()
+            if node.type == node_type
         ]
+
 
     def find_by_kind(
         self,
         kind: NodeKind | str,
-    ) -> list[GraphNode]:
+    ):
+
         return [
             node
             for node in self.nodes.values()
-            if node.kind == kind
+            if node.type == kind
         ]
 
-    def find_by_label(
-        self,
-        label: str,
-    ) -> list[GraphNode]:
-        return [
-            node
-            for node in self.nodes.values()
-            if node.name == label
-        ]
 
     def outgoing(
         self,
         node_id: str,
-        relation: EdgeRelation | str | None = None,
-    ) -> list[GraphEdge]:
+        relation=None,
+    ):
+
         return [
             edge
             for edge in self.edges
-            if edge.source == node_id
-            and (
-                relation is None
-                or edge.relation == relation
+            if (
+                edge.source == node_id
+                and (
+                    relation is None
+                    or edge.type == relation
+                )
             )
         ]
+
 
     def incoming(
         self,
         node_id: str,
-        relation: EdgeRelation | str | None = None,
-    ) -> list[GraphEdge]:
+        relation=None,
+    ):
+
         return [
             edge
             for edge in self.edges
-            if edge.target == node_id
-            and (
-                relation is None
-                or edge.relation == relation
+            if (
+                edge.target == node_id
+                and (
+                    relation is None
+                    or edge.type == relation
+                )
             )
         ]
 
-    def neighbors(
+
+    def find_by_label(
         self,
-        node_id: str,
-    ) -> list[GraphNode]:
+        label: str,
+    ):
+
         return [
-            self.nodes[edge.target]
-            for edge in self.outgoing(node_id)
-            if edge.target in self.nodes
+            node
+            for node in self.nodes
+            if node.name == label
         ]
 
-    def children(
-        self,
-        node_id: str,
-        relation: EdgeRelation | str | None = None,
-    ) -> list[GraphNode]:
-        return [
-            self.nodes[edge.target]
-            for edge in self.outgoing(
-                node_id,
-                relation,
-            )
-            if edge.target in self.nodes
-        ]
 
-    def parents(
+    def as_dict(
         self,
-        node_id: str,
-        relation: EdgeRelation | str | None = None,
-    ) -> list[GraphNode]:
-        return [
-            self.nodes[edge.source]
-            for edge in self.incoming(
-                node_id,
-                relation,
-            )
-            if edge.source in self.nodes
-        ]
+    ) -> dict[str, Any]:
 
-    def as_dict(self) -> dict[str, Any]:
         return {
             "nodes": {
                 node_id: node.as_dict()
@@ -399,5 +427,22 @@ class ApplicationGraph:
             ],
         }
 
-    def to_dict(self) -> dict[str, Any]:
+
+    def to_dict(self):
         return self.as_dict()
+
+
+# ---------------------------------------------------------
+# Compatibility aliases
+# ---------------------------------------------------------
+
+GraphNodeType = NodeKind
+GraphEdgeType = EdgeRelation
+
+
+# ---------------------------------------------------------
+# Canonical graph naming compatibility aliases
+# ---------------------------------------------------------
+
+GraphNodeType = NodeKind
+GraphEdgeType = EdgeRelation

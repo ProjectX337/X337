@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.graph.models import EdgeRelation
 from core.graph.models import NodeKind
 
@@ -37,8 +37,8 @@ class GraphAnalyzer:
 
         counts = defaultdict(int)
 
-        for node in self.graph.nodes:
-            counts[node.kind] += 1
+        for node in self.graph.nodes.values():
+            counts[node.type] += 1
 
         return dict(counts)
 
@@ -54,7 +54,7 @@ class GraphAnalyzer:
 
         return [
             node.id
-            for node in self.graph.nodes
+            for node in self.graph.nodes.values()
             if node.id not in connected
         ]
 
@@ -69,7 +69,7 @@ class GraphAnalyzer:
 
             if (
                 edge.source == node_id
-                and edge.relation == EdgeRelation.REQUIRES
+                and edge.type == EdgeRelation.REQUIRES
             ):
                 node = self.graph.get_node(
                     edge.target

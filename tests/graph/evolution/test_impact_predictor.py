@@ -1,4 +1,4 @@
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
 )
 

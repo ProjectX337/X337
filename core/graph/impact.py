@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.graph.change import ChangeRequest
 
 

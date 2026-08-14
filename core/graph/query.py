@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.graph.models import EdgeRelation
 
 
@@ -21,7 +21,7 @@ class GraphQuery:
         for edge in self.graph.edges:
             if (
                 edge.source == feature_id
-                and edge.relation == EdgeRelation.IMPLEMENTS
+                and edge.type == EdgeRelation.IMPLEMENTS
             ):
                 node = self.graph.get_node(
                     edge.target
@@ -41,7 +41,7 @@ class GraphQuery:
         for edge in self.graph.edges:
             if (
                 edge.source == page_id
-                and edge.relation == EdgeRelation.RENDERS
+                and edge.type == EdgeRelation.RENDERS
             ):
                 node = self.graph.get_node(
                     edge.target

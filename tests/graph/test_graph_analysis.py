@@ -1,5 +1,5 @@
 from core.graph.analysis import GraphAnalyzer
-from core.graph.application_graph import ApplicationGraph
+from core.graph.models import ApplicationGraph
 from core.graph.nodes import (
     PageNode,
     ComponentNode,
