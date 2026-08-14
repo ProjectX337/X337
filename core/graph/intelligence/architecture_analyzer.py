@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
-    GraphNodeType,
-    GraphEdgeType,
+    NodeKind,
+    EdgeRelation,
 )
 
 from core.graph.intelligence.architecture_report import (
@@ -29,7 +29,7 @@ class ArchitectureAnalyzer:
         feature_ids = {
             node.id
             for node in graph.find_nodes(
-                GraphNodeType.FEATURE
+                NodeKind.FEATURE
             )
         }
 
@@ -38,8 +38,8 @@ class ArchitectureAnalyzer:
             for edge in graph.edges
             if edge.type
             in (
-                GraphEdgeType.IMPLEMENTS,
-                GraphEdgeType.RENDERS,
+                EdgeRelation.IMPLEMENTS,
+                EdgeRelation.RENDERS,
             )
         }
 

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
-    GraphNodeType,
+    NodeKind,
 )
 
 from core.graph.intelligence.models import (
@@ -24,14 +24,14 @@ class GraphReasoner:
         capabilities = [
             node.name
             for node in graph.find_nodes(
-                GraphNodeType.FEATURE
+                NodeKind.FEATURE
             )
         ]
 
         user_experiences = [
             node.name
             for node in graph.find_nodes(
-                GraphNodeType.PAGE
+                NodeKind.PAGE
             )
         ]
 

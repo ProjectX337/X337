@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from core.graph.application_graph import (
+from core.graph.models import (
     ApplicationGraph,
-    GraphNodeType,
+    NodeKind,
 )
 
 
@@ -21,7 +21,7 @@ class CapabilityMapper:
         matches = []
 
         for node in graph.find_nodes(
-            GraphNodeType.FEATURE
+            NodeKind.FEATURE
         ):
             if node.name == capability:
                 matches.append(node.id)
