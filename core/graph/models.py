@@ -99,19 +99,23 @@ class GraphNode:
     """
 
     id: str
-    type: NodeKind | str
     kind: NodeKind | str
     name: str
     data: dict[str, Any] = field(default_factory=dict)
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def relation(self):
-        return self.type
+    def type(self):
+        """
+        Backwards-compatible alias for legacy graph consumers.
 
-    @relation.setter
-    def relation(self, value):
-        self.type = value
+        Canonical field is `kind`.
+        """
+        return self.kind
+
+    @type.setter
+    def type(self, value):
+        self.kind = value
 
     def __init__(
         self,
@@ -143,7 +147,6 @@ class GraphNode:
 
         self.id = id
         self.kind = type
-        self.type = type
         self.name = name
         self.data = {} if data is None else data
         self.metadata = {} if metadata is None else metadata
@@ -185,17 +188,21 @@ class GraphEdge:
 
     source: str
     target: str
-    type: EdgeRelation | str
     relation: EdgeRelation | str
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def relation(self):
-        return self.type
+    def type(self):
+        """
+        Backwards-compatible alias for legacy graph consumers.
 
-    @relation.setter
-    def relation(self, value):
-        self.type = value
+        Canonical field is `relation`.
+        """
+        return self.relation
+
+    @type.setter
+    def type(self, value):
+        self.relation = value
 
     def __init__(
         self,
@@ -218,7 +225,6 @@ class GraphEdge:
 
         self.source = source
         self.target = target
-        self.type = type
         self.relation = type
         self.metadata = {} if metadata is None else metadata
 
@@ -346,7 +352,7 @@ class ApplicationGraph:
         return [
             node
             for node in self.nodes.values()
-            if node.type == node_type
+            if node.kind == node_type
         ]
 
 
@@ -358,9 +364,66 @@ class ApplicationGraph:
         return [
             node
             for node in self.nodes.values()
-            if node.type == kind
+            if node.kind == kind
         ]
 
+
+    def neighbors(
+        self,
+        node_id: str,
+    ) -> list[GraphNode]:
+        """
+        Return nodes connected to ``node_id`` by incoming
+        or outgoing edges.
+        """
+        result = []
+
+        for edge in self.edges:
+            if edge.source == node_id:
+                node = self.get_node(edge.target)
+                if node is not None:
+                    result.append(node)
+
+            elif edge.target == node_id:
+                node = self.get_node(edge.source)
+                if node is not None:
+                    result.append(node)
+
+        return result
+
+    def children(
+        self,
+        node_id: str,
+        relation=None,
+    ) -> list[GraphNode]:
+        """
+        Return nodes reached by outgoing edges.
+        """
+        result = []
+
+        for edge in self.outgoing(node_id, relation):
+            node = self.get_node(edge.target)
+            if node is not None:
+                result.append(node)
+
+        return result
+
+    def parents(
+        self,
+        node_id: str,
+        relation=None,
+    ) -> list[GraphNode]:
+        """
+        Return nodes reached by incoming edges.
+        """
+        result = []
+
+        for edge in self.incoming(node_id, relation):
+            node = self.get_node(edge.source)
+            if node is not None:
+                result.append(node)
+
+        return result
 
     def outgoing(
         self,
@@ -375,7 +438,7 @@ class ApplicationGraph:
                 edge.source == node_id
                 and (
                     relation is None
-                    or edge.type == relation
+                    or edge.relation == relation
                 )
             )
         ]
@@ -394,7 +457,7 @@ class ApplicationGraph:
                 edge.target == node_id
                 and (
                     relation is None
-                    or edge.type == relation
+                    or edge.relation == relation
                 )
             )
         ]
@@ -403,11 +466,11 @@ class ApplicationGraph:
     def find_by_label(
         self,
         label: str,
-    ):
+    ) -> list[GraphNode]:
 
         return [
             node
-            for node in self.nodes
+            for node in self.nodes.values()
             if node.name == label
         ]
 
@@ -440,9 +503,3 @@ GraphNodeType = NodeKind
 GraphEdgeType = EdgeRelation
 
 
-# ---------------------------------------------------------
-# Canonical graph naming compatibility aliases
-# ---------------------------------------------------------
-
-GraphNodeType = NodeKind
-GraphEdgeType = EdgeRelation
