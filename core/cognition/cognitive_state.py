@@ -159,6 +159,10 @@ class CognitiveState:
         default_factory=ApplicationGraph
     )
 
+    # Graph intelligence derived from the canonical
+    # application architecture graph.
+    graph_intelligence: dict | None = None
+
     # Architecture evolution intelligence output.
     #
     # Represents recommended changes

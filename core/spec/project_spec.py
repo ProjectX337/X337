@@ -61,6 +61,8 @@ class ProjectSpec:
         default_factory=ApplicationGraph
     )
 
+    graph_intelligence: dict | None = None
+
     # ---------------------------------------------------------
     # Identity
     # ---------------------------------------------------------

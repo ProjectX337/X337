@@ -49,6 +49,7 @@ class ProjectSpecStage(PlanningStage):
             technologies=context.technologies,
 
         application_graph=context.application_graph,
+        graph_intelligence=context.graph_intelligence,
 
             feature_models=context.feature_models,
 

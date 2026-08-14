@@ -20,6 +20,7 @@ from core.planner.stages.product_profile_stage import ProductProfileStage
 from core.planner.stages.design_inference_stage import DesignInferenceStage
 from core.planner.stages.ui_spec_stage import UISpecStage
 from core.planner.stages.application_graph_stage import ApplicationGraphStage
+from core.planner.stages.graph_intelligence_stage import GraphIntelligenceStage
 from core.planner.stages.change_request_stage import ChangeRequestStage
 from core.planner.stages.change_planning_stage import ChangePlanningStage
 from core.planner.stages.project_spec_stage import ProjectSpecStage
@@ -51,6 +52,7 @@ class ProjectPlanner:
             DesignInferenceStage(),
             UISpecStage(),
             ApplicationGraphStage(),
+            GraphIntelligenceStage(),
             ChangeRequestStage(),
             ChangePlanningStage(),
             ProjectSpecStage(),
