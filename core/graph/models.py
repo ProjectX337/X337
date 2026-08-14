@@ -70,32 +70,11 @@ class EdgeRelation(str, Enum):
 
 @dataclass(slots=True, init=False)
 class GraphNode:
-
-
-    # ---------------------------------------------------------
-    # Legacy compatibility API
-    # ---------------------------------------------------------
-
-    @property
-    def node_type(self):
-        """
-        Backwards-compatible alias.
-
-        Canonical field is `kind`.
-        """
-        return self.kind
-
-    @node_type.setter
-    def node_type(self, value):
-        self.kind = value
-
     """
     Canonical X337 graph node.
 
+    `kind` identifies the graph node type.
     `name` is the canonical human-readable identifier.
-
-    `label` remains available as a compatibility alias for
-    older graph consumers.
     """
 
     id: str
@@ -104,28 +83,15 @@ class GraphNode:
     data: dict[str, Any] = field(default_factory=dict)
     metadata: dict[str, Any] = field(default_factory=dict)
 
-    @property
-    def type(self):
-        """
-        Backwards-compatible alias for legacy graph consumers.
-
-        Canonical field is `kind`.
-        """
-        return self.kind
-
-    @type.setter
-    def type(self, value):
-        self.kind = value
-
     def __init__(
         self,
         id: str,
-        type: NodeKind | str = None,
+        type: NodeKind | str | None = None,
         name: str | None = None,
         data: dict[str, Any] | None = None,
         metadata: dict[str, Any] | None = None,
         *,
-        kind: NodeKind | str = None,
+        kind: NodeKind | str | None = None,
         label: str | None = None,
     ) -> None:
 
@@ -152,14 +118,27 @@ class GraphNode:
         self.metadata = {} if metadata is None else metadata
 
     @property
-    def label(self) -> str:
-        """
-        Backwards-compatible alias for legacy GraphNode.label.
-        """
+    def type(self):
+        return self.kind
+
+    @type.setter
+    def type(self, value):
+        self.kind = value
+
+    @property
+    def node_type(self):
+        return self.kind
+
+    @node_type.setter
+    def node_type(self, value):
+        self.kind = value
+
+    @property
+    def label(self):
         return self.name
 
     @label.setter
-    def label(self, value: str) -> None:
+    def label(self, value):
         self.name = value
 
     def as_dict(self) -> dict[str, Any]:
@@ -180,6 +159,7 @@ class GraphNode:
     def to_dict(self) -> dict[str, Any]:
         return self.as_dict()
 
+
 @dataclass(slots=True, init=False)
 class GraphEdge:
     """
@@ -190,19 +170,6 @@ class GraphEdge:
     target: str
     relation: EdgeRelation | str
     metadata: dict[str, Any] = field(default_factory=dict)
-
-    @property
-    def type(self):
-        """
-        Backwards-compatible alias for legacy graph consumers.
-
-        Canonical field is `relation`.
-        """
-        return self.relation
-
-    @type.setter
-    def type(self, value):
-        self.relation = value
 
     def __init__(
         self,
@@ -231,14 +198,16 @@ class GraphEdge:
         if weight != 1.0:
             self.metadata["weight"] = weight
 
+    @property
+    def type(self):
+        return self.relation
+
+    @type.setter
+    def type(self, value):
+        self.relation = value
 
     @property
     def edge_type(self):
-        """
-        Backwards-compatible alias for legacy graph consumers.
-
-        Canonical field is `relation`.
-        """
         return self.relation
 
     @edge_type.setter
@@ -247,9 +216,6 @@ class GraphEdge:
 
     @property
     def weight(self) -> float:
-        """
-        Compatibility accessor for legacy decision graphs.
-        """
         value = self.metadata.get("weight", 1.0)
 
         try:
@@ -277,9 +243,6 @@ class GraphEdge:
 
     def to_dict(self) -> dict[str, Any]:
         return self.as_dict()
-
-
-
 
 
 @dataclass
@@ -499,7 +462,5 @@ class ApplicationGraph:
 # Compatibility aliases
 # ---------------------------------------------------------
 
-GraphNodeType = NodeKind
-GraphEdgeType = EdgeRelation
 
 
