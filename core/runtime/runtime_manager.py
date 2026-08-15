@@ -1,7 +1,7 @@
 from core.terminal.terminal_manager import TerminalManager
 from core.runtime.process_manager import ProcessManager
 from core.preview.runtime import PreviewRuntime
-from core.runtime.project_runtime import ProjectRuntime
+from core.runtime.runtime_factory import RuntimeFactory
 
 import os
 import time
@@ -20,6 +20,8 @@ class RuntimeManager:
 
         self.preview_runtime = PreviewRuntime()
 
+        self.runtime_factory = RuntimeFactory()
+
         if registry is None:
             raise ValueError(
                 "RuntimeManager requires RuntimeRegistry"
@@ -30,82 +32,39 @@ class RuntimeManager:
 
     def launch(
         self,
-        artifact
+        spec,
     ):
+
+        if spec is None:
+            raise ValueError(
+                "RuntimeManager requires ProjectSpec"
+            )
 
         processes = []
 
+        root_path = spec.path
 
-        if not os.path.isabs(
-            artifact.path
-        ):
-
-            artifact.path = os.path.abspath(
-                artifact.path
+        if not root_path:
+            root_path = os.path.join(
+                "workspace",
+                "generated",
+                spec.slug,
             )
 
+        if not os.path.isabs(root_path):
+            root_path = os.path.abspath(
+                root_path
+            )
 
         os.makedirs(
-            artifact.path,
+            root_path,
             exist_ok=True
         )
 
-
-
-        for command in artifact.install_commands:
-
-            process = self.terminal.start(
-                command,
-                artifact.path
-            )
-
-            processes.append(
-                process
-            )
-
-
-
-
-        for command in artifact.run_commands:
-
-            process = self.terminal.start(
-                command,
-                artifact.path
-            )
-
-
-            processes.append(
-                process
-            )
-
-
-            self.process_manager.register(
-                artifact.name,
-                process,
-                artifact.preview_port
-            )
-
-
-
-
-        time.sleep(1)
-
-
-        artifact.status = "running"
-
-
-        runtime = ProjectRuntime.from_artifact(
-            artifact
+        runtime = self.runtime_factory.create(
+            spec=spec,
+            root_path=root_path,
         )
-
-        runtime.status = "running"
-
-        if artifact.preview_port:
-
-            runtime.preview = self.start_preview(
-                artifact.name,
-                artifact.preview_port
-            )
 
         runtime.processes = {
             str(process.pid): {
@@ -115,54 +74,27 @@ class RuntimeManager:
             for process in processes
         }
 
-
         self.runtime_registry.register(
             runtime
         )
 
+        stored_runtime = (
+            self.runtime_registry.update_status(
+                spec.project_name,
+                "running",
+            )
+        )
 
-        result = {
-
-            "artifact": {
-
-                "name": artifact.name,
-
-                "artifact_type": artifact.artifact_type,
-
-                "path": artifact.path,
-
-                "framework": artifact.framework,
-
-                "status": artifact.status,
-
-                "preview_port": artifact.preview_port
-
-            },
-
-
+        return {
+            "runtime": stored_runtime,
             "processes": [
-
                 {
                     "pid": process.pid
                 }
-
                 for process in processes
-
             ],
-
-
-            "preview":
-                runtime.preview,
-
-
-            "runtime":
-                runtime.to_dict()
-
+            "preview": runtime.preview,
         }
-
-
-        return result
-
 
 
     def start_preview(
@@ -173,6 +105,16 @@ class RuntimeManager:
         preview = self.preview_runtime.start(
             project_slug
         )
+
+        runtime = self.runtime_registry.update_preview(
+            project_slug,
+            preview,
+        )
+
+        if runtime is None:
+            raise ValueError(
+                f"Runtime not found: {project_slug}"
+            )
 
         return preview
 

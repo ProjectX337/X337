@@ -17,14 +17,12 @@ class RuntimeService:
     #
     def start(
         self,
-        artifact
+        spec,
     ):
 
-        result = self.runtime.launch(
-            artifact
+        return self.runtime.launch(
+            spec,
         )
-
-        return result
 
 
 
@@ -70,26 +68,55 @@ class RuntimeService:
 
 
     #
-    # Health check
+    # Runtime status mutation
+    #
+    def update_status(
+        self,
+        name,
+        status,
+    ):
+
+        return self.registry.update_status(
+            name,
+            status,
+        )
+
+
+    #
+    # Health state
     #
     def health(
         self,
         name
     ):
 
-        running = (
-            self.runtime
-            .process_manager
-            .is_running(name)
+        runtime = self.registry.get(
+            name
+        )
+
+        if runtime is None:
+            return {
+                "name": name,
+                "healthy": False,
+                "runtime": None,
+            }
+
+        health = runtime.get(
+            "health",
+            {}
         )
 
         return {
 
             "name": name,
 
-            "healthy": running,
+            "healthy": (
+                health.get(
+                    "status"
+                ) == "healthy"
+            ),
 
-            "runtime": self.registry.get(name)
+            "runtime": runtime,
 
         }
 
@@ -100,15 +127,15 @@ class RuntimeService:
     #
     def restart(
         self,
-        artifact
+        spec,
     ):
 
         self.stop(
-            artifact.name
+            spec.project_name
         )
 
         return self.start(
-            artifact
+            spec,
         )
 
 

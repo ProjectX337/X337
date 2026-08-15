@@ -15,11 +15,11 @@ class RuntimeAPI:
     #
     def start(
         self,
-        artifact
+        spec,
     ):
 
         return self.controller.start(
-            artifact
+            spec,
         )
 
 
@@ -43,11 +43,11 @@ class RuntimeAPI:
     #
     def restart(
         self,
-        artifact
+        spec,
     ):
 
         return self.controller.restart(
-            artifact
+            spec,
         )
 
 

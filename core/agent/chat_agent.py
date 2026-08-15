@@ -221,23 +221,21 @@ class ChatAgent:
             root=str(output_root),
         )
 
-        runtime.add_artifact(
-            "generation_result",
-            {
-                "files": len(result.files),
-            },
-        )
-
-        runtime.status = "generated"
-
-        preview = self.runtime_service.start_preview(
-            slug
-        )
-
-        runtime.preview = preview
+        runtime.generation = {
+            "files": len(result.files),
+        }
 
         self.runtime_service.register(
             runtime
+        )
+
+        self.runtime_service.update_status(
+            spec.project_name,
+            "generated",
+        )
+
+        preview = self.runtime_service.start_preview(
+            slug
         )
 
         self.project_memory.save_project(

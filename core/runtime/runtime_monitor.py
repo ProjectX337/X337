@@ -4,6 +4,11 @@ import psutil
 
 class RuntimeMonitor:
 
+    def __init__(
+        self,
+        registry,
+    ):
+        self.registry = registry
 
     def check(
         self,
@@ -11,7 +16,6 @@ class RuntimeMonitor:
     ):
 
         alive = True
-
 
         for process in runtime.processes.values():
 
@@ -21,40 +25,26 @@ class RuntimeMonitor:
                     process["pid"]
                 )
 
-
                 if not p.is_running():
 
                     alive = False
-
 
             except psutil.NoSuchProcess:
 
                 alive = False
 
+        health = {
+            "status": (
+                "healthy"
+                if alive
+                else "failed"
+            ),
+            "last_check": time.time(),
+        }
 
+        self.registry.update_health(
+            runtime.slug,
+            health,
+        )
 
-        if alive:
-
-            runtime.health = {
-
-                "status":"healthy",
-
-                "last_check":
-                    time.time()
-
-            }
-
-
-        else:
-
-            runtime.health = {
-
-                "status":"failed",
-
-                "last_check":
-                    time.time()
-
-            }
-
-
-        return runtime.health
+        return health

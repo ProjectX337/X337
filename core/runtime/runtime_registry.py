@@ -134,7 +134,7 @@ class RuntimeRegistry:
 
 
     #
-    # Get project runtime
+    # Get project runtime by name
     #
     def get(
         self,
@@ -144,6 +144,51 @@ class RuntimeRegistry:
         return self.find_by_name(
             name
         )
+
+
+    #
+    # Find project runtime by slug
+    #
+    def find_by_slug(
+        self,
+        slug
+    ):
+
+        for runtime in self.runtimes.values():
+
+            if runtime.get(
+                "slug"
+            ) == slug:
+
+                return runtime
+
+
+        return None
+
+
+    #
+    # Update preview state
+    #
+    def update_preview(
+        self,
+        slug,
+        preview
+    ):
+
+        runtime = self.find_by_slug(
+            slug
+        )
+
+        if runtime is None:
+            return None
+
+        runtime[
+            "preview"
+        ] = preview
+
+        self._save()
+
+        return runtime
 
 
 
@@ -202,8 +247,11 @@ class RuntimeRegistry:
                 "status"
             ] = status
 
-
             self._save()
+
+            return runtime
+
+        return None
 
 
 
@@ -212,30 +260,26 @@ class RuntimeRegistry:
     #
     def update_health(
         self,
-        name,
-        healthy
+        slug,
+        health
     ):
 
-        runtime = self.find_by_name(
-            name
+        runtime = self.find_by_slug(
+            slug
         )
 
+        if runtime is None:
+            return None
 
-        if runtime:
+        runtime[
+            "health"
+        ] = dict(
+            health
+        )
 
-            runtime[
-                "health"
-            ] = {
+        self._save()
 
-                "status":
-                    "healthy"
-                    if healthy
-                    else "unhealthy"
-
-            }
-
-
-            self._save()
+        return runtime
 
 
 

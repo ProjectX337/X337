@@ -33,7 +33,7 @@ class ProjectRuntime:
         default_factory=datetime.now
     )
 
-    artifacts: dict[str, Any] = field(
+    generation: dict[str, Any] = field(
         default_factory=dict
     )
 
@@ -42,6 +42,10 @@ class ProjectRuntime:
     )
 
     preview: dict[str, Any] = field(
+        default_factory=dict
+    )
+
+    health: dict[str, Any] = field(
         default_factory=dict
     )
 
@@ -58,51 +62,6 @@ class ProjectRuntime:
         return self.spec.project_name
 
 
-    @classmethod
-    def from_artifact(
-        cls,
-        artifact,
-        spec=None,
-    ):
-        from pathlib import Path
-
-        if spec is None:
-            spec = getattr(
-                artifact,
-                "spec",
-                None
-            )
-
-        if spec is None:
-            raise ValueError(
-                "ProjectRuntime requires ProjectSpec"
-            )
-
-        runtime = cls(
-            spec=spec,
-            root_path=Path(
-                artifact.path
-            )
-        )
-
-        runtime.add_artifact(
-            artifact.name,
-            artifact
-        )
-
-        return runtime
-
-
-
-    def add_artifact(
-        self,
-        name: str,
-        value: Any,
-    ) -> None:
-
-        self.artifacts[name] = value
-
-
     def to_dict(self) -> dict:
 
         return {
@@ -114,8 +73,9 @@ class ProjectRuntime:
             "created_at": (
                 self.created_at.isoformat()
             ),
-            "artifacts": self.artifacts,
+            "generation": self.generation,
             "preview": self.preview,
+            "health": self.health,
             "processes": list(
                 self.processes.keys()
             ),

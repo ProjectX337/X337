@@ -9,14 +9,24 @@ class RuntimeController:
     def __init__(self, service):
         self.service = service
 
-    def start(self, artifact):
-        return self.service.start(artifact)
+    def start(
+        self,
+        spec,
+    ):
+        return self.service.start(
+            spec,
+        )
 
     def stop(self, name):
         return self.service.stop(name)
 
-    def restart(self, artifact):
-        return self.service.restart(artifact)
+    def restart(
+        self,
+        spec,
+    ):
+        return self.service.restart(
+            spec,
+        )
 
     def status(self, name):
         return self.service.status(name)
