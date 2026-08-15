@@ -42,8 +42,6 @@ class RuntimeManager:
                 "RuntimeManager requires ProjectSpec"
             )
 
-        processes = []
-
         root_path = spec.path
 
         if not root_path:
@@ -68,14 +66,6 @@ class RuntimeManager:
             root_path=root_path,
         )
 
-        runtime.processes = {
-            str(process.pid): {
-                "pid": process.pid,
-                "type": "runtime"
-            }
-            for process in processes
-        }
-
         self.runtime_registry.register(
             runtime
         )
@@ -89,12 +79,9 @@ class RuntimeManager:
 
         return {
             "runtime": stored_runtime,
-            "processes": [
-                {
-                    "pid": process.pid
-                }
-                for process in processes
-            ],
+            "processes": list(
+                runtime.processes.keys()
+            ),
             "preview": runtime.preview,
         }
 
