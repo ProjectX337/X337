@@ -32,6 +32,17 @@ class ProcessManager:
 
 
 
+    def list_runtime_processes(
+        self,
+    ):
+
+        return {
+            name: record["runtime_process"]
+            for name, record in self.processes.items()
+        }
+
+
+
     def get(
         self,
         artifact_name

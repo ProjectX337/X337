@@ -100,6 +100,11 @@ class RuntimeManager:
             preview,
         )
 
+        self.runtime_registry.update_processes(
+            project_slug,
+            self.process_manager.list_runtime_processes(),
+        )
+
         if runtime is None:
             raise ValueError(
                 f"Runtime not found: {project_slug}"

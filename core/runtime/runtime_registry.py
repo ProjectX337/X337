@@ -256,6 +256,37 @@ class RuntimeRegistry:
 
 
     #
+    # Update runtime process state
+    #
+    def update_processes(
+        self,
+        slug,
+        processes,
+    ):
+
+        runtime = self.find_by_slug(
+            slug
+        )
+
+        if runtime is None:
+            return None
+
+        runtime[
+            "processes"
+        ] = [
+            process.to_dict()
+            if hasattr(process, "to_dict")
+            else process
+            for process in processes.values()
+        ]
+
+        self._save()
+
+        return runtime
+
+
+
+    #
     # Update health information
     #
     def update_health(
