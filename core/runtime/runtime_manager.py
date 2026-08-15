@@ -18,7 +18,9 @@ class RuntimeManager:
 
         self.process_manager = ProcessManager()
 
-        self.preview_runtime = PreviewRuntime()
+        self.preview_runtime = PreviewRuntime(
+            self.process_manager
+        )
 
         self.runtime_factory = RuntimeFactory()
 

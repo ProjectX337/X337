@@ -16,8 +16,11 @@ class PreviewRuntime:
         workspace/generated/<project_slug>/frontend/
     """
 
-    def __init__(self):
-        self.processes: dict[str, subprocess.Popen] = {}
+    def __init__(
+        self,
+        process_manager,
+    ):
+        self.process_manager = process_manager
 
     def _project_dir(self, project_slug: str) -> Path:
         return (
@@ -62,7 +65,12 @@ class PreviewRuntime:
                 f"package.json not found: {package_json}"
             )
 
-        existing = self.processes.get(project_slug)
+        existing = self.process_manager.get(
+            project_slug
+        )
+
+        if existing is not None:
+            existing = existing["process"]
 
         if existing is not None:
             if existing.poll() is None:
@@ -79,7 +87,9 @@ class PreviewRuntime:
                     "url": f"http://127.0.0.1:{existing_port}",
                 }
 
-            self.processes.pop(project_slug, None)
+            self.process_manager.stop(
+                project_slug
+            )
 
         actual_port = self._find_free_port(port)
 
@@ -121,7 +131,11 @@ class PreviewRuntime:
 
         process._x337_port = actual_port
 
-        self.processes[project_slug] = process
+        self.process_manager.register(
+            project_slug,
+            process,
+            port=actual_port,
+        )
 
         url = f"http://127.0.0.1:{actual_port}"
 
@@ -194,22 +208,19 @@ class PreviewRuntime:
         }
 
     def stop(self, project_slug: str) -> dict:
-        process = self.processes.get(project_slug)
+        record = self.process_manager.get(
+            project_slug
+        )
 
-        if not process:
+        if not record:
             return {
                 "project": project_slug,
                 "status": "not_running",
             }
 
-        process.terminate()
-
-        try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-
-        self.processes.pop(project_slug, None)
+        self.process_manager.stop(
+            project_slug
+        )
 
         return {
             "project": project_slug,
