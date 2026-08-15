@@ -1,11 +1,11 @@
 from core.graph.models import ApplicationGraph
-from core.graph.nodes import (
-    FeatureNode,
-    PageNode,
+from core.graph.models import (
+    GraphNode,
+    NodeKind,
 )
-from core.graph.edges import (
+from core.graph.models import (
     GraphEdge,
-    EdgeType,
+    EdgeRelation,
 )
 from core.graph.change import (
     ChangeRequest,
@@ -20,13 +20,15 @@ def test_feature_change_impact():
 
     graph = ApplicationGraph()
 
-    feature = FeatureNode(
+    feature = GraphNode(
         id="feature.auth",
+        type=NodeKind.FEATURE,
         name="Authentication",
     )
 
-    page = PageNode(
+    page = GraphNode(
         id="page.login",
+        type=NodeKind.PAGE,
         name="Login",
     )
 
@@ -37,7 +39,7 @@ def test_feature_change_impact():
         GraphEdge(
             source=feature.id,
             target=page.id,
-            edge_type=EdgeType.IMPLEMENTS,
+            type=EdgeRelation.IMPLEMENTS,
         )
     )
 

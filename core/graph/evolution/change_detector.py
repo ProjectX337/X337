@@ -30,7 +30,7 @@ class ChangeDetector:
             (
                 edge.source,
                 edge.target,
-                edge.type.value,
+                edge.relation.value,
             )
             for edge in before.edges
         }
@@ -39,7 +39,7 @@ class ChangeDetector:
             (
                 edge.source,
                 edge.target,
-                edge.type.value,
+                edge.relation.value,
             )
             for edge in after.edges
         }

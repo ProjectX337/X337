@@ -38,7 +38,7 @@ class GraphAnalyzer:
         counts = defaultdict(int)
 
         for node in self.graph.nodes.values():
-            counts[node.type] += 1
+            counts[node.kind] += 1
 
         return dict(counts)
 
@@ -69,7 +69,7 @@ class GraphAnalyzer:
 
             if (
                 edge.source == node_id
-                and edge.type == EdgeRelation.REQUIRES
+                and edge.relation == EdgeRelation.REQUIRES
             ):
                 node = self.graph.get_node(
                     edge.target

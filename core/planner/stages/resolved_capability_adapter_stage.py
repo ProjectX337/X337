@@ -18,6 +18,7 @@ class ResolvedCapabilityAdapterStage(PlanningStage):
 
     provides = {
         "capabilities",
+        "capability_models",
     }
 
     def __init__(self) -> None:

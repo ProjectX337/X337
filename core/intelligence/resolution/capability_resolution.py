@@ -44,26 +44,68 @@ class CapabilityResolution:
         hypotheses: list[CapabilityHypothesis],
     ) -> list[ResolvedCapability]:
 
-        resolved = []
+        resolved: dict[str, ResolvedCapability] = {}
+        visited: set[str] = set()
+
+        def expand(
+            name: str,
+            confidence: float,
+            source: str,
+        ) -> None:
+
+            if name in visited:
+                return
+
+            visited.add(name)
+
+            capability = self.registry.get(name)
+
+            if capability is None:
+                resolved[name] = ResolvedCapability(
+                    name=name,
+                    capability=None,
+                    features=self.mappings.get(
+                        name,
+                        [],
+                    ),
+                    confidence=confidence,
+                    source=source,
+                )
+
+                return
+
+            resolved[name] = ResolvedCapability(
+                name=name,
+                capability=capability,
+                features=self.mappings.get(
+                    name,
+                    [],
+                ),
+                confidence=confidence,
+                source=source,
+            )
+
+            for dependency in capability.depends_on:
+                expand(
+                    dependency,
+                    confidence,
+                    "dependency_resolution",
+                )
+
+            for implication in capability.implies:
+                expand(
+                    implication,
+                    confidence,
+                    "implication_resolution",
+                )
 
         for hypothesis in hypotheses:
-
-            features = self.mappings.get(
+            expand(
                 hypothesis.name,
-                [],
+                hypothesis.confidence,
+                hypothesis.source,
             )
 
-            capability = self.registry.get(
-                hypothesis.name
-            )
-
-            resolved.append(
-                ResolvedCapability(
-                    name=hypothesis.name,
-                    capability=capability,
-                    features=features,
-                    confidence=hypothesis.confidence,
-                )
-            )
-
-        return resolved
+        return list(
+            resolved.values()
+        )

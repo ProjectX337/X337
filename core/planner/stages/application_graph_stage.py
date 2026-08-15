@@ -20,6 +20,8 @@ class ApplicationGraphStage(PlanningStage):
     requires = {
         "ui_spec",
         "feature_models",
+        "capability_models",
+        "technologies",
     }
 
     provides = {
@@ -50,6 +52,11 @@ class ApplicationGraphStage(PlanningStage):
         builder.add_capabilities(
             state.application_graph,
             normalized_capabilities,
+        )
+
+        builder.add_technologies(
+            state.application_graph,
+            state.technologies,
         )
 
         state.application_graph = (

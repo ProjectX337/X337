@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from core.cognition.cognitive_state import CognitiveState
-from core.intelligence.artifacts.capability_hypothesis import CapabilityHypothesis
 from core.intelligence.resolution.capability_resolution import (
     CapabilityResolution,
 )
@@ -15,7 +14,9 @@ class CapabilityResolutionStage(PlanningStage):
     resolved implementation capabilities.
     """
 
-    requires = set()
+    requires = {
+        "capability_hypotheses",
+    }
 
     provides = {
         "resolved_capabilities",
@@ -29,17 +30,7 @@ class CapabilityResolutionStage(PlanningStage):
         context: CognitiveState,
     ) -> None:
 
-        hypotheses = [
-            CapabilityHypothesis(
-                name=name,
-                confidence=0.5,
-                source="capability_reasoner",
-            )
-            for name in context.capability_candidates
-        ]
-
-        if not hypotheses:
-            hypotheses = context.capability_hypotheses
+        hypotheses = context.capability_hypotheses
 
         context.resolved_capabilities = (
             self.resolver.resolve(

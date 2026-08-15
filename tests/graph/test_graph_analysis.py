@@ -1,12 +1,12 @@
 from core.graph.analysis import GraphAnalyzer
 from core.graph.models import ApplicationGraph
-from core.graph.nodes import (
-    PageNode,
-    ComponentNode,
+from core.graph.models import (
+    GraphNode,
+    NodeKind,
 )
-from core.graph.edges import (
+from core.graph.models import (
     GraphEdge,
-    EdgeType,
+    EdgeRelation,
 )
 
 
@@ -14,13 +14,15 @@ def test_graph_analyzer_summary():
 
     graph = ApplicationGraph()
 
-    page = PageNode(
+    page = GraphNode(
         id="page.login",
+        type=NodeKind.PAGE,
         name="Login",
     )
 
-    component = ComponentNode(
+    component = GraphNode(
         id="component.form",
+        type=NodeKind.COMPONENT,
         name="Form",
     )
 
@@ -31,7 +33,7 @@ def test_graph_analyzer_summary():
         GraphEdge(
             source=page.id,
             target=component.id,
-            edge_type=EdgeType.RENDERS,
+            type=EdgeRelation.RENDERS,
         )
     )
 

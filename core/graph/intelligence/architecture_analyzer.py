@@ -36,7 +36,7 @@ class ArchitectureAnalyzer:
         implemented_features = {
             edge.source
             for edge in graph.edges
-            if edge.type
+            if edge.relation
             in (
                 EdgeRelation.IMPLEMENTS,
                 EdgeRelation.RENDERS,

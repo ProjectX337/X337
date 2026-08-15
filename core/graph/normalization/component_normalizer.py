@@ -29,7 +29,7 @@ class ComponentNormalizer:
             graph.nodes.items()
         ):
 
-            if node.type != NodeKind.COMPONENT:
+            if node.kind != NodeKind.COMPONENT:
                 continue
 
             slug = normalize_component_slug(

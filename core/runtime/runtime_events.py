@@ -12,7 +12,7 @@ class RuntimeEvents:
     def emit(
         self,
         event,
-        session
+        runtime
     ):
 
         self.events.append(
@@ -20,11 +20,11 @@ class RuntimeEvents:
             {
                 "event": event,
 
-                "session":
-                    session.id,
+                "runtime":
+                    runtime.id,
 
                 "name":
-                    session.name,
+                    runtime.name,
 
                 "time":
                     time.time()
@@ -35,15 +35,15 @@ class RuntimeEvents:
 
     def list(
         self,
-        session_id=None
+        runtime_id=None
     ):
 
-        if session_id:
+        if runtime_id:
 
             return [
                 e
                 for e in self.events
-                if e["session"] == session_id
+                if e["runtime"] == runtime_id
             ]
 
         return self.events

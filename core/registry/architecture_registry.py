@@ -105,6 +105,13 @@ class ArchitectureRegistry:
                     "services",
                     "tests",
                 ],
+                technology_defaults={
+                    "database": "PostgreSQL",
+                    "orm": "SQLAlchemy",
+                    "api_style": "REST",
+                    "validation": "Pydantic",
+                    "package_manager_backend": "pip",
+                },
             )
         )
 
@@ -126,6 +133,13 @@ class ArchitectureRegistry:
                     "react-dom",
                     "vite",
                 ],
+                technology_defaults={
+                    "styling": "tailwindcss",
+                    "state_management": "zustand",
+                    "routing": "react-router",
+                    "ui_library": "shadcn",
+                    "package_manager_frontend": "npm",
+                },
             )
         )
 
@@ -170,5 +184,10 @@ class ArchitectureRegistry:
                     "llm",
                     "ai",
                 ],
+                technology_defaults={
+                    "llm_provider": "OpenAI",
+                    "vector_database": "pgvector",
+                    "embeddings": "text-embedding",
+                },
             )
         )

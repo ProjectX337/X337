@@ -6,14 +6,14 @@ class RuntimeRegistry:
 
     def __init__(
         self,
-        storage_path="workspace/runtime/runtime_sessions.json"
+        storage_path="workspace/runtime/project_runtimes.json"
     ):
 
         self.storage_path = Path(
             storage_path
         )
 
-        self.sessions = {}
+        self.runtimes = {}
 
         self._load()
 
@@ -30,17 +30,17 @@ class RuntimeRegistry:
 
             try:
 
-                self.sessions = json.loads(
+                self.runtimes = json.loads(
                     self.storage_path.read_text()
                 )
 
             except Exception:
 
-                self.sessions = {}
+                self.runtimes = {}
 
         else:
 
-            self.sessions = {}
+            self.runtimes = {}
 
 
 
@@ -59,7 +59,7 @@ class RuntimeRegistry:
 
         self.storage_path.write_text(
             json.dumps(
-                self.sessions,
+                self.runtimes,
                 indent=2
             )
         )
@@ -67,11 +67,11 @@ class RuntimeRegistry:
 
 
     #
-    # Register runtime session
+    # Register project runtime
     #
     def register(
         self,
-        session
+        runtime
     ):
 
         #
@@ -80,31 +80,31 @@ class RuntimeRegistry:
         existing_id = None
 
 
-        for session_id, existing in self.sessions.items():
+        for runtime_id, existing in self.runtimes.items():
 
             if existing.get(
                 "name"
-            ) == session.name:
+            ) == runtime.name:
 
-                existing_id = session_id
+                existing_id = runtime_id
                 break
 
 
 
         if existing_id:
 
-            del self.sessions[
+            del self.runtimes[
                 existing_id
             ]
 
 
 
         #
-        # Store newest session
+        # Store newest runtime
         #
-        self.sessions[
-            session.id
-        ] = session.to_dict()
+        self.runtimes[
+            runtime.id
+        ] = runtime.to_dict()
 
 
 
@@ -120,13 +120,13 @@ class RuntimeRegistry:
         name
     ):
 
-        for session in self.sessions.values():
+        for runtime in self.runtimes.values():
 
-            if session.get(
+            if runtime.get(
                 "name"
             ) == name:
 
-                return session
+                return runtime
 
 
         return None
@@ -134,7 +134,7 @@ class RuntimeRegistry:
 
 
     #
-    # Get runtime session
+    # Get project runtime
     #
     def get(
         self,
@@ -155,25 +155,25 @@ class RuntimeRegistry:
         name
     ):
 
-        remove_ids = []
+        remove_runtime_ids = []
 
 
-        for session_id, session in self.sessions.items():
+        for runtime_id, runtime in self.runtimes.items():
 
-            if session.get(
+            if runtime.get(
                 "name"
             ) == name:
 
-                remove_ids.append(
-                    session_id
+                remove_runtime_ids.append(
+                    runtime_id
                 )
 
 
 
-        for session_id in remove_ids:
+        for runtime_id in remove_runtime_ids:
 
-            del self.sessions[
-                session_id
+            del self.runtimes[
+                runtime_id
             ]
 
 
@@ -191,14 +191,14 @@ class RuntimeRegistry:
         status
     ):
 
-        session = self.find_by_name(
+        runtime = self.find_by_name(
             name
         )
 
 
-        if session:
+        if runtime:
 
-            session[
+            runtime[
                 "status"
             ] = status
 
@@ -216,14 +216,14 @@ class RuntimeRegistry:
         healthy
     ):
 
-        session = self.find_by_name(
+        runtime = self.find_by_name(
             name
         )
 
 
-        if session:
+        if runtime:
 
-            session[
+            runtime[
                 "health"
             ] = {
 
@@ -247,5 +247,5 @@ class RuntimeRegistry:
     ):
 
         return list(
-            self.sessions.values()
+            self.runtimes.values()
         )

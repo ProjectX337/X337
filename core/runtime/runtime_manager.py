@@ -1,8 +1,7 @@
 from core.terminal.terminal_manager import TerminalManager
 from core.runtime.process_manager import ProcessManager
-from core.runtime.preview_registry import PreviewRegistry
-from core.runtime.runtime_registry import RuntimeRegistry
-from core.runtime.runtime_session import RuntimeSession
+from core.preview.runtime import PreviewRuntime
+from core.runtime.project_runtime import ProjectRuntime
 
 import os
 import time
@@ -10,15 +9,23 @@ import time
 
 class RuntimeManager:
 
-    def __init__(self):
+    def __init__(
+        self,
+        registry=None,
+    ):
 
         self.terminal = TerminalManager()
 
         self.process_manager = ProcessManager()
 
-        self.preview_registry = PreviewRegistry()
+        self.preview_runtime = PreviewRuntime()
 
-        self.runtime_registry = RuntimeRegistry()
+        if registry is None:
+            raise ValueError(
+                "RuntimeManager requires RuntimeRegistry"
+            )
+
+        self.runtime_registry = registry
 
 
     def launch(
@@ -44,22 +51,6 @@ class RuntimeManager:
         )
 
 
-        session = {
-
-            "name": artifact.name,
-
-            "status": "starting",
-
-            "started_at": time.time(),
-
-            "path": artifact.path,
-
-            "preview_port": artifact.preview_port,
-
-            "processes": []
-
-        }
-
 
         for command in artifact.install_commands:
 
@@ -73,13 +64,6 @@ class RuntimeManager:
             )
 
 
-            session["processes"].append(
-                {
-                    "pid": process.pid,
-                    "command": command,
-                    "type": "install"
-                }
-            )
 
 
         for command in artifact.run_commands:
@@ -102,22 +86,6 @@ class RuntimeManager:
             )
 
 
-            session["processes"].append(
-                {
-                    "pid": process.pid,
-                    "command": command,
-                    "type": "runtime"
-                }
-            )
-
-
-            if artifact.preview_port:
-
-                self.preview_registry.register(
-                    artifact,
-                    artifact.preview_port,
-                    process.pid
-                )
 
 
         time.sleep(1)
@@ -125,32 +93,31 @@ class RuntimeManager:
 
         artifact.status = "running"
 
-        session["status"] = "running"
 
-
-        runtime_session = RuntimeSession(
+        runtime = ProjectRuntime.from_artifact(
             artifact
         )
 
-        runtime_session.set_running()
+        runtime.status = "running"
 
+        if artifact.preview_port:
 
-        runtime_session.preview = (
-            self.preview_registry.get(
-                artifact.name
+            runtime.preview = self.start_preview(
+                artifact.name,
+                artifact.preview_port
             )
-        )
 
-
-        for process_record in session["processes"]:
-
-            runtime_session.processes.append(
-                process_record
-            )
+        runtime.processes = {
+            str(process.pid): {
+                "pid": process.pid,
+                "type": "runtime"
+            }
+            for process in processes
+        }
 
 
         self.runtime_registry.register(
-            runtime_session
+            runtime
         )
 
 
@@ -185,18 +152,29 @@ class RuntimeManager:
 
 
             "preview":
-                self.preview_registry.get(
-                    artifact.name
-                ),
+                runtime.preview,
 
 
-            "session":
-                runtime_session.to_dict()
+            "runtime":
+                runtime.to_dict()
 
         }
 
 
         return result
+
+
+
+    def start_preview(
+        self,
+        project_slug
+    ):
+
+        preview = self.preview_runtime.start(
+            project_slug
+        )
+
+        return preview
 
 
 

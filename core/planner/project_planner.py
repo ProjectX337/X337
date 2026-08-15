@@ -1,5 +1,4 @@
 from __future__ import annotations
-from core.planner.stages.knowledge_graph_stage import KnowledgeGraphStage
 from core.planner.stages.technology_resolver_stage import TechnologyResolverStage
 from core.cognition.cognitive_state import CognitiveState
 
@@ -9,7 +8,6 @@ from core.planner.stages.prompt_parser_stage import PromptParserStage
 from core.planner.stages.intent_classifier_stage import IntentClassifierStage
 from core.planner.stages.product_intent_stage import ProductIntentStage
 from core.planner.stages.capability_resolution_stage import CapabilityResolutionStage
-from core.planner.stages.capability_reasoner_stage import CapabilityReasonerStage
 from core.planner.stages.resolved_capability_adapter_stage import ResolvedCapabilityAdapterStage
 from core.planner.stages.product_intelligence_stage import ProductIntelligenceStage
 from core.planner.stages.architecture_selection_stage import ArchitectureSelectionStage
@@ -39,14 +37,12 @@ class ProjectPlanner:
             IntentClassifierStage(),
             ProductIntentStage(),
             ProductIntelligenceStage(),
-            CapabilityReasonerStage(),
             CapabilityResolutionStage(),
             ResolvedCapabilityAdapterStage(),
             ArchitectureRequirementsStage(),
             ArchitectureSelectionStage(),
             StackBuilderStage(),
             FeatureStage(),
-            KnowledgeGraphStage(),
             TechnologyResolverStage(),
             ProductProfileStage(),
             DesignInferenceStage(),

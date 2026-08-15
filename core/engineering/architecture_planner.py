@@ -16,7 +16,7 @@ class ArchitecturePlan:
     """
     Complete software architecture for a project.
 
-    This is consumed by the ProjectGenerator and
+    This is consumed by the canonical generation pipeline and
     future engineering agents.
     """
 

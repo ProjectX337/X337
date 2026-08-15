@@ -6,6 +6,7 @@ from core.generators.react.generator import ReactGenerator
 from core.generators.ai.generator import AIAgentGenerator
 from core.generators.python.generator import PythonGenerator
 from core.generators.fastapi.generator import FastAPIGenerator
+from core.generators.website.generator import WebsiteGenerator
 
 
 def create_default_registry() -> GeneratorRegistry:
@@ -25,6 +26,10 @@ def create_default_registry() -> GeneratorRegistry:
 
     registry.register(
         FastAPIGenerator()
+    )
+
+    registry.register(
+        WebsiteGenerator()
     )
 
     return registry

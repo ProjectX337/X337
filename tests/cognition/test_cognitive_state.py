@@ -9,13 +9,7 @@ def test_cognitive_state():
 
     assert state.prompt == "Build an AI SaaS"
 
-    assert state.knowledge_graph is not None
-
-    assert state.decision_graph is not None
-
-    assert state.task_graph is not None
-
-    assert state.execution_graph is not None
+    assert state.application_graph is not None
 
 
 if __name__ == "__main__":

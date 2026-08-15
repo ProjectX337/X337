@@ -45,7 +45,7 @@ class GraphValidator:
             key = (
                 edge.source,
                 edge.target,
-                edge.type,
+                edge.relation,
             )
 
             if key in seen:

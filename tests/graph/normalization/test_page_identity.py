@@ -7,12 +7,12 @@ from core.graph.models import (
     NodeKind,
 )
 
-from core.graph.graph import Graph
+from core.graph.models import ApplicationGraph
 
 
 def test_page_identity_is_normalized():
 
-    graph = Graph()
+    graph = ApplicationGraph()
 
     graph.add_node(
         GraphNode(

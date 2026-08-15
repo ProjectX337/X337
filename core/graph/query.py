@@ -21,7 +21,7 @@ class GraphQuery:
         for edge in self.graph.edges:
             if (
                 edge.source == feature_id
-                and edge.type == EdgeRelation.IMPLEMENTS
+                and edge.relation == EdgeRelation.IMPLEMENTS
             ):
                 node = self.graph.get_node(
                     edge.target
@@ -41,7 +41,7 @@ class GraphQuery:
         for edge in self.graph.edges:
             if (
                 edge.source == page_id
-                and edge.type == EdgeRelation.RENDERS
+                and edge.relation == EdgeRelation.RENDERS
             ):
                 node = self.graph.get_node(
                     edge.target

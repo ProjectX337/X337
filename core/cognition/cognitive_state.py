@@ -9,7 +9,6 @@ from core.planner.architecture_selector import ArchitectureCandidate
 from core.planner.stack_builder import ArchitectureStack
 from core.planner.technology_plan import TechnologyPlan
 
-from core.graph.graph import Graph
 from core.graph.models import ApplicationGraph
 from core.graph.change_plan import ChangePlan
 from core.graph.evolution.models import EvolutionPlan
@@ -41,7 +40,7 @@ class CognitiveState:
         stack
         capabilities
         feature_models
-        task_graph
+        application_graph
         technologies
         product_profile
         design_spec
@@ -85,7 +84,11 @@ class CognitiveState:
         default_factory=list
     )
 
-    capability_candidates: list[str] = field(
+    # Resolved implementation-ready capabilities.
+    #
+    # Produced by CapabilityResolutionStage and consumed
+    # by ResolvedCapabilityAdapterStage.
+    resolved_capabilities: list = field(
         default_factory=list
     )
 
@@ -145,16 +148,10 @@ class CognitiveState:
     # Semantic graph
     # ---------------------------------------------------------
 
-    task_graph: Graph = field(
-        default_factory=Graph
-    )
-
     # Canonical application architecture graph.
     #
-    # This is distinct from:
-    #   task_graph: legacy planner compatibility graph
-    #   execution_graph: execution / decision graph
-
+    # This is the authoritative graph representation of the
+    # product/application being planned and evolved.
     application_graph: ApplicationGraph = field(
         default_factory=ApplicationGraph
     )
@@ -165,23 +162,17 @@ class CognitiveState:
 
     # Architecture evolution intelligence output.
     #
-    # Represents recommended changes
-    # after graph analysis.
+    # Represents recommended changes after graph analysis.
     evolution_plan: EvolutionPlan | None = None
 
-    # Application evolution requests
+    # Application evolution requests.
     change_requests: list = field(
         default_factory=list
     )
 
-    # Generated evolution plans
+    # Generated evolution plans.
     change_plans: list[ChangePlan] = field(
         default_factory=list
-    )
-
-
-    execution_graph: Graph = field(
-        default_factory=Graph
     )
 
     # ---------------------------------------------------------
@@ -238,28 +229,3 @@ class CognitiveState:
     @features.setter
     def features(self, value: list) -> None:
         self.feature_models = value
-
-    @property
-    def knowledge_graph(self) -> Graph:
-        """
-        Backwards-compatible alias for task_graph.
-        """
-        return self.task_graph
-
-    @knowledge_graph.setter
-    def knowledge_graph(self, value: Graph) -> None:
-        self.task_graph = value
-
-    @property
-    def decision_graph(self) -> Graph:
-        """
-        Backwards-compatible alias for execution_graph.
-        """
-        return self.execution_graph
-
-    @decision_graph.setter
-    def decision_graph(
-        self,
-        value: Graph,
-    ) -> None:
-        self.execution_graph = value

@@ -73,12 +73,5 @@ class ProjectSpecStage(PlanningStage):
             else ""
         ),
 
-            metadata={
-                "task_graph": getattr(
-                    context,
-                    "task_graph",
-                    None,
-                ),
-            },
 
         )

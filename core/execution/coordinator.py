@@ -12,7 +12,7 @@ from core.execution.validation.validator import ExecutionValidator
 
 
 @dataclass
-class ExecutionReport:
+class ExecutionResultSet:
     """
     Result of executing an evolution plan.
     """
@@ -67,7 +67,7 @@ class ExecutionCoordinator:
         self,
         plan: ChangePlan,
         context: ExecutionContext | None = None,
-    ) -> ExecutionReport:
+    ) -> ExecutionResultSet:
 
         tasks = self.planner.create_tasks(
             plan,
@@ -112,6 +112,6 @@ class ExecutionCoordinator:
                 )
             )
 
-        return ExecutionReport(
+        return ExecutionResultSet(
             results=results
         )

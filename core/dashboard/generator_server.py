@@ -6,12 +6,12 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 from core.agent.change_engine import ChangeEngine
-from core.agent.context_builder import create_generator_context
-from core.generators.react.generator import ReactGenerator
+from core.generators.generation_service import GenerationService
 from core.generators.result_writer import ResultWriter
 from core.planner.project_planner import ProjectPlanner
 from core.training.training_store import TrainingStore
-from core.preview.runtime import preview_runtime
+from core.agent.chat_agent import ChatAgent
+from core.runtime.runtime_container import runtime_service
 
 
 TRAINING_PATH = Path(
@@ -25,8 +25,10 @@ OUTPUT_ROOT = Path(
 
 planner = ProjectPlanner()
 change_engine = ChangeEngine()
-generator = ReactGenerator()
+generation_service = GenerationService()
+chat_agent = ChatAgent()
 writer = ResultWriter()
+
 training_store = TrainingStore()
 
 
@@ -601,6 +603,10 @@ class GeneratorHandler(BaseHTTPRequestHandler):
             self.handle_generate()
             return
 
+        if self.path == "/api/chat":
+            self.handle_chat()
+            return
+
         self._send_json_headers(404)
 
         self.wfile.write(
@@ -637,6 +643,57 @@ class GeneratorHandler(BaseHTTPRequestHandler):
             return default
 
         return value
+
+    def handle_chat(self):
+
+        try:
+            data = self.read_json()
+
+            message = str(
+                data.get(
+                    "message",
+                    "",
+                )
+            ).strip()
+
+            if not message:
+                self._send_json_headers(400)
+
+                self.wfile.write(
+                    json.dumps(
+                        {
+                            "error": "Message is required",
+                        }
+                    ).encode()
+                )
+
+                return
+
+            result = chat_agent.respond(
+                message
+            )
+
+            self._send_json_headers()
+
+            self.wfile.write(
+                json.dumps(
+                    result,
+                    default=str,
+                ).encode()
+            )
+
+        except Exception as error:
+
+            self._send_json_headers(500)
+
+            self.wfile.write(
+                json.dumps(
+                    {
+                        "error": str(error),
+                    }
+                ).encode()
+            )
+
 
     def handle_training(self):
 
@@ -747,20 +804,11 @@ class GeneratorHandler(BaseHTTPRequestHandler):
             changes = []
 
             # -------------------------------------------------
-            # 3. Canonical generation context
+            # 3. Canonical application generation
             # -------------------------------------------------
 
-            context = create_generator_context(
-                spec,
-                changes=changes,
-            )
-
-            # -------------------------------------------------
-            # 4. Canonical React generation
-            # -------------------------------------------------
-
-            result = generator.generate(
-                context
+            result = generation_service.generate(
+                spec
             )
 
             # -------------------------------------------------
@@ -790,7 +838,7 @@ class GeneratorHandler(BaseHTTPRequestHandler):
             # 5b. Start live generated-app preview
             # -------------------------------------------------
 
-            preview = preview_runtime.start(
+            preview = runtime_service.start_preview(
                 slug
             )
 

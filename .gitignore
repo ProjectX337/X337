@@ -25,3 +25,13 @@ generated/frontend/package-lock.json
 *.egg-info/
 __pycache__/
 *.pyc
+
+# X337 runtime artifacts
+workspace/generated/
+workspace/runtime/*.json
+memory/*.json
+
+# X337 runtime artifacts
+workspace/generated/
+workspace/runtime/*.json
+memory/*.json

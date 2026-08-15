@@ -25,12 +25,12 @@ def test_component_identity_is_normalized():
     }
 
 
-    assert (
-        "component.chatpanel"
-        in components
+    assert any(
+        node_id.endswith(".component.chatpanel")
+        for node_id in components
     )
 
-    assert (
-        "component.chat_panel"
-        not in components
+    assert not any(
+        node_id.endswith(".component.chat_panel")
+        for node_id in components
     )

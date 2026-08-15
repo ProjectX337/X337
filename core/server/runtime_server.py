@@ -2,10 +2,10 @@ from fastapi import FastAPI
 
 from core.api.runtime_api import RuntimeAPI
 
-from core.runtime.runtime_manager import RuntimeManager
-from core.runtime.runtime_registry import RuntimeRegistry
-from core.runtime.runtime_service import RuntimeService
-from core.runtime.runtime_controller import RuntimeController
+from core.runtime.runtime_container import (
+    runtime_service,
+    runtime_controller,
+)
 from core.runtime.artifact import Artifact
 
 
@@ -17,19 +17,6 @@ app = FastAPI(
 #
 # Runtime dependencies
 #
-
-runtime_manager = RuntimeManager()
-
-registry = RuntimeRegistry()
-
-runtime_service = RuntimeService(
-    runtime_manager,
-    registry
-)
-
-runtime_controller = RuntimeController(
-    runtime_service
-)
 
 runtime_api = RuntimeAPI(
     runtime_controller

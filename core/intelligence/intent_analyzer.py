@@ -40,14 +40,7 @@ class ProductIntentAnalyzer:
 
         text = parsed.original
 
-        capabilities = list(
-            dict.fromkeys(
-                [
-                    *parsed.keywords,
-                    *infer_capabilities(text),
-                ]
-            )
-        )
+        capabilities = infer_capabilities(text)
 
         domain = infer_domain(text)
 

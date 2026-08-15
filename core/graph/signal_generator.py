@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from core.graph.models import NodeKind
 from core.graph.signals import (
     EngineeringSignal,
     EngineeringSignalSet,
@@ -18,6 +19,12 @@ class SignalGenerator:
     It produces engineering intent only.
     """
 
+    def __init__(self, graph):
+        self.graph = graph
+
+    def _graph_node(self, node_id: str):
+        return self.graph.get_node(node_id)
+
     def generate(
         self,
         change: ChangeRequest,
@@ -28,7 +35,12 @@ class SignalGenerator:
 
         for node_id in impact.affected_nodes:
 
-            if node_id.startswith("component."):
+            node = self._graph_node(node_id)
+
+            if node is None:
+                continue
+
+            if node.kind == NodeKind.COMPONENT:
 
                 signals.add(
                     EngineeringSignal(
@@ -37,9 +49,7 @@ class SignalGenerator:
                     )
                 )
 
-        for node_id in impact.affected_nodes:
-
-            if node_id.startswith("page."):
+            elif node.kind == NodeKind.PAGE:
 
                 signals.add(
                     EngineeringSignal(

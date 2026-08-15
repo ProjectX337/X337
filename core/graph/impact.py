@@ -38,6 +38,7 @@ class ImpactAnalyzer:
     ) -> ImpactReport:
 
         affected = []
+        affected_set = set()
 
         node = self.graph.get_node(
             change.target_node
@@ -68,9 +69,9 @@ class ImpactAnalyzer:
 
                     if target:
 
-                        affected.append(
-                            target.id
-                        )
+                        if target.id not in affected_set:
+                            affected_set.add(target.id)
+                            affected.append(target.id)
 
                         walk(
                             target.id

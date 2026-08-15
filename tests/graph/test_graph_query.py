@@ -1,12 +1,11 @@
 from core.graph.models import ApplicationGraph
-from core.graph.nodes import (
-    FeatureNode,
-    PageNode,
-    ComponentNode,
+from core.graph.models import (
+    GraphNode,
+    NodeKind,
 )
-from core.graph.edges import (
+from core.graph.models import (
     GraphEdge,
-    EdgeType,
+    EdgeRelation,
 )
 from core.graph.query import GraphQuery
 
@@ -16,22 +15,25 @@ def build_graph():
     graph = ApplicationGraph()
 
     graph.add_node(
-        FeatureNode(
+        GraphNode(
             id="feature.auth",
+            type=NodeKind.FEATURE,
             name="Authentication",
         )
     )
 
     graph.add_node(
-        PageNode(
+        GraphNode(
             id="page.login",
+            type=NodeKind.PAGE,
             name="Login",
         )
     )
 
     graph.add_node(
-        ComponentNode(
+        GraphNode(
             id="component.form",
+            type=NodeKind.COMPONENT,
             name="LoginForm",
         )
     )
@@ -40,7 +42,7 @@ def build_graph():
         GraphEdge(
             source="feature.auth",
             target="page.login",
-            edge_type=EdgeType.IMPLEMENTS,
+            type=EdgeRelation.IMPLEMENTS,
         )
     )
 
@@ -48,7 +50,7 @@ def build_graph():
         GraphEdge(
             source="page.login",
             target="component.form",
-            edge_type=EdgeType.RENDERS,
+            type=EdgeRelation.RENDERS,
         )
     )
 

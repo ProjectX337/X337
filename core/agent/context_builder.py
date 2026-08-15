@@ -7,6 +7,7 @@ from core.generators.generator_context import GeneratorContext
 
 def create_generator_context(
     spec,
+    step: BuildStep,
     changes=None,
     project_state=None,
 ):
@@ -14,12 +15,7 @@ def create_generator_context(
     return GeneratorContext(
         spec=spec,
 
-        step=BuildStep(
-            name="react",
-            generator="react",
-            description="Generate React application",
-            output_directory="frontend",
-        ),
+        step=step,
 
         builder=FileBuilder(),
 

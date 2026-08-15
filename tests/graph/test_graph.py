@@ -1,11 +1,13 @@
-from core.graph.graph import Graph
-from core.graph.node import GraphNode
-from core.graph.edge import GraphEdge
+from core.graph.models import (
+    ApplicationGraph,
+    GraphNode,
+    GraphEdge,
+)
 
 
 def test_graph():
 
-    graph = Graph()
+    graph = ApplicationGraph()
 
     graph.add_node(
         GraphNode(

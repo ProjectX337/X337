@@ -7,13 +7,13 @@ class RuntimeMonitor:
 
     def check(
         self,
-        session
+        runtime
     ):
 
         alive = True
 
 
-        for process in session.processes:
+        for process in runtime.processes.values():
 
             try:
 
@@ -35,7 +35,7 @@ class RuntimeMonitor:
 
         if alive:
 
-            session.health = {
+            runtime.health = {
 
                 "status":"healthy",
 
@@ -47,7 +47,7 @@ class RuntimeMonitor:
 
         else:
 
-            session.health = {
+            runtime.health = {
 
                 "status":"failed",
 
@@ -57,4 +57,4 @@ class RuntimeMonitor:
             }
 
 
-        return session.health
+        return runtime.health

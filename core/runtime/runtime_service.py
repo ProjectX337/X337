@@ -28,6 +28,19 @@ class RuntimeService:
 
 
 
+
+    #
+    # Start preview
+    #
+    def start_preview(
+        self,
+        project_slug
+    ):
+
+        return self.runtime.start_preview(
+            project_slug
+        )
+
     #
     # Stop runtime
     #
@@ -101,17 +114,30 @@ class RuntimeService:
 
 
     #
-    # Preview registry
+    # Register runtime
+    #
+    def register(
+        self,
+        runtime
+    ):
+
+        return self.registry.register(
+            runtime
+        )
+
+
+    #
+    # Preview runtimes
     #
     def previews(
         self
     ):
 
-        return (
-            self.runtime
-            .preview_registry
-            .list()
-        )
+        return [
+            runtime
+            for runtime in self.registry.list()
+            if runtime.get("preview")
+        ]
 
 
 

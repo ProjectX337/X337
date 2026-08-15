@@ -1,11 +1,11 @@
 from core.graph.models import ApplicationGraph
-from core.graph.nodes import (
-    FeatureNode,
-    PageNode,
+from core.graph.models import (
+    GraphNode,
+    NodeKind,
 )
-from core.graph.edges import (
+from core.graph.models import (
     GraphEdge,
-    EdgeType,
+    EdgeRelation,
 )
 from core.graph.change import (
     ChangeRequest,
@@ -20,15 +20,17 @@ def test_change_planner_creates_evolution_plan():
     graph = ApplicationGraph()
 
     graph.add_node(
-        FeatureNode(
+        GraphNode(
             id="feature.auth",
+            type=NodeKind.FEATURE,
             name="Auth",
         )
     )
 
     graph.add_node(
-        PageNode(
+        GraphNode(
             id="page.login",
+            type=NodeKind.PAGE,
             name="Login",
         )
     )
@@ -37,7 +39,7 @@ def test_change_planner_creates_evolution_plan():
         GraphEdge(
             source="feature.auth",
             target="page.login",
-            edge_type=EdgeType.IMPLEMENTS,
+            type=EdgeRelation.IMPLEMENTS,
         )
     )
 

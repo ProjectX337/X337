@@ -215,6 +215,3 @@ class PreviewRuntime:
             "project": project_slug,
             "status": "stopped",
         }
-
-
-preview_runtime = PreviewRuntime()

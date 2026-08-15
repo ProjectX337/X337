@@ -17,7 +17,7 @@ class ChangePlanner:
     def __init__(self, graph):
         self.graph = graph
         self.impact_analyzer = ImpactAnalyzer(graph)
-        self.signal_generator = SignalGenerator()
+        self.signal_generator = SignalGenerator(graph)
 
     def create_plan(
         self,

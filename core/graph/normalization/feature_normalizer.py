@@ -30,7 +30,7 @@ class FeatureNormalizer:
             graph.nodes.items()
         ):
 
-            if node.type != NodeKind.FEATURE:
+            if node.kind != NodeKind.FEATURE:
                 continue
 
             slug = normalize_feature_slug(
