@@ -79,7 +79,7 @@ class ProcessManager:
 
             if process.is_running():
 
-                record["status"] = "running"
+                record["runtime_process"].status = "running"
 
                 return True
 
@@ -91,7 +91,7 @@ class ProcessManager:
 
 
 
-        record["status"] = "dead"
+        record["runtime_process"].status = "dead"
 
         return False
 
@@ -143,9 +143,11 @@ class ProcessManager:
 
 
 
-            record["status"] = "stopped"
+            record["runtime_process"].status = "stopped"
 
-            record["stopped_at"] = time.time()
+            record["runtime_process"].created_at = (
+                record["runtime_process"].created_at
+            )
 
 
             return True
