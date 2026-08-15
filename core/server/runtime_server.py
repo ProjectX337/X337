@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from core.api.runtime_api import RuntimeAPI
 
 from core.runtime.runtime_container import (
-    runtime_service,
+    registry,
     runtime_controller,
 )
 from core.runtime.artifact import Artifact

@@ -9,14 +9,20 @@ class FakeService:
     def stop(self, name):
         return "stopped"
 
+    def restart(self, artifact):
+        return "restarted"
+
     def status(self, name):
         return "status"
 
+    def health(self, name):
+        return "healthy"
+
     def list_running(self):
-        return []
+        return ["app"]
 
     def previews(self):
-        return []
+        return ["preview"]
 
 
 def test_runtime_controller_boundary():
@@ -27,6 +33,9 @@ def test_runtime_controller_boundary():
 
     assert controller.start(None) == "started"
     assert controller.stop("app") == "stopped"
+    assert controller.restart(None) == "restarted"
     assert controller.status("app") == "status"
-    assert controller.running() == []
-    assert controller.previews() == []
+    assert controller.health("app") == "healthy"
+    assert controller.list_running() == ["app"]
+    assert controller.running() == ["app"]
+    assert controller.previews() == ["preview"]
