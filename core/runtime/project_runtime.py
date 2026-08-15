@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from core.spec.project_spec import ProjectSpec
+from core.runtime.runtime_process import RuntimeProcess
 
 
 @dataclass
@@ -37,7 +38,7 @@ class ProjectRuntime:
         default_factory=dict
     )
 
-    processes: dict[str, Any] = field(
+    processes: dict[str, RuntimeProcess] = field(
         default_factory=dict
     )
 
@@ -76,7 +77,12 @@ class ProjectRuntime:
             "generation": self.generation,
             "preview": self.preview,
             "health": self.health,
-            "processes": list(
-                self.processes.keys()
-            ),
+            "processes": [
+                (
+                    process.to_dict()
+                    if hasattr(process, "to_dict")
+                    else process
+                )
+                for process in self.processes.values()
+            ],
         }

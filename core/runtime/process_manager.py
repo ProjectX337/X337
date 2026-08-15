@@ -1,6 +1,8 @@
 import psutil
 import time
 
+from core.runtime.runtime_process import RuntimeProcess
+
 
 class ProcessManager:
 
@@ -19,14 +21,12 @@ class ProcessManager:
     ):
 
         self.processes[artifact_name] = {
-
-            "pid": process.pid,
-
-            "port": port,
-
+            "runtime_process": RuntimeProcess(
+                name=artifact_name,
+                pid=process.pid,
+                port=port,
+            ),
             "process": process,
-
-            "status": "running"
         }
 
 
@@ -62,7 +62,7 @@ class ProcessManager:
         try:
 
             process = psutil.Process(
-                record["pid"]
+                record["runtime_process"].pid
             )
 
 
@@ -104,7 +104,7 @@ class ProcessManager:
 
 
 
-        pid = record["pid"]
+        pid = record["runtime_process"].pid
 
 
 

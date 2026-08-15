@@ -21,8 +21,14 @@ class RuntimeMonitor:
 
             try:
 
+                pid = (
+                    process.pid
+                    if hasattr(process, "pid")
+                    else process["pid"]
+                )
+
                 p = psutil.Process(
-                    process["pid"]
+                    pid
                 )
 
                 if not p.is_running():
