@@ -2,6 +2,7 @@ import psutil
 import time
 
 from core.runtime.runtime_process import RuntimeProcess
+from core.runtime.process_handle import ProcessHandle
 
 
 class ProcessManager:
@@ -20,13 +21,18 @@ class ProcessManager:
         port=None
     ):
 
+        runtime_process = RuntimeProcess(
+            name=artifact_name,
+            pid=process.pid,
+            port=port,
+        )
+
         self.processes[artifact_name] = {
-            "runtime_process": RuntimeProcess(
-                name=artifact_name,
-                pid=process.pid,
-                port=port,
+            "runtime_process": runtime_process,
+            "handle": ProcessHandle(
+                runtime_process=runtime_process,
+                popen_process=process,
             ),
-            "process": process,
         }
 
 
@@ -121,10 +127,7 @@ class ProcessManager:
 
         try:
 
-            process = psutil.Process(
-                pid
-            )
-
+            process = record["handle"].popen_process
 
             process.terminate()
 
