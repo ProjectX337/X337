@@ -257,10 +257,13 @@ def test_runtime_monitor_persists_failed_state(
         root_path=Path(spec.path),
     )
 
+    from core.runtime.runtime_process import RuntimeProcess
+
     runtime.processes = {
-        "999999999": {
-            "pid": 999999999,
-        }
+        "999999999": RuntimeProcess(
+            name="999999999",
+            pid=999999999,
+        )
     }
 
     registry.register(

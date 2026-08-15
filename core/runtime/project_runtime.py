@@ -78,11 +78,7 @@ class ProjectRuntime:
             "preview": self.preview,
             "health": self.health,
             "processes": [
-                (
-                    process.to_dict()
-                    if hasattr(process, "to_dict")
-                    else process
-                )
+                process.to_dict()
                 for process in self.processes.values()
             ],
         }
