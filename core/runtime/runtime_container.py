@@ -16,8 +16,7 @@ runtime_manager = RuntimeManager(
 
 
 runtime_service = RuntimeService(
-    runtime_manager,
-    registry
+    runtime_manager
 )
 
 

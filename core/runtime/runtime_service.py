@@ -3,12 +3,9 @@ class RuntimeService:
     def __init__(
         self,
         runtime_manager,
-        registry
     ):
 
         self.runtime = runtime_manager
-
-        self.registry = registry
 
 
 
@@ -76,7 +73,7 @@ class RuntimeService:
         status,
     ):
 
-        return self.registry.update_status(
+        return self.runtime.update_status(
             name,
             status,
         )
@@ -90,7 +87,7 @@ class RuntimeService:
         name
     ):
 
-        runtime = self.registry.get(
+        runtime = self.runtime.status(
             name
         )
 
@@ -148,7 +145,7 @@ class RuntimeService:
         runtime
     ):
 
-        return self.registry.register(
+        return self.runtime.register(
             runtime
         )
 
@@ -160,11 +157,7 @@ class RuntimeService:
         self
     ):
 
-        return [
-            runtime
-            for runtime in self.registry.list()
-            if runtime.get("preview")
-        ]
+        return self.runtime.previews()
 
 
 
@@ -175,4 +168,4 @@ class RuntimeService:
         self
     ):
 
-        return self.registry.list()
+        return self.runtime.list_running()
