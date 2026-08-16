@@ -9,7 +9,19 @@ artifact = loader.load(
 )
 
 
-runtime = RuntimeManager()
+registry = RuntimeRegistry()
+
+process_manager = ProcessManager()
+
+preview_runtime = PreviewRuntime(
+    process_manager
+)
+
+runtime = RuntimeManager(
+    registry=registry,
+    process_manager=process_manager,
+    preview_runtime=preview_runtime,
+)
 
 
 result = runtime.launch(
