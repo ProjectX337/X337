@@ -54,6 +54,11 @@ class ChatAgent:
         self.project_memory = ProjectMemory()
 
 
+        if runtime_service is None:
+            raise ValueError(
+                "ChatAgent requires RuntimeService"
+            )
+
         self.runtime_service = runtime_service
 
 

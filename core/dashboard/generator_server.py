@@ -29,6 +29,7 @@ generation_service = GenerationService()
 chat_agent = ChatAgent(
     runtime_service=runtime_service,
 )
+
 writer = ResultWriter()
 
 training_store = TrainingStore()
@@ -840,7 +841,7 @@ class GeneratorHandler(BaseHTTPRequestHandler):
             # 5b. Start live generated-app preview
             # -------------------------------------------------
 
-            preview = runtime_service.start_preview(
+            preview = chat_agent.start_preview(
                 slug
             )
 
