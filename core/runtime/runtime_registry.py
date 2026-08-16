@@ -106,6 +106,14 @@ class RuntimeRegistry:
             runtime.id
         ] = runtime.to_dict()
 
+        if hasattr(runtime, "processes"):
+            self.runtimes[
+                runtime.id
+            ]["processes"] = [
+                process.to_dict()
+                for process in runtime.processes.values()
+            ]
+
 
 
         self._save()

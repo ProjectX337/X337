@@ -1,14 +1,22 @@
 import time
 import psutil
 
+from core.runtime.process_manager import ProcessManager
+
 
 class RuntimeMonitor:
 
     def __init__(
         self,
         registry,
+        process_manager=None,
     ):
         self.registry = registry
+        self.process_manager = (
+            process_manager
+            if process_manager is not None
+            else ProcessManager()
+        )
 
     def check(
         self,
@@ -17,7 +25,25 @@ class RuntimeMonitor:
 
         alive = True
 
-        for process in runtime.processes.values():
+        processes = (
+            self.process_manager.list_runtime_processes()
+        )
+
+        if not processes:
+            stored = self.registry.get(
+                runtime.name
+            )
+
+            processes = {
+                str(process.get("pid")): process
+                for process in (
+                    stored.get("processes", [])
+                    if stored
+                    else []
+                )
+            }
+
+        for process in processes.values():
 
             try:
 

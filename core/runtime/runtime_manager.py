@@ -80,7 +80,7 @@ class RuntimeManager:
         return {
             "runtime": stored_runtime,
             "processes": list(
-                runtime.processes.keys()
+                self.process_manager.list_runtime_processes().keys()
             ),
             "preview": runtime.preview,
         }
