@@ -29,11 +29,14 @@ class CapabilityResolution:
     """
 
     mappings = {
-        "adaptive tutoring": [
-            "progress tracking",
-            "personalized recommendations",
-            "lesson adaptation",
-        ],
+        "adaptive tutoring": {
+            "capability": "ai",
+            "features": [
+                "progress tracking",
+                "personalized recommendations",
+                "lesson adaptation",
+            ],
+        },
     }
 
     def __init__(self):
@@ -58,15 +61,31 @@ class CapabilityResolution:
 
             visited.add(name)
 
-            capability = self.registry.get(name)
+            mapping = self.mappings.get(
+                name,
+                {}
+            )
+
+            capability_name = (
+                mapping.get("capability")
+                if isinstance(mapping, dict)
+                else None
+            )
+
+            capability = (
+                self.registry.get(capability_name)
+                if capability_name
+                else self.registry.get(name)
+            )
 
             if capability is None:
                 resolved[name] = ResolvedCapability(
                     name=name,
                     capability=None,
-                    features=self.mappings.get(
-                        name,
-                        [],
+                    features=(
+                        mapping.get("features", [])
+                        if isinstance(mapping, dict)
+                        else []
                     ),
                     confidence=confidence,
                     source=source,
@@ -77,9 +96,10 @@ class CapabilityResolution:
             resolved[name] = ResolvedCapability(
                 name=name,
                 capability=capability,
-                features=self.mappings.get(
-                    name,
-                    [],
+                features=(
+                    mapping.get("features", [])
+                    if isinstance(mapping, dict)
+                    else []
                 ),
                 confidence=confidence,
                 source=source,

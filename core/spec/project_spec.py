@@ -8,6 +8,7 @@ from core.planner.models import Intent, ParsedPrompt
 from core.planner.capability_match import CapabilityMatch
 from core.planner.technology_plan import TechnologyPlan
 from core.planner.stack_builder import ArchitectureStack
+from core.graph.change_plan import ChangePlan
 from core.graph.models import ApplicationGraph
 
 from core.spec.ui_spec import UISpec
@@ -62,6 +63,10 @@ class ProjectSpec:
     )
 
     graph_intelligence: dict | None = None
+
+    change_plans: list[ChangePlan] = field(
+        default_factory=list
+    )
 
     # ---------------------------------------------------------
     # Identity

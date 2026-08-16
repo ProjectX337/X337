@@ -50,6 +50,7 @@ class ProjectSpecStage(PlanningStage):
 
         application_graph=context.application_graph,
         graph_intelligence=context.graph_intelligence,
+        change_plans=context.change_plans,
 
             feature_models=context.feature_models,
 

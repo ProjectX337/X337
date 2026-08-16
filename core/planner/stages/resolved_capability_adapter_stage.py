@@ -35,8 +35,12 @@ class ResolvedCapabilityAdapterStage(PlanningStage):
 
         for resolved in context.resolved_capabilities:
 
-            capability = self.registry.get(
-                resolved.name
+            capability = (
+                resolved.capability
+                if resolved.capability is not None
+                else self.registry.get(
+                    resolved.name
+                )
             )
 
             if capability is None:
