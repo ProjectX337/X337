@@ -1,29 +1,27 @@
 from __future__ import annotations
 
-from core.cognition.cognitive_state import CognitiveState
 from core.planner.stages.base_stage import PlanningStage
 
-from core.graph.intelligence.runtime import (
+from core.intelligence.intelligence_runtime import (
     GraphIntelligenceRuntime,
 )
 
 
 class GraphIntelligenceStage(PlanningStage):
+    """
+    Runs intelligence analysis over the canonical
+    ApplicationGraph.
+
+    Input:
+        state.application_graph
+
+    Output:
+        state.graph_intelligence
+    """
 
     name = "graph_intelligence"
 
-    requires = {
-        "application_graph",
-    }
-
-    provides = {
-        "graph_intelligence",
-    }
-
-    def run(
-        self,
-        state: CognitiveState,
-    ) -> None:
+    def run(self, state):
 
         runtime = GraphIntelligenceRuntime(
             state.application_graph
@@ -32,3 +30,5 @@ class GraphIntelligenceStage(PlanningStage):
         state.graph_intelligence = (
             runtime.analyze()
         )
+
+        return state
