@@ -13,6 +13,7 @@ class RuntimeManager:
         self,
         registry=None,
         process_manager=None,
+        preview_runtime=None,
     ):
 
         self.terminal = TerminalManager()
@@ -23,8 +24,12 @@ class RuntimeManager:
             else ProcessManager()
         )
 
-        self.preview_runtime = PreviewRuntime(
-            self.process_manager
+        self.preview_runtime = (
+            preview_runtime
+            if preview_runtime is not None
+            else PreviewRuntime(
+                self.process_manager
+            )
         )
 
         self.runtime_factory = RuntimeFactory()
