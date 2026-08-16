@@ -15,7 +15,6 @@ from core.generators.generation_service import GenerationService
 from core.generators.result_writer import ResultWriter
 from core.training.training_store import TrainingStore
 from core.planner.project_planner import ProjectPlanner
-from core.runtime.runtime_container import runtime_service
 
 
 class ChatAgent:
@@ -27,7 +26,10 @@ class ChatAgent:
     GenerationService.
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        runtime_service,
+    ):
 
         self.project_planner = ProjectPlanner()
 

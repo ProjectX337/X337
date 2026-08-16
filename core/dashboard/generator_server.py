@@ -26,7 +26,9 @@ OUTPUT_ROOT = Path(
 planner = ProjectPlanner()
 change_engine = ChangeEngine()
 generation_service = GenerationService()
-chat_agent = ChatAgent()
+chat_agent = ChatAgent(
+    runtime_service=runtime_service,
+)
 writer = ResultWriter()
 
 training_store = TrainingStore()
