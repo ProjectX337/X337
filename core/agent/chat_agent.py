@@ -15,7 +15,6 @@ from core.generators.generation_service import GenerationService
 from core.generators.result_writer import ResultWriter
 from core.training.training_store import TrainingStore
 from core.planner.project_planner import ProjectPlanner
-from core.runtime.runtime_factory import RuntimeFactory
 from core.runtime.runtime_container import runtime_service
 
 
@@ -52,7 +51,6 @@ class ChatAgent:
 
         self.project_memory = ProjectMemory()
 
-        self.runtime_factory = None
 
         self.runtime_service = runtime_service
 
@@ -211,9 +209,8 @@ class ChatAgent:
             exist_ok=True,
         )
 
-        runtime = self.runtime_factory.create(
-            spec=spec,
-            root_path=output_root,
+        runtime = self.runtime_service.start(
+            spec,
         )
 
         self.result_writer.write(
