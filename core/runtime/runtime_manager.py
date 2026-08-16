@@ -18,19 +18,19 @@ class RuntimeManager:
 
         self.terminal = TerminalManager()
 
-        self.process_manager = (
-            process_manager
-            if process_manager is not None
-            else ProcessManager()
-        )
-
-        self.preview_runtime = (
-            preview_runtime
-            if preview_runtime is not None
-            else PreviewRuntime(
-                self.process_manager
+        if process_manager is None:
+            raise ValueError(
+                "RuntimeManager requires ProcessManager"
             )
-        )
+
+        if preview_runtime is None:
+            raise ValueError(
+                "RuntimeManager requires PreviewRuntime"
+            )
+
+        self.process_manager = process_manager
+
+        self.preview_runtime = preview_runtime
 
         self.runtime_factory = RuntimeFactory()
 
