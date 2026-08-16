@@ -236,6 +236,19 @@ class RuntimeRegistry:
 
 
     #
+    # List runtimes
+    #
+    def list(
+        self
+    ):
+
+        return list(
+            self.runtimes.values()
+        )
+
+
+
+    #
     # Update runtime status
     #
     def update_status(

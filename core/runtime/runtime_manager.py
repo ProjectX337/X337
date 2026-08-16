@@ -141,3 +141,66 @@ class RuntimeManager:
         return self.runtime_registry.get(
             artifact_name
         )
+
+
+    def health(
+        self,
+        artifact_name
+    ):
+
+        runtime = self.runtime_registry.get(
+            artifact_name
+        )
+
+        if runtime is None:
+            return {
+                "name": artifact_name,
+                "healthy": False,
+                "runtime": None,
+            }
+
+        health = runtime.get(
+            "health",
+            {}
+        )
+
+        return {
+            "name": artifact_name,
+            "healthy": (
+                health.get(
+                    "status"
+                ) == "healthy"
+            ),
+            "runtime": runtime,
+        }
+
+
+    def update_status(
+        self,
+        artifact_name,
+        status,
+    ):
+
+        return self.runtime_registry.update_status(
+            artifact_name,
+            status,
+        )
+
+
+    def previews(
+        self
+    ):
+
+        return [
+            runtime
+            for runtime in self.runtime_registry.list()
+            if runtime.get("preview")
+        ]
+
+
+    def list_running(
+        self
+    ):
+
+        return self.runtime_registry.list()
+
