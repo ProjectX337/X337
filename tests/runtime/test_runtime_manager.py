@@ -1,6 +1,25 @@
+import pytest
+
+@pytest.fixture
+def runtime_dependencies():
+    process_manager = ProcessManager()
+
+    preview_runtime = PreviewRuntime(
+        process_manager
+    )
+
+    return (
+        process_manager,
+        preview_runtime,
+    )
+
+
+
 from pathlib import Path
 
 from core.runtime.runtime_manager import RuntimeManager
+from core.runtime.process_manager import ProcessManager
+from core.preview.runtime import PreviewRuntime
 from core.runtime.runtime_registry import RuntimeRegistry
 from core.spec.project_spec import ProjectSpec
 
@@ -8,13 +27,16 @@ from core.spec.project_spec import ProjectSpec
 def test_runtime_manager_launch_preserves_project_spec(
     tmp_path,
     monkeypatch,
+    runtime_dependencies,
 ):
     registry = RuntimeRegistry(
         storage_path=tmp_path / "runtimes.json"
     )
 
     manager = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     )
 
     spec = ProjectSpec(
@@ -46,13 +68,16 @@ def test_runtime_manager_launch_preserves_project_spec(
 def test_runtime_manager_start_preview_updates_registered_runtime(
     tmp_path,
     monkeypatch,
+    runtime_dependencies,
 ):
     registry = RuntimeRegistry(
         storage_path=tmp_path / "runtimes.json"
     )
 
     manager = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     )
 
     spec = ProjectSpec(
@@ -98,6 +123,7 @@ def test_runtime_manager_start_preview_updates_registered_runtime(
 
 def test_runtime_registry_resolves_runtime_by_slug(
     tmp_path,
+    runtime_dependencies,
 ):
     registry = RuntimeRegistry(
         storage_path=tmp_path / "runtimes.json"
@@ -112,7 +138,9 @@ def test_runtime_registry_resolves_runtime_by_slug(
     )
 
     runtime = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     ).runtime_factory.create(
         spec=spec,
         root_path=Path(spec.path),
@@ -131,6 +159,7 @@ def test_runtime_registry_resolves_runtime_by_slug(
 
 def test_runtime_registry_update_preview_persists(
     tmp_path,
+    runtime_dependencies,
 ):
     registry = RuntimeRegistry(
         storage_path=tmp_path / "runtimes.json"
@@ -145,7 +174,9 @@ def test_runtime_registry_update_preview_persists(
     )
 
     runtime = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     ).runtime_factory.create(
         spec=spec,
         root_path=Path(spec.path),
@@ -181,6 +212,7 @@ def test_runtime_registry_update_preview_persists(
 def test_runtime_monitor_persists_healthy_state(
     tmp_path,
     monkeypatch,
+    runtime_dependencies,
 ):
     from core.runtime.runtime_monitor import RuntimeMonitor
 
@@ -189,7 +221,9 @@ def test_runtime_monitor_persists_healthy_state(
     )
 
     manager = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     )
 
     spec = ProjectSpec(
@@ -233,6 +267,7 @@ def test_runtime_monitor_persists_healthy_state(
 def test_runtime_monitor_persists_failed_state(
     tmp_path,
     monkeypatch,
+    runtime_dependencies,
 ):
     from core.runtime.runtime_monitor import RuntimeMonitor
 
@@ -241,7 +276,9 @@ def test_runtime_monitor_persists_failed_state(
     )
 
     manager = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     )
 
     spec = ProjectSpec(
@@ -291,6 +328,7 @@ def test_runtime_monitor_persists_failed_state(
 
 def test_runtime_registry_update_status_persists(
     tmp_path,
+    runtime_dependencies,
 ):
     registry = RuntimeRegistry(
         storage_path=tmp_path / "runtimes.json"
@@ -303,7 +341,9 @@ def test_runtime_registry_update_status_persists(
     )
 
     runtime = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     ).runtime_factory.create(
         spec=spec,
         root_path=Path(spec.path),
@@ -332,13 +372,16 @@ def test_runtime_registry_update_status_persists(
 def test_runtime_manager_launch_persists_running_status(
     tmp_path,
     monkeypatch,
+    runtime_dependencies,
 ):
     registry = RuntimeRegistry(
         storage_path=tmp_path / "runtimes.json"
     )
 
     manager = RuntimeManager(
-        registry=registry
+        registry=registry,
+        process_manager=runtime_dependencies[0],
+        preview_runtime=runtime_dependencies[1],
     )
 
     spec = ProjectSpec(
