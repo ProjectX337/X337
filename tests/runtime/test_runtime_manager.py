@@ -8,9 +8,12 @@ def runtime_dependencies():
         process_manager
     )
 
+    runtime_factory = RuntimeFactory()
+
     return (
         process_manager,
         preview_runtime,
+        runtime_factory,
     )
 
 
@@ -19,6 +22,7 @@ from pathlib import Path
 
 from core.runtime.runtime_manager import RuntimeManager
 from core.runtime.process_manager import ProcessManager
+from core.runtime.runtime_factory import RuntimeFactory
 from core.preview.runtime import PreviewRuntime
 from core.runtime.runtime_registry import RuntimeRegistry
 from core.spec.project_spec import ProjectSpec
@@ -37,6 +41,7 @@ def test_runtime_manager_launch_preserves_project_spec(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     )
 
     spec = ProjectSpec(
@@ -78,6 +83,7 @@ def test_runtime_manager_start_preview_updates_registered_runtime(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     )
 
     spec = ProjectSpec(
@@ -141,6 +147,7 @@ def test_runtime_registry_resolves_runtime_by_slug(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     ).runtime_factory.create(
         spec=spec,
         root_path=Path(spec.path),
@@ -177,6 +184,7 @@ def test_runtime_registry_update_preview_persists(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     ).runtime_factory.create(
         spec=spec,
         root_path=Path(spec.path),
@@ -224,6 +232,7 @@ def test_runtime_monitor_persists_healthy_state(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     )
 
     spec = ProjectSpec(
@@ -279,6 +288,7 @@ def test_runtime_monitor_persists_failed_state(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     )
 
     spec = ProjectSpec(
@@ -344,6 +354,7 @@ def test_runtime_registry_update_status_persists(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     ).runtime_factory.create(
         spec=spec,
         root_path=Path(spec.path),
@@ -382,6 +393,7 @@ def test_runtime_manager_launch_persists_running_status(
         registry=registry,
         process_manager=runtime_dependencies[0],
         preview_runtime=runtime_dependencies[1],
+            runtime_factory=runtime_dependencies[2],
     )
 
     spec = ProjectSpec(
