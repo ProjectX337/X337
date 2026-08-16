@@ -258,6 +258,14 @@ class ChatAgent:
             "preview": preview,
         }
 
+    def start_preview(
+        self,
+        project_slug,
+    ):
+        return self.runtime_service.start_preview(
+            project_slug
+        )
+
     def respond(
         self,
         message: str,

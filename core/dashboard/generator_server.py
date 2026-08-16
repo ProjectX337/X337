@@ -10,8 +10,7 @@ from core.generators.generation_service import GenerationService
 from core.generators.result_writer import ResultWriter
 from core.planner.project_planner import ProjectPlanner
 from core.training.training_store import TrainingStore
-from core.agent.chat_agent import ChatAgent
-from core.runtime.runtime_container import runtime_service
+from core.application.container import chat_agent
 
 
 TRAINING_PATH = Path(
@@ -26,9 +25,7 @@ OUTPUT_ROOT = Path(
 planner = ProjectPlanner()
 change_engine = ChangeEngine()
 generation_service = GenerationService()
-chat_agent = ChatAgent(
-    runtime_service=runtime_service,
-)
+
 
 writer = ResultWriter()
 
