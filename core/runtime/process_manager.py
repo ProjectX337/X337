@@ -108,13 +108,13 @@ class ProcessManager:
         try:
 
             process = psutil.Process(
-                record["runtime_process"].pid
+                record["handle"].runtime_process.pid
             )
 
 
             if process.is_running():
 
-                record["runtime_process"].status = "running"
+                record["handle"].runtime_process.status = "running"
 
                 return True
 
@@ -126,7 +126,7 @@ class ProcessManager:
 
 
 
-        record["runtime_process"].status = "dead"
+        record["handle"].runtime_process.status = "dead"
 
         return False
 
@@ -150,7 +150,7 @@ class ProcessManager:
 
 
 
-        pid = record["runtime_process"].pid
+        pid = record["handle"].runtime_process.pid
 
 
 
@@ -175,10 +175,10 @@ class ProcessManager:
 
 
 
-            record["runtime_process"].status = "stopped"
+            record["handle"].runtime_process.status = "stopped"
 
-            record["runtime_process"].created_at = (
-                record["runtime_process"].created_at
+            record["handle"].runtime_process.created_at = (
+                record["handle"].runtime_process.created_at
             )
 
 
