@@ -12,11 +12,16 @@ class RuntimeManager:
     def __init__(
         self,
         registry=None,
+        process_manager=None,
     ):
 
         self.terminal = TerminalManager()
 
-        self.process_manager = ProcessManager()
+        self.process_manager = (
+            process_manager
+            if process_manager is not None
+            else ProcessManager()
+        )
 
         self.preview_runtime = PreviewRuntime(
             self.process_manager

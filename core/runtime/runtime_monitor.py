@@ -1,9 +1,6 @@
 import time
 import psutil
 
-from core.runtime.process_manager import ProcessManager
-
-
 class RuntimeMonitor:
 
     def __init__(
@@ -12,11 +9,9 @@ class RuntimeMonitor:
         process_manager=None,
     ):
         self.registry = registry
-        self.process_manager = (
-            process_manager
-            if process_manager is not None
-            else ProcessManager()
-        )
+
+        self.process_manager = process_manager
+
 
     def check(
         self,
@@ -25,9 +20,12 @@ class RuntimeMonitor:
 
         alive = True
 
-        processes = (
-            self.process_manager.list_runtime_processes()
-        )
+        processes = {}
+
+        if self.process_manager is not None:
+            processes = (
+                self.process_manager.list_runtime_processes()
+            )
 
         if not processes:
             stored = self.registry.get(
