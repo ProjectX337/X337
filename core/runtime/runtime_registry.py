@@ -275,8 +275,6 @@ class RuntimeRegistry:
             "processes"
         ] = [
             process.to_dict()
-            if hasattr(process, "to_dict")
-            else process
             for process in processes.values()
         ]
 
