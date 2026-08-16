@@ -28,11 +28,10 @@ class ProcessManager:
         )
 
         self.processes[artifact_name] = {
-            "runtime_process": runtime_process,
             "handle": ProcessHandle(
                 runtime_process=runtime_process,
                 popen_process=process,
-            ),
+            )
         }
 
 
@@ -43,10 +42,40 @@ class ProcessManager:
     ):
 
         return {
-            name: record["runtime_process"]
+            name: record["handle"].runtime_process
             for name, record in self.processes.items()
         }
 
+
+
+    def get_handle(
+        self,
+        artifact_name,
+    ):
+
+        record = self.get(
+            artifact_name
+        )
+
+        if not record:
+            return None
+
+        return record["handle"]
+
+
+    def get_runtime_process(
+        self,
+        artifact_name,
+    ):
+
+        handle = self.get_handle(
+            artifact_name
+        )
+
+        if not handle:
+            return None
+
+        return handle.runtime_process
 
 
     def get(

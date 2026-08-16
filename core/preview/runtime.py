@@ -65,12 +65,15 @@ class PreviewRuntime:
                 f"package.json not found: {package_json}"
             )
 
-        existing = self.process_manager.get(
+        handle = self.process_manager.get_handle(
             project_slug
         )
 
-        if existing is not None:
-            existing = existing["process"]
+        existing = (
+            handle.popen_process
+            if handle
+            else None
+        )
 
         if existing is not None:
             if existing.poll() is None:
