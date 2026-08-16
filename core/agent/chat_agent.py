@@ -52,7 +52,7 @@ class ChatAgent:
 
         self.project_memory = ProjectMemory()
 
-        self.runtime_factory = RuntimeFactory()
+        self.runtime_factory = None
 
         self.runtime_service = runtime_service
 

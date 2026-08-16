@@ -14,6 +14,7 @@ class RuntimeManager:
         registry=None,
         process_manager=None,
         preview_runtime=None,
+        runtime_factory=None,
     ):
 
         self.terminal = TerminalManager()
@@ -32,7 +33,12 @@ class RuntimeManager:
 
         self.preview_runtime = preview_runtime
 
-        self.runtime_factory = RuntimeFactory()
+        if runtime_factory is None:
+            raise ValueError(
+                "RuntimeManager requires RuntimeFactory"
+            )
+
+        self.runtime_factory = runtime_factory
 
         if registry is None:
             raise ValueError(
